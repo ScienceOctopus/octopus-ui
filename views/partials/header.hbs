@@ -3,7 +3,17 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Octopus{{#if publication}} - {{publication.name}}{{else}} - built for Scientists{{/if}}</title>
+  <title>
+    {{#if publication}}
+     Publication: {{publication.title}} - Octopus
+    {{else}}
+      {{#if problem}}
+      Problem: {{problem.title}} - Octopus
+      {{else}}
+       Octopus. Built for Scientists.
+     {{/if}}
+   {{/if}}
+  </title>
   <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="/public/css/app.css" rel="stylesheet" type="text/css">
 

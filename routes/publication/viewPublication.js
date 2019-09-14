@@ -17,7 +17,7 @@ module.exports = (req, res) => {
 
       // debug('octopus:ui:trace')(res.locals);
 
-      return res.render('publication/view', res.locals);
+      return res.render('publication/viewPublication', res.locals);
     });
   });
 };

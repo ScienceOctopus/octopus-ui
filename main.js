@@ -36,12 +36,12 @@ function startApp() {
   app.get('/faq', (req, res) => res.render('faq', res.locals));
   app.get('/publish', (req, res) => res.render('publish', res.locals));
 
-  app.get('/problems', require('./routes/problems/getAll'));
-  app.get('/problems/:problemID', require('./routes/problems/getOne'));
-  app.get('/problems/:problemID/publication/:publicationID', require('./routes/publication/view'));
-  //
-  app.get('/search', require('./routes/search'));
-  //
+  app.get('/problems', require('./routes/problems/exploreProblems'));
+  app.get('/problems/:problemID', require('./routes/problems/viewProblem'));
+  app.get('/problems/:problemID/publication/:publicationID', require('./routes/publication/viewPublication'));
+
+  app.get('/search', require('./routes/publication/searchPublications'));
+
   // app.get('/users/:id', require('./routes/user').getUserByID);
   /* eslint-enable global-require */
 

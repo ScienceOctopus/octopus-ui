@@ -1,0 +1,97 @@
+{{> header}}
+
+<div class="container-fluid" id="publicationChain" role="main">
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <p>Problem: {{problem.title}}</p>
+    </div>
+  </div>
+
+  <div>
+    [publication chain here]
+  </div>
+
+</div>
+
+<div class="container-fluid" id="mainBody" role="main">
+
+  <div class="row">
+    <div class="col-sm-9">
+
+      <h1 class="plainBodyText hide ">
+        <strong>Showing {{resultsDisplayed}} results out of {{resultsTotal}} total</strong>
+          {{#if query}} for term "{{query}}"{{/if}}
+          {{#if category}} in <i>{{category.name}}</i>{{else}} across categories{{/if}}.
+      </h1>
+      <br />
+
+        <div class="row result-item">
+          <div class="col-xs-8 col-sm-10">
+            <p class="category">Problem {{publication.problem}}</p>
+
+            <h2>{{{markHits publication.title ../query}}}</h2>
+            <p>{{publication.authors}}</p>
+
+            <p>Last modified: {{publication.dateLastActivity}}</p>
+
+            <hr />
+
+            <div>
+              <h3>Additional information</h3>
+              <p>
+                <strong>Funding:</strong>
+                <br />
+                {{publication.metaFunding}}
+              </p>
+              <p>
+                <strong>Conflict of interest:</strong>
+                <br />
+                {{publication.metaConflict}}
+              </p>
+              <p>
+                <strong>Editor</strong>
+                <br />
+                {{publication.metaEditor}}
+              </p>
+              <p>
+                <strong>Files</strong>
+                <br />
+                ...
+              </p>
+            </div>
+
+
+            <div>
+              <h3>Summary</h3>
+              <p>{{publication.summary}}</p>
+            </div>
+
+            <div>
+              <h3>Full text</h3>
+              {{publication.text}}
+            </div>
+          </div>
+
+          <div class="col-xs-4 col-sm-2 text-right">
+            Stage {{publication.stage}}
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <hr />
+
+    </div>
+
+    <div class="col-sm-3" id="sidebar">
+      <h2>Reviews</h2>
+
+      <div>ASDF</div>
+    </div>
+
+  </div>
+
+</div>
+
+{{> navTop}}
+
+{{> footer}}

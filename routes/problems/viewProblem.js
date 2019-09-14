@@ -11,7 +11,7 @@ module.exports = (req, res) => {
       res.locals.problem = problemResult;
       res.locals.publications = publications;
 
-      return res.render('problems/view', res.locals);
+      return res.render('problems/viewProblem', res.locals);
     });
   });
 };
