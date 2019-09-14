@@ -1,0 +1,51 @@
+{{> header}}
+
+<div class="container-fluid" id="mainBody" role="main">
+
+  <div class="row">
+
+    <div class="col-sm-9">
+
+        <div class="row result-item">
+          <div class="col-xs-8 col-sm-10">
+            <h2>{{problem.title}}</h2>
+
+            <p>{{#each problem.stages}}<span class="label label-default">{{this}}</span> {{/each}}</p>
+
+            <p>{{problem.summary}}</p>
+
+            <br />
+            <br />
+            <br />
+
+            <h2>Publications in this problem</h2>
+
+            {{#each publications.results}}
+              <p>
+                <a href="/problems/{{../problem.id}}/publication/{{this.id}}">
+                  {{this.title}}
+                  ({{this.stage}})
+                </a>
+              </p>
+            {{/each}}
+
+          </div>
+
+          <div class="col-xs-4 col-sm-2 text-right">
+            (number of docs)
+
+            <div class="clearfix"></div>
+
+          </div>
+
+        </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+{{> navTop}}
+
+{{> footer}}

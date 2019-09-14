@@ -1,0 +1,45 @@
+<nav id="navTop" role="navigation">
+  <ul>
+    <li>
+      <a href="/">
+        <img class="logo" src="/public/octopus.svg" />
+        <span class="branding">Octopus</span>
+      </a>
+    </li>
+    <li>
+      <a href="/problems">
+        <span class="fa fa-sitemap"></span>
+        Explore problems
+      </a>
+    </li>
+    <li>
+      <a href="/search">
+        <span class="fa fa-files-o"></span>
+        All publications
+      </a>
+    </li>
+    <li>
+      <a href="/publish">
+        <span class="fa fa-file-word-o"></span>
+        Publish your work
+      </a>
+    </li>
+    <li>
+      <form method="GET" action="/search" class="form-inline" id="mainSearchForm">
+        <!-- <div class="form-group"> -->
+          <label for="mainSearchInput" class="sr-only">Search term</label>
+          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
+
+          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
+            <span class="fa fa-search"></span>
+            <span class="sr-only">Submit search</span>
+          </button>
+        <!-- </div> -->
+
+      </form>
+    </li>
+    <li class="pull-right">
+      <a href="/login">Log in via ORCiD</a>
+    </li>
+  </ul>
+</nav>

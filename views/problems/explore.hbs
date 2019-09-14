@@ -1,0 +1,64 @@
+{{> header}}
+
+<div class="container-fluid" id="mainBody" role="main">
+
+  <div class="row">
+    <div class="col-sm-3" id="sidebar">
+
+      <h2>Filter problems</h2>
+
+      <form method="GET" action="" class="form-inline">
+        <!-- <div class="form-group"> -->
+          <label for="mainSearchInput" class="sr-only">Search term</label>
+          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search problems" />
+
+          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
+            <span class="fa fa-search"></span>
+            <span class="sr-only">Submit search</span>
+          </button>
+        <!-- </div> -->
+      </form>
+
+
+    </div>
+
+    <div class="col-sm-9">
+
+      <h1 class="plainBodyText">
+        <strong>Showing {{resultsDisplayed}} problems out of {{resultsTotal}} total</strong>
+          {{#if query}} for term "{{query}}"{{/if}}.
+      </h1>
+      <br />
+
+      {{#each results}}
+        <div class="row result-item">
+          <div class="col-xs-8 col-sm-10">
+            <p class="category">{{this.problem}}</p>
+
+            <h2><a href="/problems/{{this.id}}">{{{markHits this.title ../query}}}</a></h2>
+
+            <p>{{this.summary}}</p>
+
+            <p>{{#each this.stages}}<span class="label label-default">{{this}}</span> {{/each}}</p>
+          </div>
+
+          <div class="col-xs-4 col-sm-2 text-right">
+            (number of docs)
+
+            <div class="clearfix"></div>
+
+          </div>
+
+        </div>
+
+        <hr />
+      {{/each}}
+
+    </div>
+  </div>
+
+</div>
+
+{{> navTop}}
+
+{{> footer}}

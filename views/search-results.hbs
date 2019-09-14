@@ -1,0 +1,113 @@
+{{> header}}
+
+<div class="container-fluid" id="mainBody" role="main">
+
+  <div class="row">
+    <div class="col-sm-3" id="sidebar">
+
+      <h2>Refine search</h2>
+
+      <form method="GET" action="" class="form-inline">
+        <!-- <div class="form-group"> -->
+          <label for="mainSearchInput" class="sr-only">Search term</label>
+          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
+
+          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
+            <span class="fa fa-search"></span>
+            <span class="sr-only">Submit search</span>
+          </button>
+        <!-- </div> -->
+      </form>
+
+      <form method="GET" action="" class="form-horizontal">
+        <!-- <div class="form-group"> -->
+          <strong>Publication type:</strong>
+          <br />
+
+          <div class="checkbox"><label>
+            <input type="checkbox" /> Hypotheses
+          </label></div>
+          <div class="checkbox"><label>
+            <input type="checkbox" /> Methods/Protocols
+          </label></div>
+          <div class="checkbox"><label>
+            <input type="checkbox" /> Data/Results
+          </label></div>
+          <div class="checkbox"><label>
+            <input type="checkbox" /> Analyses
+          </label></div>
+          <div class="checkbox"><label>
+            <input type="checkbox" /> Interpretations
+          </label></div>
+          <div class="checkbox"><label>
+            <input type="checkbox" /> Applications
+          </label></div>
+        <!-- </div> -->
+      </form>
+
+      <form method="GET" action="" class="form-inline">
+        <!-- <div class="form-group"> -->
+          <strong>Sort by:</strong>
+          <br />
+          <select>
+            <option>Title (A-Z)</option>
+            <option>Title (Z-A)</option>
+            <option>Creation date (newest-oldest)</option>
+            <option>Creation date (oldest-newest)</option>
+            <option>Last activity date (newest-oldest)</option>
+            <option>Last activity date (oldest-newest)</option>
+          </select>
+        <!-- </div> -->
+      </form>
+
+
+    </div>
+
+    <div class="col-sm-9">
+
+
+      <h1 class="plainBodyText">
+        <strong>Showing {{resultsDisplayed}} results out of {{resultsTotal}} total</strong>
+          {{#if query}} for term "{{query}}"{{/if}}
+          {{#if category}} in <i>{{category.name}}</i>{{else}} across categories{{/if}}.
+      </h1>
+      <br />
+
+      {{#each results}}
+        <div class="row result-item">
+          <div class="col-xs-8 col-sm-10">
+            <p class="category">{{this.problem}}</p>
+
+            <h2><a href="/problems/{{this.problem}}/publication/{{this.id}}">{{{markHits this.title ../query}}}</a></h2>
+
+            <p>{{markHits this.summary ../query}}</p>
+
+            <p>{{this.authors}}</p>
+
+            <!-- <blockquote>{{this.abstract}}</blockquote> -->
+
+            <!-- <p>DOI: <a href="https://doi.org/{{this.doi}}" target="_blank">https://doi.org/{{this.doi}} <span class="fa fa-external-link"></span></a></p> -->
+
+            <p>Last modified: {{this.dateLastActivity}}</p>
+          </div>
+
+          <div class="col-xs-4 col-sm-2 text-right">
+            Stage {{this.stage}}
+
+            <div class="clearfix"></div>
+
+          </div>
+
+        </div>
+
+        <hr />
+      {{/each}}
+
+    </div>
+  </div>
+
+</div>
+
+{{> navTop}}
+
+{{> footer}}
