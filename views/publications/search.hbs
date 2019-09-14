@@ -5,14 +5,16 @@
   <div class="row">
     <div class="col-sm-3" id="sidebar">
 
-      <h2>Refine search</h2>
+      <h2 class="plainBodyText">
+        <strong>Refine search</strong>
+      </h2>
 
-      <form method="GET" action="" class="form-inline">
+      <form method="GET" action="" class="form-inline" id="searchFormSidebar">
         <!-- <div class="form-group"> -->
-          <label for="mainSearchInput" class="sr-only">Search term</label>
-          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
+          <label for="searchFormSidebarInput" class="sr-only">Search term</label>
+          <input id="searchFormSidebarInput" class="searchFormInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
 
-          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
+          <button type="submit" class="btn btn-default searchFormSubmitBtn">
             <span class="fa fa-search"></span>
             <span class="sr-only">Submit search</span>
           </button>
@@ -24,24 +26,11 @@
           <strong>Publication type:</strong>
           <br />
 
+          {{#each publicationTypes}}
           <div class="checkbox"><label>
-            <input type="checkbox" /> Hypotheses
+            <input type="checkbox" checked="checked" name="publicationTypes" value="{{this.key}}" /> {{this.title}}
           </label></div>
-          <div class="checkbox"><label>
-            <input type="checkbox" /> Methods/Protocols
-          </label></div>
-          <div class="checkbox"><label>
-            <input type="checkbox" /> Data/Results
-          </label></div>
-          <div class="checkbox"><label>
-            <input type="checkbox" /> Analyses
-          </label></div>
-          <div class="checkbox"><label>
-            <input type="checkbox" /> Interpretations
-          </label></div>
-          <div class="checkbox"><label>
-            <input type="checkbox" /> Applications
-          </label></div>
+          {{/each}}
         <!-- </div> -->
       </form>
 
@@ -67,45 +56,35 @@
 
 
       <h1 class="plainBodyText">
-        <strong>Showing {{resultsDisplayed}} results out of {{resultsTotal}} total</strong>
-          {{#if query}} for term "{{query}}"{{/if}}
-          {{#if category}} in <i>{{category.name}}</i>{{else}} across categories{{/if}}.
+        <strong>Showing {{publications.displayedCount}} results out of {{publications.totalCount}} total</strong>
+          {{#if query}} for term "{{query}}"{{/if}}.
+          <!-- {{#if category}} in <i>{{category.name}}</i>{{else}} across categories{{/if}}. -->
       </h1>
       <br />
 
-      {{#each results}}
+      {{#each publications.results}}
         <div class="row result-item">
-          <div class="col-xs-8 col-sm-10">
-            <p class="category">{{this.problem}}</p>
+          <div class="col-xs-12">
+            <h2><a href="/publications/view/{{this.id}}">{{{markHits this.title ../query}}}</a></h2>
 
-            <h2><a href="/publication/{{this.id}}">{{{markHits this.title ../query}}}</a></h2>
+            <p>{{{markHits this.summary ../query}}}</p>
 
-            <p>{{markHits this.summary ../query}}</p>
+            <!-- <blockquote>{{{markHits this.summary ../query}}}</blockquote> -->
 
             <p>{{this.authors}}</p>
 
-            <!-- <blockquote>{{this.abstract}}</blockquote> -->
-
-            <!-- <p>DOI: <a href="https://doi.org/{{this.doi}}" target="_blank">https://doi.org/{{this.doi}} <span class="fa fa-external-link"></span></a></p> -->
-
-            <p>Last modified: {{this.dateLastActivity}}</p>
+            <ul class="list list-inline">
+              <li><span class="label label-default">{{this.type}}</span></li>
+              <li>Parent publication: {{this.parentPublication}} &nbsp;</li>
+              <li>Part of problem: {{this.parentProblem}} &nbsp;</li>
+              <li>Last activity: {{formatDate this.dateLastActivity}} &nbsp;</li>
+            </ul>
           </div>
-
-          <div class="col-xs-4 col-sm-2 text-right">
-            Stage {{this.stage}}
-
-            <div class="clearfix"></div>
-
-          </div>
-
         </div>
-
-        <hr />
       {{/each}}
 
     </div>
   </div>
-
 </div>
 
 {{> navTop}}

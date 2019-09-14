@@ -7,24 +7,24 @@
       </a>
     </li>
     <li>
-      <a href="/search">
+      <a href="/publications/search">
         <span class="fa fa-files-o"></span>
         All publications
       </a>
     </li>
     <li>
-      <a href="/publish">
+      <a href="/publications/publish">
         <span class="fa fa-file-word-o"></span>
         Publish your work
       </a>
     </li>
     <li>
-      <form method="GET" action="/search" class="form-inline" id="mainSearchForm">
+      <form method="GET" action="/publications/search" class="form-inline" id="searchFormTop">
         <!-- <div class="form-group"> -->
-          <label for="mainSearchInput" class="sr-only">Search term</label>
-          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
+          <label for="searchFormTopInput" class="sr-only">Search term</label>
+          <input id="searchFormTopInput" class="searchFormInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
 
-          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
+          <button type="submit" class="btn btn-default searchFormSubmitBtn">
             <span class="fa fa-search"></span>
             <span class="sr-only">Submit search</span>
           </button>

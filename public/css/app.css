@@ -23,14 +23,22 @@ nav#navTop li a { padding: 14px 30px; color: #fff; font-weight: 400; border-bott
 nav#navTop li a:hover { color: #fff; background: #ada3ed; text-decoration: none; border-bottom-color: #ada3ed}
 nav#navTop li a.active { background: #ada3ed; border-bottom-color: #7965e6}
 
-#mainSearchForm {margin-bottom: 30px; width: 100%; min-width: 200px }
-#mainSearchInput {width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px}
-#mainSearchSubmit {float: right; margin: -41px 1px 0 0; z-index: 10; position: relative; width: 50px; height: 40px; padding: 0;}
-#mainSearchSubmit {border: none; border-radius: 0 3px 3px 0; border-left: 1px solid #eee; background: white;}
-#mainSearchSubmit:hover, #mainSearchSubmit:focus {background: #f8f8f8;}
+#searchTop {margin-bottom: 30px; width: 100%; min-width: 200px }
+.searchFormInput {width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px}
+.searchFormSubmitBtn {float: right; margin: -41px 1px 0 0; position: relative; width: 50px; height: 40px; padding: 0;}
+.searchFormSubmitBtn {border: none; border-radius: 0 3px 3px 0; border-left: 1px solid #eee; background: white;}
+.searchFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
 
-.result-item {padding: 15px 0}
-.result-item .category {text-transform: uppercase; color: #707070; font-weight: bold}
+.searchFormSubmitBtn {z-index: 9}
+nav#navTop {z-index: 10}
+nav#navTop .searchFormSubmitBtn {z-index: 11}
+
+#sidebar form { padding: 15px 0; border-top: 1px dotted #ccc; }
+#sidebar form:first-of-type { border-top: none }
+
+.result-item {padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc}
+.result-item:first-of-type { border-top: none }
+/* .result-item .category {text-transform: uppercase; color: #707070; font-weight: bold} */
 
 .plainBodyText {font-size: 1em !important; margin: 0}
 
