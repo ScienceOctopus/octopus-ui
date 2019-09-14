@@ -3,24 +3,6 @@
 <div class="container-fluid" id="mainBody" role="main">
 
   <div class="row">
-    <div class="col-sm-3" id="sidebar">
-
-      <h2>Filter problems</h2>
-
-      <form method="GET" action="" class="form-inline">
-        <!-- <div class="form-group"> -->
-          <label for="mainSearchInput" class="sr-only">Search term</label>
-          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search problems" />
-
-          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
-            <span class="fa fa-search"></span>
-            <span class="sr-only">Submit search</span>
-          </button>
-        <!-- </div> -->
-      </form>
-
-
-    </div>
 
     <div class="col-sm-9">
 
@@ -43,7 +25,9 @@
           </div>
 
           <div class="col-xs-4 col-sm-2 text-right">
-            (number of docs)
+            20 publications
+            <br />
+            7 collaborators
 
             <div class="clearfix"></div>
 
@@ -55,6 +39,24 @@
       {{/each}}
 
     </div>
+
+    <div class="col-sm-3" id="sidebar">
+
+      <h2>Filter problems</h2>
+
+      <form method="GET" action="" class="form-inline">
+        <!-- <div class="form-group"> -->
+          <label for="mainSearchInput" class="sr-only">Search term</label>
+          <input id="mainSearchInput" name="query" type="text" value="{{query}}" placeholder="Search problems" />
+
+          <button id="mainSearchSubmit" type="submit" class="btn btn-default">
+            <span class="fa fa-search"></span>
+            <span class="sr-only">Submit search</span>
+          </button>
+        <!-- </div> -->
+      </form>
+    </div>
+
   </div>
 
 </div>
