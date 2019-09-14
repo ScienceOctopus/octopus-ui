@@ -1,21 +1,12 @@
 {{> header}}
 
 <div class="container-fluid" id="publicationChain" role="main">
-
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <p>Problem: {{problem.title}}</p>
-    </div>
-  </div>
-
   <div>
     [publication chain here]
   </div>
-
 </div>
 
 <div class="container-fluid" id="mainBody" role="main">
-
   <div class="row">
     <div class="col-sm-9">
 
@@ -29,11 +20,26 @@
 
       <h2>{{{markHits publication.title ../query}}}</h2>
 
-      <p class="category">Problem: {{publication.problem}}</p>
-      <p class="category">Stage: {{publication.stage}}</p>
+      <p class="category">Part of Problem: {{publication.problem}}</p>
+      <p class="category">Publication Type: {{publication.stage}}</p>
 
       <p>{{publication.authors}}</p>
       <p>Last modified: {{publication.dateLastActivity}}</p>
+
+      <hr />
+
+      <div>
+        <h3>Summary</h3>
+        <p>{{publication.summary}}</p>
+      </div>
+
+      <hr />
+
+      <div>
+        <h3>Full text</h3>
+        <p>{{publication.text}}</p>
+      </div>
+
       <hr />
 
       <div>
@@ -74,22 +80,17 @@
           ...
         </p>
       </div>
-
-
-      <div>
-        <h3>Summary</h3>
-        <p>{{publication.summary}}</p>
-      </div>
-
-      <div>
-        <h3>Full text</h3>
-        {{publication.text}}
-      </div>
     </div>
 
     <div class="col-sm-3" id="sidebar">
+      <h2>Collaborators</h2>
+      <div>12 collaborators</div>
+
+      <h2>Ratings</h2>
+      <div>7 ratings</div>
+
       <h2>Reviews</h2>
-      <div>7 reviews</div>
+      <div>3 reviews</div>
     </div>
 
   </div>
