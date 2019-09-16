@@ -5,11 +5,15 @@ const api = require('../../lib/api');
 // const mappers = require('../lib/mappers');
 
 module.exports = (req, res) => {
-  const query = _.get(req, 'query.query');
+  const query = {
+    phrase: _.get(req, 'query.phrase'),
+    parentProblem: _.get(req, 'query.parentProblem'),
+    type: _.get(req, 'query.type'),
+  };
 
-  debug('octopus:ui:debug')(`Searching for Publications: "${query}"`);
+  debug('octopus:ui:debug')(`Searching for Publications. Query: "${query.phrase || ''}"`);
 
-  return api.findPublications({ query }, (publicationsErr, pubData) => {
+  return api.findPublications(query, (publicationsErr, pubData) => {
     const data = pubData;
 
     res.locals.query = query;
