@@ -1,60 +1,57 @@
-#headerSpacer {height: 60px}
-
-.container-fluid { padding: 30px }
-.container-fluid#mainBody { max-width: 1280px }
-
-.form-horizontal .control-label {text-align: left}
-.homepageJumbotron h2 {font-size: 24px}
-.bg-homepage {background: #a8bdf0}
-
-h2 {font-size: 20px}
-
-.homepageJumbotron .logo {width: 200px; margin: 10px 50px; float: right}
-nav#navTop .logo { height: 42px; float: left; margin-top: -10px; padding-right: 20px;}
-/* nav#navTop .branding { font-weight: 300; font-size: 1.2em} */
-
+/* Global layout */
+html { position: relative; min-height: 100%; }
+body { margin-bottom: 140px; margin-top: 50px; }
+footer { position: absolute; bottom: 0; width: 100%; height: 140px; }
 nav#navTop { position: fixed; left:0; top:0; width:100%; height:50px; overflow: hidden}
-nav#navTop { background: #9f90ed; background: linear-gradient(#9f90ed,#9f90ed,#9485e4,#7766ce); box-shadow: 0 1px 10px #eee}
 
-nav#navTop ul, nav#navTop ul li {padding: 0; margin: 0}
+/* Footer styling */
+footer { background: #ded9f3; padding: 30px; box-shadow: 0 -1px 10px #eee }
+footer, footer a { color: #424242; font-weight: 500; }
 
-nav#navTop li, nav#navTop li a { display: inline-block; height: 50px}
+/* Top nav styling */
+nav#navTop { background: #9f90ed; box-shadow: 0 1px 10px #ccc; border-bottom: 1px solid #eee}
+nav#navTop li, nav#navTop li a { display: inline-block; padding: 0; height: 50px}
 nav#navTop li a { padding: 14px 30px; color: #fff; font-weight: 400; border-bottom: 4px solid transparent; text-shadow: 0 1px 1px #777}
 nav#navTop li a:hover { color: #fff; background: #ada3ed; text-decoration: none; border-bottom-color: #ada3ed}
 nav#navTop li a.active { background: #ada3ed; border-bottom-color: #7965e6}
+nav#navTop .logo { height: 40px; float: left; margin-top: -10px; padding-right: 20px;}
 
-#searchTop {margin-bottom: 30px; width: 100%; min-width: 200px }
+/* z-index */
+.searchFormSubmitBtn {z-index: 9}
+nav#navTop {z-index: 10}
+nav#navTop .searchFormSubmitBtn {z-index: 11}
+
+/* Search input */
 .searchFormInput {width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px}
 .searchFormSubmitBtn {float: right; margin: -41px 1px 0 0; position: relative; width: 50px; height: 40px; padding: 0;}
 .searchFormSubmitBtn {border: none; border-radius: 0 3px 3px 0; border-left: 1px solid #eee; background: white;}
 .searchFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
 
-.searchFormSubmitBtn {z-index: 9}
-nav#navTop {z-index: 10}
-nav#navTop .searchFormSubmitBtn {z-index: 11}
-
+/* Sidebar styling */
 #sidebar form { padding: 15px 0; border-top: 1px dotted #ccc; }
 #sidebar form:first-of-type { border-top: none }
 
+/* Generic styles */
+.container-fluid { padding: 30px }
+.container-fluid#mainBody { max-width: 1280px }
+.form-horizontal .control-label {text-align: left}
+.plainBodyText {font-size: 1em !important; margin: 0}
+.hit { background: #ffa; padding: 1px; margin: -1px }
+.fa-external-link {font-size: 14px !important}
+h2 {font-size: 20px}
+hr.octopus-separator {height: 30px; background: url('../images/separatorChain.png') center center; border: none; margin: 0}
+
+/* Homepage */
+.bg-homepage {background: #a8bdf0}
+.homepageJumbotron h2 {font-size: 24px}
+.homepageJumbotron .homepageGraph {width: 100%; max-width: 500px; margin: 0 0 10px -50px; float: right}
+
+/* List of results */
 .result-item {padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc}
 .result-item:first-of-type { border-top: none }
-/* .result-item .category {text-transform: uppercase; color: #707070; font-weight: bold} */
 
-.plainBodyText {font-size: 1em !important; margin: 0}
-
-.hit { background: #ffa; padding: 1px; margin: -1px }
-
-/* Our lowest breakpoint - nav at the bottom */
-@media (max-width: 600px) {
-  .container-fluid#mainBody { width: 100%; margin-left:0 }
-  nav#navTop {position: relative; left: 0; right: 0; width: 100%; border-right: 0; height: auto }
-}
-
-
-.fa-external-link {font-size: 14px !important}
-
-footer {box-shadow: 0 -1px 10px #eee}
-footer {background: #ded9f3; color: #424242; font-weight: 500; padding: 30px; margin-top:50px}
-
-footer ul, footer ul li {padding: 0; margin: 0; list-style: none}
-footer a {color: #424242}
+/* Publication chain display*/
+.publicationChainWrapper { display: block; width: 100%; overflow: scroll; padding: 20px 10px}
+.publicationChain { display: block; width: 1750px; height: 230px}
+.typeColumn {float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; height: 200px}
+.typeColumn:first-of-type {margin-left: 0}

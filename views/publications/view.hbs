@@ -1,30 +1,33 @@
 {{> header}}
 
-<div class="container-fluid" id="publicationChain" role="main">
-  <div>
-    [publication chain here]
+<div class="publicationChainWrapper">
+  <div class="publicationChain">
+    <!-- <p>Publication chain:</p> -->
+
+    {{#each publicationTypes}}
+      <div class="typeColumn">
+        <p>{{this.plural}}</p>
+      </div>
+    {{/each}}
+
+    <div class="clearfix"></div>
   </div>
 </div>
+
+<hr class="octopus-separator" />
 
 <div class="container-fluid" id="mainBody" role="main">
   <div class="row">
     <div class="col-sm-9">
 
-      <h1 class="plainBodyText hide ">
-        <strong>Showing {{resultsDisplayed}} results out of {{resultsTotal}} total</strong>
-          {{#if query}} for term "{{query}}"{{/if}}
-          {{#if category}} in <i>{{category.name}}</i>{{else}} across categories{{/if}}.
-      </h1>
+      <h1>{{publication.type}}: {{publication.title}}</h1>
 
-      <br />
-
-      <h2>{{{markHits publication.title ../query}}}</h2>
-
-      <p class="category">Part of Problem: {{publication.problem}}</p>
-      <p class="category">Publication Type: {{publication.stage}}</p>
+      <p class="category">Part of Problem: {{publication.parentProblem}}</p>
+      <p class="category">Parent publication: {{publication.parentPublication}}</p>
+      <p class="category">Publication Type: {{publication.type}}</p>
 
       <p>{{publication.authors}}</p>
-      <p>Last modified: {{publication.dateLastActivity}}</p>
+      <p>Last modified: {{formatDate publication.dateLastActivity}}</p>
 
       <hr />
 

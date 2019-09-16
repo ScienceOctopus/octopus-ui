@@ -1,5 +1,5 @@
 <nav id="navTop" role="navigation">
-  <ul>
+  <ul class="list list-inline">
     <li>
       <a href="/">
         <img class="logo" src="/public/octopus.svg" />
@@ -22,7 +22,7 @@
       <form method="GET" action="/publications/search" class="form-inline" id="searchFormTop">
         <!-- <div class="form-group"> -->
           <label for="searchFormTopInput" class="sr-only">Search term</label>
-          <input id="searchFormTopInput" class="searchFormInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
+          <input id="searchFormTopInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}" placeholder="Search publications" />
 
           <button type="submit" class="btn btn-default searchFormSubmitBtn">
             <span class="fa fa-search"></span>

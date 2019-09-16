@@ -12,7 +12,7 @@
       <form method="GET" action="" class="form-inline" id="searchFormSidebar">
         <!-- <div class="form-group"> -->
           <label for="searchFormSidebarInput" class="sr-only">Search term</label>
-          <input id="searchFormSidebarInput" class="searchFormInput" name="query" type="text" value="{{query}}" placeholder="Search publications" />
+          <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}" placeholder="Search publications" />
 
           <button type="submit" class="btn btn-default searchFormSubmitBtn">
             <span class="fa fa-search"></span>
@@ -23,7 +23,7 @@
 
       <form method="GET" action="" class="form-horizontal">
         <!-- <div class="form-group"> -->
-          <strong>Publication type:</strong>
+          <strong>Filter by Publication type:</strong>
           <br />
 
           {{#each publicationTypes}}
@@ -33,50 +33,52 @@
           {{/each}}
         <!-- </div> -->
       </form>
-
-      <form method="GET" action="" class="form-inline">
-        <!-- <div class="form-group"> -->
-          <strong>Sort by:</strong>
-          <br />
-          <select>
-            <option>Title (A-Z)</option>
-            <option>Title (Z-A)</option>
-            <option>Creation date (newest-oldest)</option>
-            <option>Creation date (oldest-newest)</option>
-            <option>Last activity date (newest-oldest)</option>
-            <option>Last activity date (oldest-newest)</option>
-          </select>
-        <!-- </div> -->
-      </form>
-
-
     </div>
 
     <div class="col-sm-9">
 
+      <div class="pull-right">
+        <form method="GET" action="" class="form-inline">
+          <div class="form-group">
+            <strong>Sort by:</strong>
+            <select>
+              <option>Title (A-Z)</option>
+              <option>Title (Z-A)</option>
+              <option>Creation date (newest-oldest)</option>
+              <option>Creation date (oldest-newest)</option>
+              <option>Last activity date (newest-oldest)</option>
+              <option>Last activity date (oldest-newest)</option>
+            </select>
+          </div>
+        </form>
+      </div>
 
       <h1 class="plainBodyText">
-        <strong>Showing {{publications.displayedCount}} results out of {{publications.totalCount}} total</strong>
-          {{#if query}} for term "{{query}}"{{/if}}.
-          <!-- {{#if category}} in <i>{{category.name}}</i>{{else}} across categories{{/if}}. -->
+        Showing {{publications.displayedCount}} publications
+        out of {{publications.totalCount}} total
+        {{~#if query.phrase}} for term "{{query.phrase}}"{{/if}}.
       </h1>
+
       <br />
 
       {{#each publications.results}}
         <div class="row result-item">
           <div class="col-xs-12">
-            <h2><a href="/publications/view/{{this.id}}">{{{markHits this.title ../query}}}</a></h2>
+            <h2><a href="/publications/view/{{this.id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
 
-            <p>{{{markHits this.summary ../query}}}</p>
+            <p>{{{markHits this.summary ../query.phrase}}}</p>
 
-            <!-- <blockquote>{{{markHits this.summary ../query}}}</blockquote> -->
+            <!-- <blockquote>{{{markHits this.summary ../queryPhrase}}}</blockquote> -->
 
             <p>{{this.authors}}</p>
 
-            <ul class="list list-inline">
-              <li><span class="label label-default">{{this.type}}</span></li>
+            <ul class="list-unstyled">
               <li>Parent publication: {{this.parentPublication}} &nbsp;</li>
               <li>Part of problem: {{this.parentProblem}} &nbsp;</li>
+            </ul>
+
+            <ul class="list list-inline">
+              <li><span class="label label-default">{{this.type}}</span></li>
               <li>Last activity: {{formatDate this.dateLastActivity}} &nbsp;</li>
             </ul>
           </div>
