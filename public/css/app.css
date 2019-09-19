@@ -37,10 +37,12 @@ h1 {font-size: 28px}
 h2 {font-size: 20px}
 hr.octopus-separator { height: 30px; background: url('../images/separatorChain.png') center center; border: none; margin: 0 }
 .container-fluid { padding: 30px; max-width: 1280px; line-height }
-.text-plain { font-size: 1em !important; margin: 0 }
 .hit { background: #ffa; padding: 1px; margin: -1px }
 .fa-fw { width: 14px }
+.text-plain { font-size: 1em !important; margin: 0 }
 .text-accent { color: #9955de }
+.text-semi-strong { font-weight: 500 }
+.text-strong { font-weight: 600 }
 
 /* Homepage */
 .homepageJumbotron p { line-height: 2em; margin: 30px 0 50px; font-size: 16px; }
@@ -54,9 +56,11 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 
 /* Publication chain display*/
 .pubChainContainer { display: block; width: 100%; padding: 20px 10px; }
-.pubChainControls { width: 50px; float: left; }
-.pubChainControls .btn { width: 40px; height: 40px; padding: 10px; margin-bottom: 5px; color: white; background: #9f91ed; border: 1px #9955de; }
+.pubChainControls { width: 46px; float: left; background: #f1f1f1; padding: 3px; border-radius: 5px; }
+.pubChainControls .btn { width: 40px; height: 40px; padding: 10px; margin-top: 5px; color: white; background: #9f91ed; border: 1px #9955de; }
+.pubChainControls .btn:first-of-type { margin-top: 0 }
 .pubChain { display: block; margin-left: 50px; overflow: scroll; }
 .pubChainContent { display: block; width: 1500px; }
 .typeColumn { float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; height: 200px; }
+.typeColumn .heading { font-size: 1.1em; font-weight: bold; text-align: center; }
 .typeColumn:first-of-type { margin-left: 0; }
