@@ -1,15 +1,17 @@
-const _ = require('lodash');
 const debug = require('debug');
 
 const api = require('../../lib/api');
-// const mappers = require('../lib/mappers');
 
 module.exports = (req, res) => {
-  const publicationID = Number(req.params.publicationID);
-
+  const publicationID = req.params.publicationID;
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
 
   return api.getPublicationByID(publicationID, (publicationErr, publication) => {
+    if (publicationErr || !publication) {
+      debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
+      return res.render('publications/error');
+    }
+
     res.locals.publication = publication;
 
     // debug('octopus:ui:trace')(res.locals);

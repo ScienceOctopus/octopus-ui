@@ -1,0 +1,23 @@
+{{> header}}
+
+<div class="container-fluid text-center" role="main">
+  <h1>Publication not found :-(</h1>
+</div>
+
+<br /><br />
+
+<hr class="octopus-separator" />
+
+<br /><br />
+
+<div class="container-fluid text-center" role="main">
+  <a class="btn btn-lg btn-primary" href="/publications/search">View all publications</a>
+
+  {{#if error}}
+    {{error}}
+  {{/if}}
+</div>
+
+{{> navTop}}
+
+{{> footer}}

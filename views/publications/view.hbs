@@ -1,16 +1,34 @@
 {{> header}}
 
-<div class="publicationChainWrapper">
-  <div class="publicationChain">
-    <!-- <p>Publication chain:</p> -->
+<div class="pubChainContainer">
+  <div class="pubChainControls">
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainVisibility()">
+      <span class="fa fa-fw fa-chevron-up"></span>
+    </a>
 
-    {{#each publicationTypes}}
-      <div class="typeColumn">
-        <p>{{this.plural}}</p>
-      </div>
-    {{/each}}
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainAutoshrink()">
+      <span class="fa fa-fw fa-arrows-h" title="Autoshrink columns to fit window width"></span>
+    </a>
 
-    <div class="clearfix"></div>
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainMode()">
+      <span class="fa fa-fw fa-sitemap"></span>
+    </a>
+  </div>
+
+  <div class="pubChain">
+    <div class="pubChainContent">
+      <!-- <p>Publication chain:</p> -->
+
+      {{#each publicationTypes}}
+        {{#unless (equals this.attributes.displayInPubChain false)}}
+        <div class="typeColumn">
+          <p>{{this.plural}}</p>
+        </div>
+        {{/unless}}
+      {{/each}}
+
+      <div class="clearfix"></div>
+    </div>
   </div>
 </div>
 
@@ -20,14 +38,14 @@
   <div class="row">
     <div class="col-sm-9">
 
-      <h1>{{publication.type}}: {{publication.title}}</h1>
+      <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
       <p class="category">Part of Problem: {{publication.parentProblem}}</p>
       <p class="category">Parent publication: {{publication.parentPublication}}</p>
       <p class="category">Publication Type: {{publication.type}}</p>
 
       <p>{{publication.authors}}</p>
-      <p>Last modified: {{formatDate publication.dateLastActivity}}</p>
+      <p>Date added: {{formatDate publication.dateCreated}}</p>
 
       <hr />
 
@@ -86,11 +104,11 @@
     </div>
 
     <div class="col-sm-3" id="sidebar">
-      <h2>Collaborators</h2>
-      <div>12 collaborators</div>
-
       <h2>Ratings</h2>
       <div>7 ratings</div>
+
+      <!-- <h2>Collaborators</h2>
+      <div>12 collaborators</div> -->
 
       <h2>Reviews</h2>
       <div>3 reviews</div>

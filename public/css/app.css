@@ -51,7 +51,10 @@ hr.octopus-separator {height: 30px; background: url('../images/separatorChain.pn
 .result-item:first-of-type { border-top: none }
 
 /* Publication chain display*/
-.publicationChainWrapper { display: block; width: 100%; overflow: scroll; padding: 20px 10px}
-.publicationChain { display: block; width: 1750px; height: 230px}
-.typeColumn {float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; height: 200px}
-.typeColumn:first-of-type {margin-left: 0}
+.pubChainContainer { display: block; width: 100%; padding: 20px 10px; }
+.pubChainControls { width: 50px; float: left; }
+.pubChainControls .btn { width: 40px; height: 40px; padding: 10px; margin-bottom: 5px; color: white; background: #9f91ed; border: 1px #9955de; }
+.pubChain { display: block; margin-left: 50px; overflow: scroll; }
+.pubChainContent { display: block; width: 1500px; }
+.typeColumn { float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; height: 200px; }
+.typeColumn:first-of-type { margin-left: 0; }
