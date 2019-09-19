@@ -1,8 +1,6 @@
-const _ = require('lodash');
 const debug = require('debug');
 
 const api = require('../../lib/api');
-// const mappers = require('../lib/mappers');
 
 module.exports = (req, res) => {
   const userID = Number(req.params.userID);

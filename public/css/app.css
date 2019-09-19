@@ -11,7 +11,7 @@ footer, footer a { color: #424242; font-weight: 500; }
 /* Top nav styling */
 nav#navTop { background: #9f90ed; box-shadow: 0 1px 10px #ccc; border-bottom: 1px solid #eee}
 nav#navTop li, nav#navTop li a { display: inline-block; padding: 0; height: 50px}
-nav#navTop li a { padding: 14px 30px; color: #fff; font-weight: 400; border-bottom: 4px solid transparent; text-shadow: 0 1px 1px #777}
+nav#navTop li a { padding: 14px 30px; color: #fff; font-weight: 400; border-bottom: 4px solid transparent; text-shadow: 0 1px 1px #777; margin-right: -4px; border-left: 1px solid #9182e6; }
 nav#navTop li a:hover { color: #fff; background: #ada3ed; text-decoration: none; border-bottom-color: #ada3ed}
 nav#navTop li a.active { background: #ada3ed; border-bottom-color: #7965e6}
 nav#navTop .logo { height: 40px; float: left; margin-top: -10px; padding-right: 20px;}
@@ -28,23 +28,25 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 .searchFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
 
 /* Sidebar styling */
+#sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
 #sidebar form { padding: 15px 0; border-top: 1px dotted #ccc; }
 #sidebar form:first-of-type { border-top: none }
 
 /* Generic styles */
-.container-fluid { padding: 30px }
-.container-fluid#mainBody { max-width: 1280px }
-.form-horizontal .control-label {text-align: left}
-.plainBodyText {font-size: 1em !important; margin: 0}
-.hit { background: #ffa; padding: 1px; margin: -1px }
-.fa-external-link {font-size: 14px !important}
+h1 {font-size: 28px}
 h2 {font-size: 20px}
-hr.octopus-separator {height: 30px; background: url('../images/separatorChain.png') center center; border: none; margin: 0}
+hr.octopus-separator { height: 30px; background: url('../images/separatorChain.png') center center; border: none; margin: 0 }
+.container-fluid { padding: 30px; max-width: 1280px; line-height }
+.text-plain { font-size: 1em !important; margin: 0 }
+.hit { background: #ffa; padding: 1px; margin: -1px }
+.fa-fw { width: 14px }
+.text-accent { color: #9955de }
 
 /* Homepage */
-.bg-homepage {background: #a8bdf0}
-.homepageJumbotron h2 {font-size: 24px}
-.homepageJumbotron .homepageGraph {width: 100%; max-width: 500px; margin: 0 0 10px -50px; float: right}
+.homepageJumbotron p { line-height: 2em; margin: 30px 0 50px; font-size: 16px; }
+.homepageJumbotron h1 { font-size: 32px }
+.homepageJumbotron h2 { font-size: 24px }
+.homepageJumbotron .homepageGraph { width: 100%; max-width: 500px; margin: 0 0 10px -50px; float: right }
 
 /* List of results */
 .result-item {padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc}

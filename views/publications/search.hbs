@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col-sm-3" id="sidebar">
 
-      <h2 class="plainBodyText">
+      <h2 class="text-plain">
         <strong>Refine search</strong>
       </h2>
 
@@ -28,9 +28,26 @@
 
           {{#each publicationTypes}}
           <div class="checkbox"><label>
-            <input type="checkbox" checked="checked" name="publicationTypes" value="{{this.key}}" /> {{this.title}}
+            <input type="checkbox" checked="checked" name="publicationTypes" value="{{this.key}}" /> {{this.plural}}
           </label></div>
           {{/each}}
+        <!-- </div> -->
+      </form>
+
+      <form method="GET" action="" class="form-horizontal">
+        <!-- <div class="form-group"> -->
+          <strong>Filter by Publication date:</strong>
+          <br />
+
+          <div class="radio"><label>
+            <input type="radio" name="publicationDate" value="now-1m" /> Last month
+          </label></div>
+          <div class="radio"><label>
+            <input type="radio" name="publicationDate" value="now-3m" /> Last 3 months
+          </label></div>
+          <div class="radio"><label>
+            <input type="radio" checked="checked" name="publicationDate" value="all" /> All
+          </label></div>
         <!-- </div> -->
       </form>
     </div>
@@ -42,18 +59,18 @@
           <div class="form-group">
             <strong>Sort by:</strong>
             <select>
+              <option>Date added (newest-oldest)</option>
+              <option>Date added (oldest-newest)</option>
               <option>Title (A-Z)</option>
               <option>Title (Z-A)</option>
-              <option>Creation date (newest-oldest)</option>
-              <option>Creation date (oldest-newest)</option>
-              <option>Last activity date (newest-oldest)</option>
-              <option>Last activity date (oldest-newest)</option>
+              <!-- <option>Last activity date (newest-oldest)</option> -->
+              <!-- <option>Last activity date (oldest-newest)</option> -->
             </select>
           </div>
         </form>
       </div>
 
-      <h1 class="plainBodyText">
+      <h1 class="text-plain">
         Showing {{publications.displayedCount}} publications
         out of {{publications.totalCount}} total
         {{~#if query.phrase}} for term "{{query.phrase}}"{{/if}}.
@@ -64,22 +81,20 @@
       {{#each publications.results}}
         <div class="row result-item">
           <div class="col-xs-12">
-            <h2><a href="/publications/view/{{this.id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
+            <h2><a href="/publications/view/{{this._id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
+            <span class="label label-default">{{this.type}}</span>
+            <br /><br />
 
             <p>{{{markHits this.summary ../query.phrase}}}</p>
 
-            <!-- <blockquote>{{{markHits this.summary ../queryPhrase}}}</blockquote> -->
+            <!-- <blockquote>{{{markHits this.summary ../query.phrase}}}</blockquote> -->
 
             <p>{{this.authors}}</p>
 
-            <ul class="list-unstyled">
-              <li>Parent publication: {{this.parentPublication}} &nbsp;</li>
-              <li>Part of problem: {{this.parentProblem}} &nbsp;</li>
-            </ul>
-
-            <ul class="list list-inline">
-              <li><span class="label label-default">{{this.type}}</span></li>
-              <li>Last activity: {{formatDate this.dateLastActivity}} &nbsp;</li>
+            <ul class="list-unstyled small">
+              <li><strong>Parent publication:</strong> {{this.parentPublication}} &nbsp;</li>
+              <li><strong>Part of problem:</strong> {{this.parentProblem}} &nbsp;</li>
+              <li><strong>Date added:</strong> {{formatDate this.dateCreated}} &nbsp;</li>
             </ul>
           </div>
         </div>
