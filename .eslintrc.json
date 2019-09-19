@@ -2,6 +2,9 @@
   "extends": [
     "airbnb-base"
   ],
+  "env": {
+    "browser": "node"
+  },
   "rules": {
     "arrow-body-style": "off",
     "no-shadow": "warn",
@@ -27,17 +30,21 @@
     "curly": "error",
     "eqeqeq": "warn",
     "wrap-iife": "error",
-    "indent": [
-      2,
-      2
-    ],
+    "indent": [ 2, 2 ],
     "no-use-before-define": "warn",
     "no-caller": "error",
-    "quotes": [
-      "warn",
-      "single"
-    ],
+    "quotes": [ "warn", "single" ],
     "no-undef": "error",
     "no-unused-vars": "warn"
-  }
+  },
+
+  "overrides": [
+    {
+      "files": ["public/js/*.js"],
+      "env": {
+        "browser": "true",
+        "jquery": "true"
+      }
+    }
+  ]
 }
