@@ -19,7 +19,10 @@ function startApp() {
   hbs.registerHelper('roundNumber', hbsHelpers.roundNumber);
   hbs.registerHelper('markHits', hbsHelpers.markHits);
   hbs.registerHelper('formatDate', hbsHelpers.formatDate);
-  hbs.registerHelper('isEqual', hbsHelpers.isEqual);
+  hbs.registerHelper('equals', hbsHelpers.equals);
+  hbs.registerHelper('contains', hbsHelpers.contains);
+  hbs.registerHelper('startsWith', hbsHelpers.startsWith);
+  hbs.registerHelper('endsWith', hbsHelpers.endsWith);
 
   // eslint-disable-next-line no-underscore-dangle
   app.engine('hbs', hbs.__express);
@@ -36,7 +39,9 @@ function startApp() {
   app.get('/', (req, res) => res.render('home', res.locals));
   app.get('/about', (req, res) => res.render('about', res.locals));
   app.get('/faq', (req, res) => res.render('faq', res.locals));
-  app.get('/publish', (req, res) => res.render('publish', res.locals));
+
+  app.get('/publish', require('./routes/publish/main'));
+  app.get('/publish/step/:stepID', require('./routes/publish/steps/dispatch'));
 
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));

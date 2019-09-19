@@ -1,20 +1,20 @@
 <nav id="navTop" role="navigation">
   <ul class="list list-inline">
     <li>
-      <a href="/">
+      <a href="/" {{#if (equals url '/')}} class="active"{{/if}}>
         <img class="logo" src="/public/octopus.svg" />
         <span class="branding">Octopus</span>
       </a>
     </li>
     <li>
-      <a href="/publications/search">
-        <span class="fa fa-files-o"></span>
+      <a href="/publications/search" {{#if (startsWith url '/publications')}} class="active"{{/if}}>
+        <span class="fa fa-fw fa-files-o"></span>
         All publications
       </a>
     </li>
     <li>
-      <a href="/publications/publish">
-        <span class="fa fa-file-word-o"></span>
+      <a href="/publish" {{#if (startsWith url '/publish')}} class="active"{{/if}}>
+        <span class="fa fa-fw fa-file-word-o"></span>
         Publish your work
       </a>
     </li>

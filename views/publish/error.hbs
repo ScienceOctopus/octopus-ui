@@ -1,0 +1,21 @@
+{{> header}}
+
+<div class="container-fluid text-center" role="main">
+  <h1>Error while trying to publish :-(</h1>
+</div>
+
+<div class="container-fluid text-center" role="main">
+  {{#if error}}
+    <p>Error:</p>
+
+    <p>{{error}}</p>
+
+    <br /><br />
+  {{/if}}
+
+  <a class="btn btn-lg btn-primary" href="/publications/search">View all publications</a>
+</div>
+
+{{> navTop}}
+
+{{> footer}}
