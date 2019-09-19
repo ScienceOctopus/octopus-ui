@@ -1,0 +1,45 @@
+{{> header}}
+
+<div class="container-fluid" role="main">
+  <h1>Publish your work</h1>
+
+  <p>Step 2 of 3</p>
+
+  <form method="POST" action="/publish/step/3">
+    <h2>Enter publication details</h2>
+
+    <p>1. First select one or more publications to link to.</p>
+
+    <p>(Look for an existing area of research.)</p>
+
+    <p>2. Publication Title</p>
+    <p>3. Publication Summary</p>
+    <p>4. Publication Keywords</p>
+    <p>5. Collaborators</p>
+
+    <p>
+      6. Funding Statement<br />
+      If this research has any funding sources you think readers should be aware of, add them here.<br />
+      For example, funded by the British Council. If no funding sources need to be stated, feel free to enter "None".
+    </p>
+
+    <p>
+      7. Conflict of Interest Declaration<br />
+      Declare any potential conflicts of interest this publication may have.<br />
+      If there aren't any, just type "No conflicts of interest".
+    </p>
+
+    <button type="submit" class="btn btn-md btn-primary">Next</button>
+
+    <br /><br />
+    <br /><br />
+
+    <p class="small">Note: Fields marked with a red asterisk are required.</p>
+  </form>
+</div>
+
+{{> publishingInfoModal}}
+
+{{> navTop}}
+
+{{> footer}}

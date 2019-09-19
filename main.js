@@ -41,7 +41,8 @@ function startApp() {
   app.get('/faq', (req, res) => res.render('faq', res.locals));
 
   app.get('/publish', require('./routes/publish/main'));
-  app.get('/publish/step/:stepID', require('./routes/publish/steps/dispatch'));
+  app.post('/publish/step/:stepNumber', require('./routes/publish/steps/dispatch'));
+  app.post('/publish/save', require('./routes/publish/steps/save'));
 
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));

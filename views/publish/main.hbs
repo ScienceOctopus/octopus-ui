@@ -1,20 +1,30 @@
 {{> header}}
 
 <div class="container-fluid text-center" role="main">
-  <h1>Publish your work with Octopus</h1>
-</div>
-
-<div class="container-fluid text-center" role="main">
-  <p>Publishing with Octopus is easy.</p>
-
-  <p>Click the button below and we'll walk you through our 5 step process.</p>
+  <h1>Publish your work</h1>
 
   <br /><br />
 
-  <a class="btn btn-lg btn-primary" href="/publish/step/1">
-    Publish your work with Octopus
-  </a>
+  <p>Publishing is easy with Octopus.</p>
+
+  <p>We'll walk you through our 3 step upload process.</p>
+
+  <p>
+    <a href="#" data-toggle="modal" data-target="#publishingInfoModal">
+      How does this process work?
+    </a>
+  </p>
+
+  <br /><br />
+
+  <form method="POST" action="/publish/step/1">
+    <button type="submit" class="btn btn-md btn-primary">Publish your work with Octopus</button>
+  </form>
+
+
 </div>
+
+{{> publishingInfoModal}}
 
 {{> navTop}}
 

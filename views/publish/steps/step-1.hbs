@@ -1,0 +1,31 @@
+{{> header}}
+
+<div class="container-fluid" role="main">
+  <h1>Publish your work</h1>
+
+  <p>Step 1 of 3</p>
+
+  <form method="POST" action="/publish/step/2">
+    <p class="text-semi-strong">
+      I'd like to publish
+      <select>
+        <option>a problem</option>
+        <option>a hypothesis</option>
+        <option>a method (protocol)</option>
+        <option>a result (data)</option>
+        <option>an analysis</option>
+        <option>an interpretation</option>
+        <option>an application</option>
+        <option>a review</option>
+      </select>
+    </p>
+
+    <button type="submit" class="btn btn-md btn-primary">Next</button>
+  </form>
+</div>
+
+{{> publishingInfoModal}}
+
+{{> navTop}}
+
+{{> footer}}

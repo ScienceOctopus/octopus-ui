@@ -1,11 +1,18 @@
 const debug = require('debug');
 
 module.exports = (req, res) => {
-  const stepID = Number(req.params.step);
-  debug('octopus:ui:debug')(`Showing Publish step ${stepID}`);
+  const stepNumber = Number(req.params.stepNumber);
+  debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
 
-  res.locals.error = 'Step not found';
+  // if not logged in redirect to /users/login with a flash message
 
+  // if wrong step redirect to error page
+  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 3) {
+    res.locals.error = new Error(`Step "${stepNumber}" not found.`);
+    return res.render('publish/error', res.locals);
+  }
+
+  res.locals.publishStepNumber = stepNumber;
   // debug('octopus:ui:trace')(res.locals);
-  return res.render('publish/error', res.locals);
+  return res.render(`publish/steps/step-${stepNumber}`, res.locals);
 };
