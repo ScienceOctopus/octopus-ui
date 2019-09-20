@@ -1,6 +1,6 @@
 {{> header}}
 
-<div class="container-fluid" role="main">
+<div class="container" role="main">
   <h1>Publish your work</h1>
 
   <p>Step 2 of 3</p>
@@ -8,33 +8,57 @@
   <form method="POST" action="/publish/step/3">
     <h2>Enter publication details</h2>
 
-    <p>1. First select one or more publications to link to.</p>
+    <div class="form-group">
+      <label for="linkedPublications">1. Publications to link to</label>
+      <input id="linkedPublications" class="form-control" name="linkedPublications" type="text" value="" placeholder="Find publications to link to" />
 
-    <p>(Look for an existing area of research.)</p>
+      <p class="small">
+        Select one or more publications to link to.
+        Every publication other than a Problem needs to be linked to an existing publication.
+      </p>
+    </div>
 
-    <p>2. Publication Title</p>
-    <p>3. Publication Summary</p>
-    <p>4. Publication Keywords</p>
-    <p>5. Collaborators</p>
 
-    <p>
-      6. Funding Statement<br />
-      If this research has any funding sources you think readers should be aware of, add them here.<br />
-      For example, funded by the British Council. If no funding sources need to be stated, feel free to enter "None".
-    </p>
+    <div class="form-group">
+      <label for="publicationTitle">2. Publication Title</label>
+      <input id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter publication title" />
+    </div>
 
-    <p>
-      7. Conflict of Interest Declaration<br />
-      Declare any potential conflicts of interest this publication may have.<br />
-      If there aren't any, just type "No conflicts of interest".
-    </p>
+    <div class="form-group">
+      <label for="publicationSummary">3. Publication Summary</label>
+      <textarea id="publicationSummary" class="form-control" name="publicationSummary" placeholder="Enter publication summary"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="publicationKeywords">4. Publication Keywords</label>
+      <input id="publicationKeywords" class="form-control" name="publicationKeywords" type="text" value="" placeholder="Enter publication keywords" />
+    </div>
+
+    <div class="form-group">
+      <label for="collaborators">5. Collaborators</label>
+      <input id="collaborators" class="form-control" name="collaborators" type="text" value="" placeholder="Enter collaborators ORCiD identifiers" />
+    </div>
+
+    <div class="form-group">
+      <label for="fundingStatement">6. Funding Statement</label>
+      <textarea id="fundingStatement" class="form-control" name="fundingStatement" placeholder="Enter funding statement"></textarea>
+      <p class="small">
+        If this research has any funding sources you think readers should be aware of, add them here.<br />
+        For example, funded by the British Council. If no funding sources need to be stated, feel free to enter "None".
+      </p>
+    </div>
+
+
+    <div class="form-group">
+      <label for="coiDeclaration">7. Conflict of Interest Declaration</label>
+      <textarea id="coiDeclaration" class="form-control" name="coiDeclaration" placeholder="Publication Title here"></textarea>
+      <p class="small">
+        Declare any potential conflicts of interest this publication may have.<br />
+        If there aren't any, just type "No conflicts of interest".
+      </p>
+    </div>
 
     <button type="submit" class="btn btn-md btn-primary">Next</button>
-
-    <br /><br />
-    <br /><br />
-
-    <p class="small">Note: Fields marked with a red asterisk are required.</p>
   </form>
 </div>
 

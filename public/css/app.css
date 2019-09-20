@@ -36,8 +36,8 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 h1 {font-size: 28px}
 h2 {font-size: 20px}
 hr.octopus-separator { height: 30px; background: url('../images/separatorChain.png') center center; border: none; margin: 0 }
-.container-fluid { padding: 30px; max-width: 1280px; line-height }
 .hit { background: #ffa; padding: 1px; margin: -1px }
+.container-fluid, .container { padding: 30px; max-width: 1280px }
 .fa-fw { width: 14px }
 .text-plain { font-size: 1em !important; margin: 0 }
 .text-accent { color: #9955de }
