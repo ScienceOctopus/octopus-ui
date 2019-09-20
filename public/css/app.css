@@ -9,11 +9,11 @@ footer { background: #ded9f3; padding: 30px; box-shadow: 0 -1px 10px #eee }
 footer, footer a { color: #424242; font-weight: 500; }
 
 /* Top nav styling */
-nav#navTop { background: #9f90ed; box-shadow: 0 1px 10px #ccc; border-bottom: 1px solid #eee}
+nav#navTop { background: #ada3ed; box-shadow: 0 1px 10px #ccc; border-bottom: 1px solid #eee}
 nav#navTop li, nav#navTop li a { display: inline-block; padding: 0; height: 50px}
 nav#navTop li a { padding: 14px 30px; color: #fff; font-weight: 400; border-bottom: 4px solid transparent; text-shadow: 0 1px 1px #777; margin-right: -4px; border-left: 1px solid #9182e6; }
-nav#navTop li a:hover { color: #fff; background: #ada3ed; text-decoration: none; border-bottom-color: #ada3ed}
-nav#navTop li a.active { background: #ada3ed; border-bottom-color: #7965e6}
+nav#navTop li a:hover, nav#navTop li a:focus { color: #fff; background: #9f90ed; text-decoration: none; border-bottom-color: #ada3ed}
+nav#navTop li a.active { background: #9f90ed; border-bottom-color: #7965e6}
 nav#navTop .logo { height: 40px; float: left; margin-top: -10px; padding-right: 20px;}
 
 /* z-index */
