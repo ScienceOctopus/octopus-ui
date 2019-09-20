@@ -16,6 +16,8 @@ nav#navTop li a:hover, nav#navTop li a:focus { color: #fff; background: #9f90ed;
 nav#navTop li a.active { background: #9f90ed; border-bottom-color: #7965e6}
 nav#navTop .logo { height: 40px; float: left; margin-top: -10px; padding-right: 20px;}
 
+nav#navTop #searchFormTop { margin-left: 10px }
+
 /* z-index */
 .searchFormSubmitBtn {z-index: 9}
 nav#navTop {z-index: 10}
@@ -36,10 +38,10 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 h1 {font-size: 28px}
 h2 {font-size: 20px}
 hr.octopus-separator { height: 30px; background: url('../images/separatorChain.png') center center; border: none; margin: 0 }
-.hit { background: #ffa; padding: 1px; margin: -1px }
 .container-fluid, .container { padding: 30px; max-width: 1280px }
 .fa-fw { width: 14px }
 .text-plain { font-size: 1em !important; margin: 0 }
+.text-hit { background: #ffa; padding: 1px; margin: -1px }
 .text-accent { color: #9955de }
 .text-semi-strong { font-weight: 500 }
 .text-strong { font-weight: 600 }
@@ -55,7 +57,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .result-item:first-of-type { border-top: none }
 
 /* Publication chain display*/
-.pubChainContainer { display: block; width: 100%; padding: 20px 10px; }
+.pubChainContainer { display: block; width: 100%; padding: 20px 10px; overflow: hidden }
 .pubChainControls { width: 46px; float: left; background: #f1f1f1; padding: 3px; border-radius: 5px; }
 .pubChainControls .btn { width: 40px; height: 40px; padding: 10px; margin-top: 5px; color: white; background: #9f91ed; border: 1px #9955de; }
 .pubChainControls .btn:first-of-type { margin-top: 0 }
