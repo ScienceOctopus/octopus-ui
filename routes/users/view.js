@@ -3,7 +3,7 @@ const debug = require('debug');
 const api = require('../../lib/api');
 
 module.exports = (req, res) => {
-  const userID = Number(req.params.userID);
+  const userID = req.params.userID;
 
   debug('octopus:ui:debug')(`Showing User ${userID}`);
 

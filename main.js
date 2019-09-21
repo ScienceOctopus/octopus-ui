@@ -47,7 +47,7 @@ function startApp() {
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));
 
-  app.get('/users/:id', require('./routes/users/view'));
+  app.get('/users/:userID', require('./routes/users/view'));
   /* eslint-enable global-require */
 
   app.use((err, req, res, next) => {
