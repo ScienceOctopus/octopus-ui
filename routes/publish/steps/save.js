@@ -1,10 +1,36 @@
 const debug = require('debug');
+const api = require('../../../lib/api');
 
 module.exports = (req, res) => {
   debug('octopus:ui:debug')(`Saving a publication`);
 
-  const pubID = 'publication-id';
+  const newPublication = {
+    status: 'DRAFT',
+    revision: 1,
+    createdByUser: 1,
+    dateCreated: new Date(),
+    dateLastActivity: new Date(),
+
+    type: req.body.publicationType,
+    parentProblems: [],
+    parentPublications: req.body.linkedPublications,
+    title: req.body.publicationTitle,
+    text: '',
+    summary: req.body.publicationSummary,
+    keywords: req.body.publicationKeywords,
+    collaborators: req.body.collaborators,
+    fundingStatement: req.body.fundingStatement,
+    coiDeclaration: req.body.coiDeclaration,
+    publicationFile: req.body.publicationFile,
+  };
+
   // debug('octopus:ui:trace')(res.locals);
-  return res.redirect(`/publications/view/${pubID}`);
-  // return res.redirect(`/publish/edit/${pubID}`);
+
+  api.createPublication(newPublication, (err, data) => {
+    if (err || !data || !data.insertedId) {
+      return res.render('publish/error', { error: err });
+    }
+    // eslint-disable-next-line
+    return res.redirect(`/publications/view/${data.insertedId}`);
+  });
 };
