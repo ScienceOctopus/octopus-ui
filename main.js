@@ -1,7 +1,8 @@
 require('dotenv').config();
 
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
+const session = require('express-session');
 const hbs = require('hbs');
 const path = require('path');
 
@@ -28,11 +29,12 @@ function startApp() {
   app.engine('hbs', hbs.__express);
   app.set('view engine', 'hbs');
 
-
   /* eslint-disable global-require */
   app.use('/public', express.static('public'));
 
   app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(session(config.sessionConfig));
 
   app.use('/', require('./routes/middleware'));
 
