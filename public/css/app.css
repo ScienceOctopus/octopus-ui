@@ -56,15 +56,26 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .result-item {padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc}
 .result-item:first-of-type { border-top: none }
 
-/* Publication chain display*/
+/* Publication chain display */
 .pubChainContainer { display: block; width: 100%; padding: 20px 10px; overflow: hidden }
 .pubChainControls { width: 46px; float: left; background: #f1f1f1; padding: 3px; border-radius: 5px; }
 .pubChainControls .btn { width: 40px; height: 40px; padding: 10px; margin-top: 5px; color: white; background: #9f91ed; border: 1px #9955de; }
 .pubChainControls .btn:first-of-type { margin-top: 0 }
 .pubChain { display: block; margin-left: 50px; overflow: scroll; }
 .pubChainContent { display: block; width: 1500px; }
-.typeColumn { float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; height: 200px; }
+.typeColumn { float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; }
 .typeColumn .heading { font-size: 1.1em; font-weight: bold; text-align: center; }
 .typeColumn:first-of-type { margin-left: 0; }
+.pubItem { background: #f7f7f7; color: #777; padding: 5px; border-radius: 5px; border: 1px solid #aaa; font-size: 0.75em }
+.pubItem.active { background: #9f8fed; color: white; border: 1px solid #7864e6 }
+
+/* Publication chain minimised state */
+.pubChainContainer { height: 240px; transition: height 0.35s ease-out; }
+.pubChainContainer .typeColumn { height: 200px; transition: height 0.30s ease-out; margin-top: 3px}
+.pubChainContainer .pubItem { opacity: 1; transition: opacity 0.25s ease-out; }
+
+.pubChainContainer.minimised { height: 66px; }
+.pubChainContainer.minimised .typeColumn { height: 40px; }
+.pubChainContainer.minimised .pubItem { opacity: 0; }
 
 .form-group { margin-bottom: 35px; }

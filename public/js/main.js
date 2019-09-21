@@ -17,11 +17,11 @@
     console.log('togglePubChainVisibility');
 
     if (OctopusAppState.pubChainVisibility) {
-      OctopusAppElements.$pubChainContainer.css({ height: 60 });
+      OctopusAppElements.$pubChainContainer.addClass('minimised');
       $('.fa.fa-chevron-up').removeClass('fa-chevron-up').addClass('fa-chevron-down');
       OctopusAppState.pubChainVisibility = false;
     } else {
-      OctopusAppElements.$pubChainContainer.css({ height: 'auto' });
+      OctopusAppElements.$pubChainContainer.removeClass('minimised');
       $('.fa.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-up');
       OctopusAppState.pubChainVisibility = true;
     }
