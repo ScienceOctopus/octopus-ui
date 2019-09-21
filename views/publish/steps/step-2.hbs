@@ -3,34 +3,35 @@
 <div class="container" role="main">
   <h1>Publish your work</h1>
 
-  <p>Step 2 of 3</p>
+  <h2>
+    <span class="small">Step 2 of 3</span>
+    <br />
+    Enter publication details
+  </h2>
 
   <form method="POST" action="/publish/step/3">
-    <h2>Enter publication details</h2>
+    <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
+    <input type="hidden" name="linkedPublications" value="" />
 
     <div class="form-group">
-      <label for="linkedPublications">1. Publications to link to</label>
-      <input id="linkedPublications" class="form-control" name="linkedPublications" type="text" value="" placeholder="Find publications to link to" />
-
-      <p class="small">
-        Select one or more publications to link to.
-        Every publication other than a Problem needs to be linked to an existing publication.
-      </p>
+      <label for="linkedPublicationsBtn">1. Publications to link to</label>
+      <p>Publications need to be linked to a publication of an immediately preceding type (i.e. "analysis" must be linked to a "result" publication).</p>
+      <!-- <input id="linkedPublications" class="form-control" name="linkedPublications" type="text" value="" placeholder="Find publications to link to" /> -->
+      <a href="#" id="linkedPublicationsBtn" onclick="showLinkablePublications({{publication.publicationType}})">Select one or more publications to link to</a>.
     </div>
 
-
     <div class="form-group">
-      <label for="publicationTitle">2. Publication Title</label>
+      <label for="publicationTitle">2. Publication title</label>
       <input id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter publication title" />
     </div>
 
     <div class="form-group">
-      <label for="publicationSummary">3. Publication Summary</label>
+      <label for="publicationSummary">3. Publication summary</label>
       <textarea id="publicationSummary" class="form-control" name="publicationSummary" placeholder="Enter publication summary"></textarea>
     </div>
 
     <div class="form-group">
-      <label for="publicationKeywords">4. Publication Keywords</label>
+      <label for="publicationKeywords">4. Publication keywords</label>
       <input id="publicationKeywords" class="form-control" name="publicationKeywords" type="text" value="" placeholder="Enter publication keywords" />
     </div>
 
@@ -40,22 +41,26 @@
     </div>
 
     <div class="form-group">
-      <label for="fundingStatement">6. Funding Statement</label>
-      <textarea id="fundingStatement" class="form-control" name="fundingStatement" placeholder="Enter funding statement"></textarea>
-      <p class="small">
+      <label for="fundingStatement">6. Funding statement</label>
+
+      <p>
         If this research has any funding sources you think readers should be aware of, add them here.<br />
         For example, funded by the British Council. If no funding sources need to be stated, feel free to enter "None".
       </p>
+
+      <textarea id="fundingStatement" class="form-control" name="fundingStatement" placeholder="Enter funding statement"></textarea>
     </div>
 
 
     <div class="form-group">
-      <label for="coiDeclaration">7. Conflict of Interest Declaration</label>
-      <textarea id="coiDeclaration" class="form-control" name="coiDeclaration" placeholder="Publication Title here"></textarea>
-      <p class="small">
+      <label for="coiDeclaration">7. Conflict of Interest declaration</label>
+
+      <p>
         Declare any potential conflicts of interest this publication may have.<br />
         If there aren't any, just type "No conflicts of interest".
       </p>
+
+      <textarea id="coiDeclaration" class="form-control" name="coiDeclaration" placeholder="Publication Title here"></textarea>
     </div>
 
     <button type="submit" class="btn btn-md btn-primary">Next</button>

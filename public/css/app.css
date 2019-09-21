@@ -66,3 +66,5 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .typeColumn { float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; height: 200px; }
 .typeColumn .heading { font-size: 1.1em; font-weight: bold; text-align: center; }
 .typeColumn:first-of-type { margin-left: 0; }
+
+.form-group { margin-bottom: 35px; }

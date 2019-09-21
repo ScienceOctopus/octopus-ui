@@ -3,22 +3,27 @@
 <div class="container" role="main">
   <h1>Publish your work</h1>
 
-  <p>Step 1 of 3</p>
+  <h2>
+    <span class="small">Step 1 of 3</span>
+    <br />
+    Choose a publication type
+  </h2>
 
-  <form method="POST" action="/publish/step/2">
-    <p class="text-semi-strong">
-      I'd like to publish
-      <select>
-        <option>a problem</option>
-        <option>a hypothesis</option>
-        <option>a method (protocol)</option>
-        <option>a result (data)</option>
-        <option>an analysis</option>
-        <option>an interpretation</option>
-        <option>an application</option>
-        <option>a review</option>
+  <form method="POST" action="/publish/step/2" class="form-inline">
+    <div class="form-group">
+      <label for="publicationType">I'd like to publish</label>
+
+      <select name="publicationType" id="publicationType" class="form-control">
+        <option value="PROBLEM">a problem</option>
+        <option value="HYPOTHESIS">a hypothesis</option>
+        <option value="PROTOCOL">a protocol (method)</option>
+        <option value="RESULT">a result (data)</option>
+        <option value="ANALYSIS">an analysis</option>
+        <option value="INTERPRETATION">an interpretation</option>
+        <option value="APPLICATION">an application</option>
+        <option value="REVIEW">a review</option>
       </select>
-    </p>
+    </div>
 
     <button type="submit" class="btn btn-md btn-primary">Next</button>
   </form>

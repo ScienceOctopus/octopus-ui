@@ -3,19 +3,33 @@
 <div class="container" role="main">
   <h1>Publish your work</h1>
 
-  <p>Step 3 of 3</p>
+  <h2>
+    <span class="small">Step 3 of 3</span>
+    <br />
+    Upload publication file
+  </h2>
 
   <form method="POST" action="/publish/save">
-    <h2>Upload publication file</h2>
+    <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
+    <input type="hidden" name="linkedPublications" value="{{publication.linkedPublications}}" />
+    <input type="hidden" name="publicationTitle" value="{{publication.publicationTitle}}" />
+    <input type="hidden" name="publicationSummary" value="{{publication.publicationSummary}}" />
+    <input type="hidden" name="publicationKeywords" value="{{publication.publicationKeywords}}" />
+    <input type="hidden" name="collaborators" value="{{publication.collaborators}}" />
+    <input type="hidden" name="fundingStatement" value="{{publication.fundingStatement}}" />
+    <input type="hidden" name="coiDeclaration" value="{{publication.coiDeclaration}}" />
 
     <div class="form-group">
       <label for="publicationFile">Upload your publication in pdf, doc or docx format.</label>
+
+      <p>This step is optional - you can simply enter the content of your publication
+        in the next step where you will also have a chance to edit the imported file
+        before publishing.</p>
+
+      <br />
+
       <input id="publicationFile" name="publicationFile" type="file" value="" />
     </div>
-
-    <p>This step is optional - you can simply enter the content of your publication
-      in the next step where you will also have a chance to edit the imported file
-      before publishing.</p>
 
     <button type="submit" class="btn btn-md btn-primary">Save and proceed</button>
   </form>
