@@ -13,15 +13,15 @@ module.exports = (req, res) => {
 
     type: req.body.publicationType,
     parentProblems: [],
-    parentPublications: req.body.linkedPublications,
+    parentPublications: [req.body.linkedPublications],
     title: req.body.publicationTitle,
-    text: '',
     summary: req.body.publicationSummary,
-    keywords: req.body.publicationKeywords,
+    text: '',
+    keywords: [req.body.publicationKeywords],
     collaborators: req.body.collaborators,
     fundingStatement: req.body.fundingStatement,
     coiDeclaration: req.body.coiDeclaration,
-    publicationFile: req.body.publicationFile,
+    publicationFiles: [req.body.publicationFile],
   };
 
   // debug('octopus:ui:trace')(res.locals);

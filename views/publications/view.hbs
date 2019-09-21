@@ -52,9 +52,9 @@
 
       <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
-      <p class="category">Part of Problem: {{publication.parentProblem}}</p>
-      <p class="category">Parent publication: {{publication.parentPublication}}</p>
-      <p class="category">Publication Type: {{publication.type}}</p>
+      <p class="category">Part of problems: {{publication.parentProblems}}</p>
+      <p class="category">Parent publications: {{publication.parentPublication}}</p>
+      <p class="category">Publication type: {{publication.type}}</p>
 
       <p>{{publication.authors}}</p>
       <p>Date added: {{formatDate publication.dateCreated}}</p>
@@ -80,12 +80,12 @@
         <p>
           <strong>Funding Statement:</strong>
           <br />
-          {{publication.metaFunding}}
+          {{publication.fundingStatement}}
         </p>
         <p>
           <strong>Conflict of Interest Declaration:</strong>
           <br />
-          {{publication.metaConflict}}
+          {{publication.coiDeclaration}}
         </p>
         <p>
           <strong>Editor data:</strong>
@@ -95,7 +95,7 @@
         <p>
           <strong>Keywords:</strong>
           <br />
-          {{publication.metaKeywords}}
+          {{publication.keywords}}
         </p>
         <p>
           <strong>Files:</strong>
