@@ -3,12 +3,12 @@ const debug = require('debug');
 const api = require('../../lib/api');
 
 module.exports = (req, res) => {
-  const userID = req.params.userID;
+  const orcid = req.params.orcid;
 
-  debug('octopus:ui:debug')(`Showing User ${userID}`);
+  debug('octopus:ui:debug')(`Showing User Profile: ${orcid}`);
 
-  return api.getUserByID(userID, (userErr, userData) => {
-    res.locals.user = userData;
+  return api.getUserByORCiD(orcid, (userErr, userData) => {
+    res.locals.person = userData;
 
     // debug('octopus:ui:trace')(res.locals);
     return res.render('users/view', res.locals);

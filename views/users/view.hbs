@@ -1,21 +1,34 @@
 {{> header}}
+{{#if (equals person.orcid user.orcid)}}
+<div class="alert alert-info">This is your profile.</div>
+{{/if}}
 
 <div class="container-fluid" id="mainBody" role="main">
   <div class="row">
     <div class="col-sm-9">
 
-      <h1 class="text-plain">
-        <strong>Showing user {{user.id}}.
+      <h1>
+        User profile: {{person.name}}
       </h1>
 
       <br />
 
-      <h2>{{user.displayName}}</h2>
+      <strong>ORCiD:</strong>
+      <a href="https://orcid.org/{{person.orcid}}" target="_blank">
+        {{person.orcid}}
+        <span title="This link opens in a new tab." class="fa fa-external-link"></span>
+      </a>
 
+      <!-- <pre>{{json user}}</pre> -->
     </div>
 
     <div class="col-sm-3" id="sidebar">
-      ...
+      <h3>Publications</h3>
+      <ul class="list list-unstyled">
+      {{#each publications}}
+        <li><a href="/publications/view/{{this._id}}">{{this.title}}</a></li>
+      {{/each}}
+      </ul>
     </div>
 
   </div>
