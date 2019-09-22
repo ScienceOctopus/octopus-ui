@@ -61,7 +61,6 @@ DEBUG_MODE=false
 - add visual editor for publications
 - add support for sorting and filtering results
 - expand publishing process (file uploads, linked publications, collaborators)
-- indicate publication status (DRAFT / ARCHIVE / LIVE)
 - implement draft-to-publish process
 - implement notifications
 - add support for publication versioning

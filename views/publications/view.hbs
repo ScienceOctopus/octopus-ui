@@ -1,5 +1,12 @@
 {{> header}}
 
+{{#if (equals publication.status 'DRAFT')}}
+<div class="alert alert-warning">This is a draft. You need to publish it before it's visible to others.</div>
+{{/if}}
+{{#if (equals publication.status 'ARCHIVE')}}
+<div class="alert alert-warning">This is an archival copy of this publication. Newer revision is available.</div>
+{{/if}}
+
 <div class="pubChainContainer">
   <div class="pubChainControls">
     <a href="#" class="btn btn-primary btn-md"
@@ -103,18 +110,27 @@
     </div>
 
     <div class="col-sm-3" id="sidebar">
-      <h2>Ratings</h2>
-      <div>7 ratings</div>
+      {{#if (equals publication.status 'DRAFT')}}
+        <p>
+          This publication is still a draft visible only to you and other authors.<br />
+          You need to publish it before this publication is visible in Octopus.
+        </p>
+        <a href="#" class="btn btn-md btn-primary">Publish now</a>
+      {{else}}
+        <h2>Ratings</h2>
+        <div>7 ratings</div>
 
-      <h2>Reviews</h2>
-      <div>3 reviews</div>
+        <h2>Reviews</h2>
+        <div>3 reviews</div>
 
-      <br />
-      <br />
+        <br />
+        <hr />
+        <br />
 
-      <a href="#">Write a review</a>
-      <br />
-      <a href="#">Write a linked publication</a>
+        <a href="#" class="btn btn-md btn-default">Write a review</a>
+        <br /><br />
+        <a href="#" class="btn btn-md btn-default">Write a linked publication</a>
+      {{/if}}
     </div>
 
   </div>
