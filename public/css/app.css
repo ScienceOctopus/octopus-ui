@@ -45,6 +45,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .text-accent { color: #9955de }
 .text-semi-strong { font-weight: 500 }
 .text-strong { font-weight: 600 }
+.alert { border-radius: 0; border-width: 1px 0}
 
 /* Homepage */
 .homepageJumbotron p { line-height: 2em; margin: 30px 0 50px; font-size: 16px; }
@@ -53,7 +54,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .homepageJumbotron .homepageGraph { width: 100%; max-width: 500px; margin: 0 0 10px -50px; float: right }
 
 /* List of results */
-.result-item {padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc}
+.result-item { padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc }
 .result-item:first-of-type { border-top: none }
 
 /* Publication chain display */

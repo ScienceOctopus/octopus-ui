@@ -17,9 +17,15 @@
 
   <br /><br />
 
-  <form method="POST" action="/publish/step/1">
-    <button type="submit" class="btn btn-md btn-primary">Publish your work with Octopus</button>
-  </form>
+  {{#if user}}
+    <form method="POST" action="/publish/step/1">
+      <button type="submit" class="btn btn-md btn-primary">Publish your work with Octopus</button>
+    </form>
+  {{else}}
+    You have to log in via ORCiD before proceeding.
+    <br />
+    <a href="/auth/orcid/login?returnPath=/publish" class="btn btn-md btn-primary">Log in via ORCiD<a/>
+  {{/if}}
 
 
 </div>

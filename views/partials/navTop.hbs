@@ -33,7 +33,11 @@
       </form>
     </li>
     <li class="pull-right">
-      <a href="/login">Log in via ORCiD</a>
+      {{#if user}}
+        <a href="/users/{{user.orcid}}">{{user.name}}</a>
+      {{else}}
+        <a href="/auth/orcid/login?returnPath={{url}}">Log in via ORCiD</a>
+      {{/if}}
     </li>
   </ul>
 </nav>

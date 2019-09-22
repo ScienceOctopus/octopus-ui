@@ -3,6 +3,7 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const session = require('express-session');
+const flash = require('express-flash');
 const hbs = require('hbs');
 const path = require('path');
 
@@ -35,6 +36,7 @@ function startApp() {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(session(config.sessionConfig));
+  app.use(flash());
 
   app.use('/', require('./routes/middleware'));
 
@@ -49,7 +51,22 @@ function startApp() {
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));
 
-  app.get('/users/:userID', require('./routes/users/view'));
+  app.get('/users/:orcid', require('./routes/users/view'));
+
+  app.get('/auth/orcid/logout', require('./routes/auth/orcid/logout'));
+
+  app.use('/auth/orcid', require('./routes/auth/orcid/middleware'));
+  app.get('/auth/orcid/login', require('./routes/auth/orcid/login'));
+  app.get('/auth/orcid/verify', require('./routes/auth/orcid/verify'));
+
+  if (config.enableDebugMode) {
+    app.get('/debug', (req, res) => {
+      const debugData = {
+        session: req.session,
+      };
+      return res.json(debugData);
+    });
+  }
   /* eslint-enable global-require */
 
   app.use((err, req, res, next) => {

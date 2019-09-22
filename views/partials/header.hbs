@@ -27,3 +27,15 @@
 </head>
 
 <body>
+
+<div id="globalAlerts">
+  {{#each messages.error}}
+    <div class="alert alert-error">{{ this }}</div>
+  {{/each}}
+  {{#each messages.info}}
+    <div class="alert alert-info">{{ this }}</div>
+  {{/each}}
+  {{#each messages.success}}
+    <div class="alert alert-success">{{ this }}</div>
+  {{/each}}
+</div>
