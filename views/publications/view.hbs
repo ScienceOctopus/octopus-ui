@@ -53,12 +53,13 @@
 
       <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
-      <p class="category">Part of problems: {{publication.parentProblems}}</p>
-      <p class="category">Parent publications: {{publication.parentPublication}}</p>
-      <p class="category">Publication type: {{publication.type}}</p>
-
-      <p>{{publication.authors}}</p>
+      <p>Authors: {{publication.authors}}</p>
       <p>Date added: {{formatDate publication.dateCreated}}</p>
+
+      <hr />
+
+      <p>Part of problems: {{publication.parentProblems}}</p>
+      <p>Parent publications: {{publication.parentPublication}}</p>
 
       <hr />
 
@@ -89,27 +90,12 @@
           {{publication.coiDeclaration}}
         </p>
         <p>
-          <strong>Editor data:</strong>
-          <br />
-          {{publication.metaEditor}}
-        </p>
-        <p>
           <strong>Keywords:</strong>
           <br />
           {{publication.keywords}}
         </p>
         <p>
           <strong>Files:</strong>
-          <br />
-          ...
-        </p>
-        <p>
-          <strong>All collaborating authors in this line of research:</strong>
-          <br />
-          ...
-        </p>
-        <p>
-          <strong>Earlier publications in this line of research:</strong>
           <br />
           ...
         </p>
@@ -120,11 +106,15 @@
       <h2>Ratings</h2>
       <div>7 ratings</div>
 
-      <!-- <h2>Collaborators</h2>
-      <div>12 collaborators</div> -->
-
       <h2>Reviews</h2>
       <div>3 reviews</div>
+
+      <br />
+      <br />
+
+      <a href="#">Write a review</a>
+      <br />
+      <a href="#">Write a linked publication</a>
     </div>
 
   </div>
