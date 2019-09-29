@@ -9,7 +9,7 @@
     Upload publication file
   </h2>
 
-  <form method="POST" action="/publish/save">
+  <form method="POST" action="/publish/save" enctype="multipart/form-data">
     <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
     <input type="hidden" name="linkedPublications" value="{{publication.linkedPublications}}" />
     <input type="hidden" name="publicationTitle" value="{{publication.publicationTitle}}" />

@@ -1,12 +1,25 @@
 const _ = require('lodash');
 const debug = require('debug');
+const helpers = require('./helpers');
+
+function aggregatePublicationFormState(fields) {
+  const publicationState = {
+    publicationType: fields.publicationType,
+    linkedPublications: fields.linkedPublications,
+    publicationTitle: fields.publicationTitle,
+    publicationSummary: fields.publicationSummary,
+    publicationKeywords: fields.publicationKeywords,
+    collaborators: fields.collaborators,
+    fundingStatement: fields.fundingStatement,
+    coiDeclaration: fields.coiDeclaration,
+    publicationFile: fields.publicationFile,
+  };
+  return publicationState;
+}
 
 module.exports = (req, res) => {
   const stepNumber = Number(req.params.stepNumber);
   debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
-  // debug('octopus:ui:debug')(`Submitted information:\n ${JSON.stringify(req.body, null, 2)}`);
-
-  // if not logged in redirect to /users/login with a flash message
 
   // if wrong step redirect to error page
   if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 3) {
@@ -14,22 +27,20 @@ module.exports = (req, res) => {
     return res.render('publish/error', res.locals);
   }
 
-  const publicationState = {
-    publicationType: req.body.publicationType,
-    linkedPublications: req.body.linkedPublications,
-    publicationTitle: req.body.publicationTitle,
-    publicationSummary: req.body.publicationSummary,
-    publicationKeywords: req.body.publicationKeywords,
-    collaborators: req.body.collaborators,
-    fundingStatement: req.body.fundingStatement,
-    coiDeclaration: req.body.coiDeclaration,
-    publicationFile: req.body.publicationFile,
-  };
+  if (!req.session.user) {
+    // TODO redirect to /users/login with a flash message
+    res.locals.error = new Error('User not logged in.');
+    return res.render('publish/error', res.locals);
+  }
 
-  res.locals.publishStepNumber = stepNumber;
-  res.locals.publication = publicationState;
+  return helpers.parseForm(req, (err, fields, files) => {
+    const publicationFormState = aggregatePublicationFormState(fields);
 
-  debug('octopus:ui:trace')(res.locals);
+    debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
+    res.locals.publishStepNumber = stepNumber;
+    res.locals.publication = publicationFormState;
+    debug('octopus:ui:trace')(res.locals);
 
-  return res.render(`publish/steps/step-${stepNumber}`, res.locals);
+    return res.render(`publish/steps/step-${stepNumber}`, res.locals);
+  });
 };

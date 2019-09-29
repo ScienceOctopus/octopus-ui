@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const bodyParser = require('body-parser');
 const express = require('express');
 const session = require('express-session');
 const flash = require('express-flash');
@@ -33,8 +32,6 @@ function startApp() {
   /* eslint-disable global-require */
   app.use('/public', express.static('public'));
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
   app.use(session(config.sessionConfig));
   app.use(flash());
 

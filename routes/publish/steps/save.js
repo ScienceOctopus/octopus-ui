@@ -1,36 +1,40 @@
+const _ = require('lodash');
 const debug = require('debug');
+
 const api = require('../../../lib/api');
+const helpers = require('./helpers');
 
 module.exports = (req, res) => {
-  debug('octopus:ui:debug')(`Saving a publication`);
+  debug('octopus:ui:debug')('Saving a publication');
 
-  const newPublication = {
-    status: 'DRAFT',
-    revision: 1,
-    createdByUser: 1,
-    dateCreated: new Date(),
-    dateLastActivity: new Date(),
+  helpers.parseForm(req, (err, fields, files) => {
+    const fileData = _.first(files);
+    const newPublication = helpers.createNewPublicationObject(fields);
 
-    type: req.body.publicationType,
-    parentProblems: [],
-    parentPublications: [req.body.linkedPublications],
-    title: req.body.publicationTitle,
-    summary: req.body.publicationSummary,
-    text: '',
-    keywords: [req.body.publicationKeywords],
-    collaborators: req.body.collaborators,
-    fundingStatement: req.body.fundingStatement,
-    coiDeclaration: req.body.coiDeclaration,
-    publicationFiles: [req.body.publicationFile],
-  };
+    debug('octopus:ui:trace')(`Saving a file for publication ${newPublication}`);
 
-  // debug('octopus:ui:trace')(res.locals);
+    helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
+      if (uploadErr) {
+        return res.send('ERROR');
+      }
 
-  api.createPublication(newPublication, (err, data) => {
-    if (err || !data || !data.insertedId) {
-      return res.render('publish/error', { error: err });
-    }
-    // eslint-disable-next-line
-    return res.redirect(`/publications/view/${data.insertedId}`);
+      // upload file, override text
+      // console.log('uploadErr', uploadErr);
+      // console.log('uploadResult', uploadResult);
+      newPublication.text = _.get(uploadResult, 'text');
+      newPublication.publicationFiles = [{ id: _.get(uploadResult, '_id') }];
+
+      debug('octopus:ui:trace')(newPublication);
+      debug('octopus:ui:trace')(res.locals);
+
+      return api.createPublication(newPublication, (createPubErr, createPubResult) => {
+        if (createPubErr || !createPubResult || !createPubResult.insertedId) {
+          return res.render('publish/error', { error: createPubErr });
+        }
+
+        // eslint-disable-next-line
+        return res.redirect(`/publications/view/${createPubResult.insertedId}`);
+      });
+    });
   });
 };
