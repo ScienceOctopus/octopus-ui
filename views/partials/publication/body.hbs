@@ -16,7 +16,11 @@
 
       <div>
         <h3>Summary</h3>
-        <p>{{publication.summary}}</p>
+        {{#if (equals publication.status 'DRAFT')}}
+          <textarea class="form-control" id="publicationSummary" name="publicationSummary">{{publication.summary}}</textarea>
+        {{else}}
+          {{publication.summary}}
+        {{/if}}
       </div>
 
       <hr />
@@ -37,22 +41,35 @@
         <p>
           <strong>Funding Statement:</strong>
           <br />
-          {{publication.fundingStatement}}
+          {{#if (equals publication.status 'DRAFT')}}
+            <textarea class="form-control" id="publicationFundingStatement" name="publicationFundingStatement">{{publication.fundingStatement}}</textarea>
+          {{else}}
+            {{publication.fundingStatement}}
+          {{/if}}
         </p>
         <p>
           <strong>Conflict of Interest Declaration:</strong>
           <br />
-          {{publication.coiDeclaration}}
+          {{#if (equals publication.status 'DRAFT')}}
+            <textarea class="form-control" id="publicationCoiDeclaration" name="publicationCoiDeclaration">{{publication.coiDeclaration}}</textarea>
+          {{else}}
+            {{publication.coiDeclaration}}
+          {{/if}}
         </p>
         <p>
           <strong>Keywords:</strong>
           <br />
-          {{publication.keywords}}
+          <!-- {{publication.keywords}} -->
+          {{#if (equals publication.status 'DRAFT')}}
+            <input class="form-control" id="publicationKeywords" name="publicationKeywords" />{{publication.keywords}}
+          {{else}}
+            {{publication.keywords}}
+          {{/if}}
         </p>
         <p>
           <strong>Files:</strong>
           <br />
-          ...
+          {{publication.files}}
         </p>
       </div>
     </div>
@@ -85,7 +102,7 @@
 </div>
 
 {{#if (equals publication.status 'DRAFT')}}
-  <p>EDIT MODE</p>
+  <!-- EDIT MODE ENABLED -->
   <link type="text/css" rel="stylesheet" href="/public/vendor/jodit-3.2.46/jodit.min.css">
   <script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
 
