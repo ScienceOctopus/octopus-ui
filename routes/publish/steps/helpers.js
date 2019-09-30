@@ -1,6 +1,5 @@
 const _ = require('lodash');
-// const fs = require('fs');
-// const helpers = require('./helpers');
+const fs = require('fs');
 const debug = require('debug');
 const formidable = require('formidable');
 
@@ -57,7 +56,7 @@ function handleFileUpload(fileData, callback) {
 
   return api.uploadFile(fileData.path, fileData.type, (uploadErr, uploadResult) => {
     debug('octopus:ui:trace')('handleFile: Upload successful');
-    // fs.unlinkSync(fileData.path);
+    fs.unlinkSync(fileData.path);
     return callback(uploadErr, uploadResult);
   });
 }
