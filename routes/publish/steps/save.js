@@ -18,14 +18,11 @@ module.exports = (req, res) => {
         return res.send('ERROR');
       }
 
-      // upload file, override text
-      // console.log('uploadErr', uploadErr);
-      // console.log('uploadResult', uploadResult);
       newPublication.text = _.get(uploadResult, 'text');
-      newPublication.publicationFiles = [{ id: _.get(uploadResult, '_id') }];
+      newPublication.publicationFiles = _.get(uploadResult, '_id');
 
-      debug('octopus:ui:trace')(newPublication);
-      debug('octopus:ui:trace')(res.locals);
+      // debug('octopus:ui:trace')(newPublication);
+      // debug('octopus:ui:trace')(res.locals);
 
       return api.createPublication(newPublication, (createPubErr, createPubResult) => {
         if (createPubErr || !createPubResult || !createPubResult.insertedId) {

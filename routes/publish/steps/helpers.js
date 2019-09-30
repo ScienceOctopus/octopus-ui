@@ -66,13 +66,13 @@ function createNewPublicationObject(data) {
   const newPublication = {
     status: 'DRAFT',
     revision: 1,
-    createdByUser: 1,
+    createdByUser: data.userId,
     dateCreated: new Date(),
     dateLastActivity: new Date(),
 
     type: data.publicationType,
-    parentProblems: [],
-    parentPublications: [data.linkedPublications],
+    parentProblems: (data.parentProblems || '').split(','),
+    parentPublications: (data.parentPublications || '').split(','),
     title: data.publicationTitle,
     summary: data.publicationSummary,
     text: '',

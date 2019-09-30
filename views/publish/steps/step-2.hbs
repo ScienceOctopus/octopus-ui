@@ -11,13 +11,17 @@
 
   <form method="POST" action="/publish/step/3">
     <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
-    <input type="hidden" name="linkedPublications" value="" />
 
     <div class="form-group">
-      <label for="linkedPublicationsBtn">1. Publications to link to</label>
+      <label for="parentPublications">1. Publications to link to</label>
       <p>Publications need to be linked to a publication of an immediately preceding type (i.e. "analysis" must be linked to a "result" publication).</p>
-      <!-- <input id="linkedPublications" class="form-control" name="linkedPublications" type="text" value="" placeholder="Find publications to link to" /> -->
-      <a href="#" id="linkedPublicationsBtn" onclick="showLinkablePublications({{publication.publicationType}})">Select one or more publications to link to</a>.
+      <select id="parentPublications" class="form-control" name="parentPublications">
+        <option disabled selected></option>
+        {{#each allLinkablePublications}}
+          <option value="{{this._id}}">{{this.type}}: {{this.title}}</option>
+        {{/each}}
+      </select>
+      <!-- <a href="#" id="linkedPublicationsBtn" onclick="showLinkablePublications({{publication.publicationType}})">Select one or more publications to link to</a>. -->
     </div>
 
     <div class="form-group">
@@ -37,7 +41,7 @@
 
     <div class="form-group">
       <label for="collaborators">5. Collaborators</label>
-      <input required id="collaborators" class="form-control" name="collaborators" type="text" value="" placeholder="Enter collaborators ORCiD identifiers" />
+      <input required id="collaborators" class="form-control" name="collaborators" type="text" value="{{user.orcid}}" placeholder="Enter collaborators ORCiD identifiers" />
     </div>
 
     <div class="form-group">
