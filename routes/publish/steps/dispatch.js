@@ -22,6 +22,7 @@ function aggregatePublicationFormState(fields) {
 
 function mapResultForDropdown(result) {
   return {
+    // eslint-disable-next-line no-underscore-dangle
     id: result._id,
     title: result.title,
     type: result.type,
