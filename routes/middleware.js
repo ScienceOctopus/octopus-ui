@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const api = require('../lib/api');
 const config = require('../lib/config');
 

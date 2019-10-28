@@ -59,7 +59,6 @@ function orcidAuthVerify(req, res) {
       );
     });
   });
-
 }
 
 module.exports = orcidAuthVerify;
