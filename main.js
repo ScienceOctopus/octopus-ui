@@ -1,13 +1,13 @@
 require('dotenv').config();
 
 const express = require('express');
-const session = require('express-session');
 const flash = require('express-flash');
 const hbs = require('hbs');
 const path = require('path');
 
 const config = require('./lib/config');
 const hbsHelpers = require('./lib/hbsHelpers');
+const sessionMiddleware = require('./lib/session');
 
 function startApp() {
   const app = express();
@@ -32,7 +32,7 @@ function startApp() {
   /* eslint-disable global-require */
   app.use('/public', express.static('public'));
 
-  app.use(session(config.sessionConfig));
+  app.use(sessionMiddleware);
   app.use(flash());
 
   app.use('/', require('./routes/middleware'));
