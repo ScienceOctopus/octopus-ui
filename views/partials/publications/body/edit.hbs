@@ -1,0 +1,75 @@
+<div class="container-fluid" id="mainBody" role="main">
+<form action="/publications/publish/{{publication._id}}" method="POST">
+  <div class="row">
+    <div class="col-sm-9">
+
+      <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
+
+      <p>Authors: {{publication.authors}}</p>
+      <p>Date added: {{formatDate publication.dateCreated}}</p>
+
+      <hr />
+
+      <p>Part of problems: {{publication.parentProblems}}</p>
+      <p>Parent publications: {{publication.parentPublication}}</p>
+
+      <hr />
+
+      <div>
+        <h3>Summary</h3>
+        <textarea class="form-control" id="publicationSummary" name="publicationSummary">{{publication.summary}}</textarea>
+      </div>
+
+      <hr />
+
+      <div>
+        <h3>Full text</h3>
+        <textarea id="publicationText" name="publicationText">{{{publication.text}}}</textarea>
+      </div>
+
+      <hr />
+
+      <div>
+        <h3>Additional information</h3>
+        <p>
+          <strong>Funding Statement:</strong>
+          <br />
+          <textarea class="form-control" id="publicationFundingStatement" name="publicationFundingStatement">{{publication.fundingStatement}}</textarea>
+        </p>
+        <p>
+          <strong>Conflict of Interest Declaration:</strong>
+          <br />
+          <textarea class="form-control" id="publicationCoiDeclaration" name="publicationCoiDeclaration">{{publication.coiDeclaration}}</textarea>
+        </p>
+        <p>
+          <strong>Keywords:</strong>
+          <br />
+          <input class="form-control" id="publicationKeywords" name="publicationKeywords" />{{publication.keywords}}
+        </p>
+        <p>
+          <strong>Files:</strong>
+          <br />
+          {{publication.files}}
+        </p>
+      </div>
+    </div>
+
+    <div class="col-sm-3" id="sidebar">
+      <p>
+        This publication is still a draft visible only to you and other authors.<br />
+        You need to publish it before this publication is visible in Octopus.
+      </p>
+      <input type="submit" class="btn btn-md btn-primary" value="Publish now" />
+    </div>
+
+  </div>
+</form>
+</div>
+
+<!-- EDIT MODE ENABLED -->
+<link type="text/css" rel="stylesheet" href="/public/vendor/jodit-3.2.46/jodit.min.css">
+<script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
+
+<script>
+  var editor = new Jodit('#publicationText');
+</script>

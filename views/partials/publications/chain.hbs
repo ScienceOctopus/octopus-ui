@@ -1,0 +1,44 @@
+<div class="pubChainContainer">
+  <div class="pubChainControls">
+    <a href="#" class="btn btn-primary btn-md"
+    onclick="OctopusApp.togglePubChainVisibility()"
+    data-toggle="tooltip" data-placement="right"
+    title="Show/hide publication chain."
+    >
+      <span class="fa fa-fw fa-chevron-up"></span>
+    </a>
+
+    <a href="#" class="btn btn-primary btn-md"
+    onclick="OctopusApp.togglePubChainAutoshrink()"
+    data-toggle="tooltip" data-placement="right"
+    title="Automatically shrink the columns to fit window width."
+    >
+      <span class="fa fa-fw fa-arrows-h" title="Autoshrink columns to fit window width"></span>
+    </a>
+
+    <a href="#" class="btn btn-primary btn-md"
+    onclick="OctopusApp.togglePubChainMode()"
+    data-toggle="tooltip" data-placement="right"
+    title="Toggle publication chain mode (columns or graph)"
+    >
+      <span class="fa fa-fw fa-sitemap"></span>
+    </a>
+  </div>
+
+  <div class="pubChain">
+    <div class="pubChainContent">
+      <!-- <p>Publication chain:</p> -->
+
+      {{#each publicationTypes}}
+        {{#unless (equals this.attributes.displayInPubChain false)}}
+        <div class="typeColumn">
+          <p class="heading">{{this.plural}}</p>
+          <p class="pubItem">Placeholder publication</p>
+        </div>
+        {{/unless}}
+      {{/each}}
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

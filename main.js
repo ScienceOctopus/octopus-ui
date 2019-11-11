@@ -15,6 +15,9 @@ function startApp() {
 
   app.disable('x-powered-by');
 
+  /*
+   * Handlebars helpers
+   */
   hbs.registerPartials(partialsPath);
   hbs.registerHelper('json', hbsHelpers.json);
   hbs.registerHelper('roundNumber', hbsHelpers.roundNumber);
@@ -47,6 +50,8 @@ function startApp() {
 
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));
+  app.get('/publications/edit/:publicationID', require('./routes/publications/edit'));
+  app.post('/publications/publish/:publicationID', require('./routes/publications/publish'));
 
   app.get('/users/:orcid', require('./routes/users/view'));
 
