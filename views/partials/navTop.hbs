@@ -34,7 +34,7 @@
     </li>
     <li class="pull-right">
       {{#if user}}
-        <a href="/users/{{user.orcid}}">{{user.name}}</a>
+        <a href="/users/view/{{user.orcid}}">{{user.name}}</a>
       {{else}}
         <a href="/auth/orcid/login?returnPath={{url}}">Log in via ORCiD</a>
       {{/if}}

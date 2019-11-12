@@ -1,0 +1,101 @@
+{{> header}}
+
+<div class="container-fluid" id="mainBody" role="main">
+
+  <div class="row">
+    <div class="col-sm-3" id="sidebar">
+
+      <h2 class="text-plain">
+        <strong>Refine search</strong>
+      </h2>
+
+      <form method="GET" action="" class="form-inline" id="searchFormSidebar">
+        <label for="searchFormSidebarInput" class="sr-only">Search term</label>
+        <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}"
+          placeholder="Search authors" />
+
+        <button type="submit" class="btn btn-default searchFormSubmitBtn">
+          <span class="fa fa-search"></span>
+          <span class="sr-only">Submit search</span>
+        </button>
+      </form>
+
+      <form method="GET" action="" class="form-horizontal">
+        <strong>Filter by Publication type:</strong>
+        <br />
+
+        {{#each publicationTypes}}
+        <div class="checkbox"><label>
+            <input type="checkbox" checked="checked" name="publicationTypes" value="{{this.key}}" /> {{this.plural}}
+          </label></div>
+        {{/each}}
+      </form>
+
+      <form method="GET" action="" class="form-horizontal">
+        <strong>Filter by Publication date:</strong>
+        <br />
+
+        <div class="radio">
+          <label><input type="radio" name="publicationDate" value="now-1m" /> Last month</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="publicationDate" value="now-3m" /> Last 3 months</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" checked="checked" name="publicationDate" value="all" /> All</label>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-sm-9">
+
+      <div class="pull-right">
+        <form method="GET" action="" class="form-inline">
+          <div class="form-group">
+            <strong>Sort by:</strong>
+            <select name="sort" onchange="this.form.submit()">
+              {{#select query.sort}}
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              {{/select}}
+            </select>
+          </div>
+          {{#if query.phrase}}
+          <input name="phrase" type="hidden" value="{{query.phrase}}" />
+          {{/if}}
+        </form>
+      </div>
+
+      <h1 class="text-plain">
+        Showing {{users.displayedCount}} authors
+        out of {{users.totalCount}} total
+        {{~#if query.phrase}} for term "{{query.phrase}}"{{/if}}.
+      </h1>
+
+      <br />
+
+      {{#each users.results}}
+      <div class="row result-item">
+        <div class="col-xs-12">
+          <h2>
+            <a href="/users/view/{{this.name.path}}">
+              {{ this.name.given-names.value }}
+              {{ this.name.family-name.value }}
+            </a>
+          </h2>
+          {{#each this.keywords.keyword}}
+          <span class="label label-default">{{this.content}}</span>
+          {{/each}}
+        </div>
+      </div>
+      {{/each}}
+
+    </div>
+
+  </div>
+
+</div>
+
+{{> navTop}}
+
+{{> footer}}
