@@ -8,14 +8,14 @@
     <div class="col-sm-9">
 
       <h1>
-        User profile: {{person.name}}
+        User profile: {{person.orcidUserData.userFullName}}
       </h1>
 
       <br />
 
       <strong>ORCiD:</strong>
-      <a href="https://orcid.org/{{person.orcid}}" target="_blank">
-        {{person.orcid}}
+      <a href="https://orcid.org/{{person.orcidId}}" target="_blank">
+        {{person.orcidId}}
         <span title="This link opens in a new tab." class="fa fa-external-link"></span>
       </a>
 
@@ -25,9 +25,9 @@
     <div class="col-sm-3" id="sidebar">
       <h3>Publications</h3>
       <ul class="list list-unstyled">
-      {{#each publications}}
+        {{#each publications}}
         <li><a href="/publications/view/{{this._id}}">{{this.title}}</a></li>
-      {{/each}}
+        {{/each}}
       </ul>
     </div>
 
