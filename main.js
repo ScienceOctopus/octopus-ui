@@ -28,6 +28,7 @@ function startApp() {
   hbs.registerHelper('startsWith', hbsHelpers.startsWith);
   hbs.registerHelper('endsWith', hbsHelpers.endsWith);
   hbs.registerHelper('select', hbsHelpers.select);
+  hbs.registerHelper('radio', hbsHelpers.radio);
 
   // eslint-disable-next-line no-underscore-dangle
   app.engine('hbs', hbs.__express);
