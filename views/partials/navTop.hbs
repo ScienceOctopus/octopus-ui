@@ -21,13 +21,24 @@
     <li>
       <form method="GET" action="/publications/search" class="form-inline" id="searchFormTop">
         <!-- <div class="form-group"> -->
-          <label for="searchFormTopInput" class="sr-only">Search term</label>
-          <input id="searchFormTopInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}" placeholder="Search publications" />
-
-          <button type="submit" class="btn btn-default searchFormSubmitBtn">
-            <span class="fa fa-search"></span>
-            <span class="sr-only">Submit search</span>
-          </button>
+          <div class="input-group">
+            <label for="searchTopFormTopInput" class="sr-only">Search term</label>
+            <input id="searchTopFormTopInput" class="searchTopFormInput" name="phrase" type="text" value="{{query.phrase}}" placeholder="Search..." />
+            <div class="input-group-btn">
+              <button type="submit" class="btn btn-default searchTopFormSubmitBtn">
+                  <span class="fa fa-search"></span>
+                  <span class="sr-only">Submit search</span>
+              </button>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="dropdown-selection">in Publications</span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="#" onClick="toggleSearchScope(event, 'publications')">in Publications</a></li>
+                <li><a href="#" onClick="toggleSearchScope(event, 'users')">in Authors</a></li>
+              </ul>
+            </div>
+          </div>
         <!-- </div> -->
 
       </form>

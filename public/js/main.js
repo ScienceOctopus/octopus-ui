@@ -50,3 +50,10 @@
     OctopusAppElements.$pubChainControls = $('.pubChainControls');
   });
 })();
+
+// Search scope
+function toggleSearchScope(event, scope) {
+  event.preventDefault();
+  $('#searchFormTop').attr('action', `/${scope}/search`);
+  $('#searchFormTop .dropdown-selection').html($(event.currentTarget).html());
+}

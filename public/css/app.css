@@ -2,7 +2,7 @@
 html { position: relative; min-height: 100%; }
 body { margin-bottom: 140px; margin-top: 50px; }
 footer { position: absolute; bottom: 0; width: 100%; height: 140px; }
-nav#navTop { position: fixed; left:0; top:0; width:100%; height:50px; overflow: hidden}
+nav#navTop { position: fixed; left:0; top:0; width:100%; height:50px;}
 
 /* Footer styling */
 footer { background: #ded9f3; padding: 30px; box-shadow: 0 -1px 10px #eee }
@@ -15,6 +15,13 @@ nav#navTop li a { padding: 14px 30px; color: #fff; font-weight: 400; border-bott
 nav#navTop li a:hover, nav#navTop li a:focus { color: #fff; background: #9f90ed; text-decoration: none; border-bottom-color: #ada3ed}
 nav#navTop li a.active { background: #9f90ed; border-bottom-color: #7965e6}
 nav#navTop .logo { height: 40px; float: left; margin-top: -10px; padding-right: 20px;}
+nav#navTop .dropdown-menu li { display: block; }
+nav#navTop .dropdown-menu li a { color: inherit; text-shadow: none; border: none; padding: 3px 20px; width: 100%;}
+nav#navTop .dropdown-menu li a:hover { color: #fff; }
+nav#navTop .dropdown-menu li, nav#navTop .dropdown-menu li a { height: auto; }
+nav#navTop .dropdown-toggle.btn-default,
+nav#navTop .dropdown-toggle.btn-default:focus,
+nav#navTop .dropdown-toggle.btn-default:hover { background-color: #fff; padding: 10px; }
 
 nav#navTop #searchFormTop { margin-left: 10px }
 
@@ -28,6 +35,11 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 .searchFormSubmitBtn {float: right; margin: -41px 1px 0 0; position: relative; width: 50px; height: 40px; padding: 0;}
 .searchFormSubmitBtn {border: none; border-radius: 0 3px 3px 0; border-left: 1px solid #eee; background: white;}
 .searchFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
+
+/* Top search input */
+.searchTopFormInput {padding: 10px; border: 1px solid #ccc; border-top-left-radius: 4px; border-bottom-left-radius: 4px;}
+.searchTopFormSubmitBtn {height: 42px; border-left: none;}
+.searchTopFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
 
 /* Sidebar styling */
 #sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
@@ -45,6 +57,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .text-accent { color: #9955de }
 .text-semi-strong { font-weight: 500 }
 .text-strong { font-weight: 600 }
+.text-truncate { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .alert { border-radius: 0; border-width: 1px 0}
 
 /* Homepage */
