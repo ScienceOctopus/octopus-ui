@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "dev": "nodemon -e js,hbs main.js",
     "start": "node main.js",
     "lint": "eslint ."
   },
@@ -21,6 +22,7 @@
     "hbs": "^4.0.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "nodemon": "^1.19.4",
     "request": "^2.88.0"
   },
   "devDependencies": {
