@@ -45,8 +45,26 @@
 
   $(document).ready(() => {
     enableTooltips();
+    toggleSearchScope(null, location.pathname);
 
     OctopusAppElements.$pubChainContainer = $('.pubChainContainer');
     OctopusAppElements.$pubChainControls = $('.pubChainControls');
   });
 })();
+
+// Search scope
+function toggleSearchScope(event, url) {
+  if (event) {
+    event.preventDefault();
+    url = $(event.currentTarget).attr("data-url");
+  }
+
+  const selection = $(`#searchFormTop a[data-url="${url}"]`);
+
+  if (!selection.length) {
+    return;
+  }
+
+  $('#searchFormTop').attr('action', url);
+  $('#searchFormTop .dropdown-selection').text(selection.text());
+}
