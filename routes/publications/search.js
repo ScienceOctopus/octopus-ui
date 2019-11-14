@@ -12,15 +12,43 @@ module.exports = (req, res) => {
 
   debug('octopus:ui:debug')(`Searching for Publications. Query: "${query.phrase || ''}"`);
 
-  return api.findPublications(query, (publicationsErr, pubData) => {
+  return api.findPublications(query, async (publicationsErr, pubData) => {
     const data = pubData;
 
     res.locals.query = query;
 
+    let results = data ? data.results || [] : [];
+
+    // Augment the publications with the author data
+    results = await Promise.all(results.map((publication) => new Promise(async (resolve) => {
+      if (!publication.collaborators) {
+        return resolve(publication);
+      }
+
+      let authors = _.filter(publication.collaborators, { role: 'author', status: 'CONFIRMED' });
+
+      // Grab the user info for each collaborator
+      authors = await Promise.all(authors.map((author) => new Promise((resolve) => {
+        return api.getUserByORCiD(author.userID, (userErr, userData) => {
+          if (userErr) {
+            resolve();
+          }
+          // We're only interested in the name and the orcid
+          const { name, orcid } = userData;
+          resolve({ name, orcid });
+        })
+      })));
+
+      // Filter our undefined entries
+      authors = authors.filter((author) => author);
+
+      return resolve({ ...publication, authors });
+    })));
+
     res.locals.publications = {
       totalCount: data && data.total ? data.total : 0,
       displayedCount: data && data.results ? data.results.length : 0,
-      results: data && data.results ? data.results : [],
+      results,
     };
 
     return res.render('publications/search', res.locals);

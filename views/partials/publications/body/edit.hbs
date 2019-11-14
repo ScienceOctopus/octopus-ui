@@ -5,7 +5,7 @@
 
       <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
-      <p>Authors: {{publication.authors}}</p>
+      <p>Authors: {{> authorsList authors=publication.authors}}</p>
       <p>Date added: {{formatDate publication.dateCreated}}</p>
 
       <hr />

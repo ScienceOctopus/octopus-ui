@@ -93,3 +93,6 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pubChainContainer.minimised .pubItem { opacity: 0; }
 
 .form-group { margin-bottom: 35px; }
+
+/* Authors list links */
+.authors-list .authors-list-items { display: inline-flex; }
