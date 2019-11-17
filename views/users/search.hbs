@@ -1,0 +1,130 @@
+{{> header}}
+
+<div class="container-fluid" id="mainBody" role="main">
+
+  <div class="row">
+    <div class="col-sm-3" id="sidebar">
+
+      <h2 class="text-plain">
+        <strong>Refine search</strong>
+      </h2>
+
+      <form method="GET" action="" class="form-inline" id="searchFormSidebar">
+        <label for="searchFormSidebarInput" class="sr-only">Search term</label>
+        <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}"
+          placeholder="Search authors" />
+        
+        {{#if query.sort}}
+        <input name="sort" type="hidden" value="{{query.sort}}" />
+        {{/if}}
+        {{#if query.filter}}
+        <input name="filter" type="hidden" value="{{query.filter}}" />
+        {{/if}}
+
+        <button type="submit" class="btn btn-default searchFormSubmitBtn">
+          <span class="fa fa-search"></span>
+          <span class="sr-only">Submit search</span>
+        </button>
+      </form>
+
+      <form method="GET" action="" class="form-horizontal">
+        <strong>Filter by Author name:</strong>
+        <br />
+
+        {{#radio query.filter}}
+        <div class="radio">
+          <label>
+            <input type="radio" name="filter" value="full-name" onChange="this.form.submit()" checked>
+            Full name
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="filter" value="first-name" onChange="this.form.submit()">
+            First name only
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="filter" value="last-name" onChange="this.form.submit()">
+            Last name only
+          </label>
+        </div>
+        {{/radio}}
+        {{#if query.phrase}}
+        <input name="phrase" type="hidden" value="{{query.phrase}}" />
+        {{/if}}
+        {{#if query.sort}}
+        <input name="sort" type="hidden" value="{{query.sort}}" />
+        {{/if}}
+      </form>
+    </div>
+
+    <div class="col-sm-9">
+
+      <div class="pull-right">
+        <form method="GET" action="" class="form-inline">
+          <div class="form-group">
+            <strong>Sort by:</strong>
+            <select name="sort" onchange="this.form.submit()">
+              {{#select query.sort}}
+              <option value="relevance">Relevance</option>
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              {{/select}}
+            </select>
+          </div>
+          {{#if query.phrase}}
+          <input name="phrase" type="hidden" value="{{query.phrase}}" />
+          {{/if}}
+          {{#if query.filter}}
+          <input name="filter" type="hidden" value="{{query.filter}}" />
+          {{/if}}
+        </form>
+      </div>
+
+      <h1 class="text-plain">
+        Showing {{users.displayedCount}} authors
+        out of {{users.totalCount}} total
+        {{~#if query.phrase}} for term "{{query.phrase}}"{{/if}}.
+      </h1>
+
+      <br />
+
+      {{#each users.results}}
+      <div class="row result-item">
+        <div class="col-xs-12">
+          <h2>
+            <a href="/users/view/{{this.name.path}}">
+              {{ this.name.given-names.value }}
+              {{ this.name.family-name.value }}
+            </a>
+          </h2>
+        </div>
+        <div class="col-xs-12">
+          <p class="text-truncate">{{this.biography.content}}</p>
+        </div>
+        {{#if this.keywords.keyword.length}}
+        <div class="col-xs-12">
+          <ul class="list-unstyled small">
+              <li>
+                <strong>Keywords:</strong>
+                {{#each this.keywords.keyword}}
+                  <span>{{this.content}}</span>
+                {{/each}}
+              </li>
+            </ul>
+        </div>
+        {{/if}}
+      </div>
+      {{/each}}
+
+    </div>
+
+  </div>
+
+</div>
+
+{{> navTop}}
+
+{{> footer}}
