@@ -80,3 +80,10 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pubChainContainer.minimised .pubItem { opacity: 0; }
 
 .form-group { margin-bottom: 35px; }
+
+
+/* User Profile Page */
+.publication-container { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; margin-bottom: 10px; }
+.publication-container:hover { border-color: #7965E6; cursor: pointer; }
+.publication-type { text-transform: capitalize; color: #ADA3ED; font-weight: bold; margin-top: 0px; }
+.publication-title { margin-bottom: 0px; }

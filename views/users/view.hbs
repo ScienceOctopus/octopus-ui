@@ -19,21 +19,147 @@
         <span title="This link opens in a new tab." class="fa fa-external-link"></span>
       </a>
 
-      <!-- <pre>{{json user}}</pre> -->
+      <br /> <br />
+
+      <strong>Current and past affiliations:</strong>
+      <ul class="list">
+        {{#each person.orcidUserData.userEmployments}}
+        <li>
+          <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+        </li>
+        {{/each}}
+      </ul>
+
+      <br />
+
+      <strong>Educational background:</strong>
+      <ul class="list">
+        {{#each person.orcidUserData.userEducations}}
+        <li>
+          <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+        </li>
+        {{/each}}
+      </ul>
+
+      <br />
+
     </div>
 
-    <div class="col-sm-3" id="sidebar">
-      <h3>Publications</h3>
+    <div class="col-sm-3">
+      <canvas id="myChart" width="200px" height="200px"></canvas>
+    </div>
+  </div>
+
+  {{#if publications.length}}
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Publications</h1>
+
+      <hr>
+
       <ul class="list list-unstyled">
         {{#each publications}}
-        <li><a href="/publications/view/{{this._id}}">{{this.title}}</a></li>
+        <li class="publication-container" onclick="window.location='/publications/view/{{this._id}}'">
+          <div class="row">
+            <div class="col-sm-9">
+              <p class="publication-type">
+                {{this.type}}
+              </p>
+              <h4 class="publication-title">
+                {{this.title}}
+              </h4>
+            </div>
+            <div class="col-sm-3">
+              <p>
+                <b>
+                  Date added:
+                </b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+        </li>
         {{/each}}
       </ul>
     </div>
-
   </div>
+  {{/if}}
+
+  {{#if person.orcidUserData.userWorks}}
+  <br />
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Non-Octopus Publications</h1>
+
+      <hr>
+
+      <ul class="list list-unstyled">
+        {{#each person.orcidUserData.userWorks}}
+
+        <li class="publication-container" onclick="window.location='{{this.url}}'" target="_blank">
+          <div class="row">
+            <div class="col-sm-9">
+              <p class="publication-type">
+                {{this.type}}
+              </p>
+
+              <h4 class="publication-title">
+                {{this.title}}
+              </h4>
+
+              <p class="publication-title">
+                {{this.journalTitle}}
+              </p>
+            </div>
+
+            <div class="col-sm-3">
+              <p>
+                <b>
+                  Date added:
+                </b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+  {{/if}}
 </div>
+
+<input type="hidden" id="publicationsTypes" value=[{{pubTypesCounted.types}}] />
+<input type="hidden" id="publicationsTypesCounter" value=[{{pubTypesCounted.counters}}] />
+
 
 {{> navTop}}
 
 {{> footer}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  console.log('test', document.getElementById("publicationsTypes"))
+  var publicationsTypes = document.getElementById("publicationsTypes").value;
+  var publicationsTypesCounter = document.getElementById("publicationsTypesCounter").value;
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'pie',
+    // The data for our dataset
+    data: {
+      labels: publicationsTypes,
+      datasets: [{
+        label: 'My First dataset',
+        backgroundColor: ['#42C0A3', '#BF72E8', '#D9504F', '', '#5180BD', '', '#C99E58'],
+        borderColor: '#FFF',
+        data: publicationsTypesCounter
+      }]
+    },
+
+    // Configuration options go here
+    options: {}
+  });
+</script>
