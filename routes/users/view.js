@@ -112,6 +112,7 @@ const getUserWorks = (orcidId) => new Promise((resolve) => {
 const getUserFullName = (orcidId) => new Promise((resolve) => {
   return orcid.getPersonDetails(
     orcidId,
+    null,
     (personDetailsErr, personDetails) => {
       if (personDetails) {
         // Combine given and family names into fullName
@@ -188,7 +189,7 @@ module.exports = async (req, res) => {
   const userEmployments = await getUserEmployments(orcidId);
   const userFullName = await getUserFullName(orcidId);
   const userPublications = await getUserPublications(orcidId);
-  const pubTypeCounted = await countPublicationsByType(
+  const pubsCountedByType = await countPublicationsByType(
     userPublications,
     publicationTypes,
   );
@@ -201,7 +202,7 @@ module.exports = async (req, res) => {
   };
 
   res.locals.publications = userPublications;
-  res.locals.pubTypesCounted = pubTypeCounted;
+  res.locals.pubsCountedByType = pubsCountedByType;
 
   return api.getUserByORCiD(orcidId, (userErr, userData) => {
     res.locals.person = { userData, orcidUserData, orcidId };

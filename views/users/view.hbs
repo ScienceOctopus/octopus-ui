@@ -46,7 +46,10 @@
     </div>
 
     <div class="col-sm-3">
-      <canvas id="myChart" width="200px" height="200px"></canvas>
+      {{#if publications.length}}
+
+        <canvas id="myChart" width="250px" height="250px"></canvas>
+      {{/if}}
     </div>
   </div>
 
@@ -130,10 +133,6 @@
   {{/if}}
 </div>
 
-<input type="hidden" id="publicationsTypes" value=[{{pubTypesCounted.types}}] />
-<input type="hidden" id="publicationsTypesCounter" value=[{{pubTypesCounted.counters}}] />
-
-
 {{> navTop}}
 
 {{> footer}}
@@ -141,25 +140,30 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 <script>
-  var ctx = document.getElementById('myChart').getContext('2d');
-  console.log('test', document.getElementById("publicationsTypes"))
-  var publicationsTypes = document.getElementById("publicationsTypes").value;
-  var publicationsTypesCounter = document.getElementById("publicationsTypesCounter").value;
-  var chart = new Chart(ctx, {
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  const publicationsTypes = "{{pubsCountedByType.types}}".split(",");
+  const publicationsTypesCounter = "{{pubsCountedByType.counters}}".split(",");
+
+  const chart = new Chart(ctx, {
     // The type of chart we want to create
     type: 'pie',
     // The data for our dataset
     data: {
       labels: publicationsTypes,
       datasets: [{
-        label: 'My First dataset',
-        backgroundColor: ['#42C0A3', '#BF72E8', '#D9504F', '', '#5180BD', '', '#C99E58'],
+        label: 'User Publications Ratio',
+        backgroundColor: ['#42C0A3', '#BF72E8', '#D9504F', '0083ff', '#5180BD', 'a90329', '#C99E58', '#F5F56C'],
         borderColor: '#FFF',
-        data: publicationsTypesCounter
-      }]
+        data: publicationsTypesCounter,
+      }],
     },
 
     // Configuration options go here
-    options: {}
+    options: {
+      legend: {
+        position: 'right',
+      },
+    },
   });
 </script>
