@@ -22,13 +22,27 @@
       <br /> <br />
 
       <strong>Current and past affiliations:</strong>
+      {{#if person.orcidUserData.userEmployments.currentEmployment}}
       <ul class="list">
-        {{#each person.orcidUserData.userEmployments}}
         <li>
-          <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+          <b>{{person.orcidUserData.userEmployments.currentEmployment.organizationName}}</b> -
+          {{person.orcidUserData.userEmployments.currentEmployment.roleTitle}}
         </li>
-        {{/each}}
+
+        {{#if person.orcidUserData.userEmployments.pastEmployments}}
+        <div id="pastAffiliations" style="display:none">
+          {{#each person.orcidUserData.userEmployments.pastEmployments}}
+          <li>
+            <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+          </li>
+          {{/each}}
+        </div>
+
+        <input id="displayAffiliations" type="button" name="expandAffiliations" value="Show past affiliations"
+          onclick="showPastAffiliations()" />
+        {{/if}}
       </ul>
+      {{/if}}
 
       <br />
 
@@ -47,8 +61,7 @@
 
     <div class="col-sm-3">
       {{#if publications.length}}
-
-        <canvas id="myChart" width="250px" height="250px"></canvas>
+      <canvas id="myChart" width="250px" height="250px"></canvas>
       {{/if}}
     </div>
   </div>
@@ -72,6 +85,7 @@
                 {{this.title}}
               </h4>
             </div>
+            
             <div class="col-sm-3">
               <p>
                 <b>
@@ -166,4 +180,9 @@
       },
     },
   });
+
+  function showPastAffiliations() {
+    document.getElementById('pastAffiliations').style.display = "block";
+    document.getElementById('displayAffiliations').style.display = "none";
+  }
 </script>

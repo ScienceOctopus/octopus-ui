@@ -34,11 +34,12 @@ const getUserEmployments = (orcidId) => new Promise((resolve) => {
   return orcid.getPersonEmployments(
     orcidId,
     (employmentsErr, employments) => {
-      const allEmployments = [];
+      const currentEmploymentArr = [];
+      const pastEmployments = [];
 
       // Extract specific data from orcid
       if (employments && employments['affiliation-group']) {
-        employments['affiliation-group'].forEach((affiliation) => {
+        employments['affiliation-group'].forEach((affiliation, index) => {
           const summaries = affiliation.summaries;
 
           summaries.forEach((summary) => {
@@ -47,10 +48,17 @@ const getUserEmployments = (orcidId) => new Promise((resolve) => {
             const roleTitle = employmentSummary['role-title'];
             const employmentsGroup = { organizationName, roleTitle };
 
-            allEmployments.push(employmentsGroup);
+            if (index === 0) {
+              currentEmploymentArr.push(employmentsGroup);
+            } else {
+              pastEmployments.push(employmentsGroup);
+            }
           });
         });
       }
+
+      const currentEmployment = currentEmploymentArr[0];
+      const allEmployments = { currentEmployment, pastEmployments };
 
       // Return it
       resolve(allEmployments);
@@ -142,7 +150,7 @@ const getUserPublications = (orcidId) => new Promise((resolve) => {
 
     // transform "2019-11-13 00:00:00" to "2019-11-13"
     userPublications.forEach((publication) => {
-      const pub = publication
+      const pub = publication;
       const { dateCreated } = pub;
       const splittedDate = dateCreated.split(' ')[0];
 
