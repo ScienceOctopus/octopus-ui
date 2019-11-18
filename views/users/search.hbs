@@ -96,8 +96,8 @@
         <div class="col-xs-12">
           <h2>
             <a href="/users/view/{{this.name.path}}">
-              {{ this.name.given-names.value }}
-              {{ this.name.family-name.value }}
+              {{{markHits this.name.given-names.value ../query.phrase}}}
+              {{{markHits this.name.family-name.value ../query.phrase}}}
             </a>
           </h2>
         </div>

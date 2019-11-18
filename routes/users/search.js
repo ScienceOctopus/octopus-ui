@@ -68,7 +68,7 @@ module.exports = (req, res) => {
     sort: _.get(req, 'query.sort'),
   };
 
-  const accessToken = _.get(req, "session.authOrcid.accessToken");
+  const accessToken = _.get(req, 'session.authOrcid.accessToken');
 
   debug('octopus:ui:debug')(`Searching for Users. Query: "${query.phrase || ''}"`);
 
@@ -78,7 +78,7 @@ module.exports = (req, res) => {
     res.locals.query = query;
 
     // Results back from orcid
-    let results = data.result || [];
+    let results = (data && data.result) || [];
 
     // Attach the user details for each result we got back
     results = await Promise.all(results.map((result) => findUser(result, accessToken)));
