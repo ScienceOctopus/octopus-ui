@@ -60,7 +60,9 @@
     </div>
 
     <div class="col-sm-3">
-      <canvas id="userProfileChart" width="250px" height="250px"></canvas>
+      {{#if publications.length}}
+        <canvas id="userProfileChart" width="250px" height="250px"></canvas>
+      {{/if}}
     </div>
   </div>
 
