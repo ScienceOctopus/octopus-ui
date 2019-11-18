@@ -32,14 +32,14 @@ module.exports = (req, res) => {
           // We're only interested in the name and the orcid
           const { name, orcid } = userData;
           resolve({ name, orcid });
-        })
+        });
       })));
 
       // Filter our undefined entries
       authors = authors.filter((author) => author);
 
       publication.authors = authors;
-    };
+    }
 
     res.locals.publication = publication;
 

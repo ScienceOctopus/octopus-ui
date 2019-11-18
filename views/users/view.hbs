@@ -8,32 +8,190 @@
     <div class="col-sm-9">
 
       <h1>
-        User profile: {{person.name}}
+        User profile: {{person.orcidUserData.userFullName}}
       </h1>
 
       <br />
 
       <strong>ORCiD:</strong>
-      <a href="https://orcid.org/{{person.orcid}}" target="_blank">
-        {{person.orcid}}
+      <a href="https://orcid.org/{{person.orcidId}}" target="_blank">
+        {{person.orcidId}}
         <span title="This link opens in a new tab." class="fa fa-external-link"></span>
       </a>
 
-      <!-- <pre>{{json user}}</pre> -->
+      <br /> <br />
+
+      <strong>Current and past affiliations:</strong>
+      {{#if person.orcidUserData.userEmployments.currentEmployment}}
+      <ul class="list">
+        <li>
+          <b>{{person.orcidUserData.userEmployments.currentEmployment.organizationName}}</b> -
+          {{person.orcidUserData.userEmployments.currentEmployment.roleTitle}}
+        </li>
+
+        {{#if person.orcidUserData.userEmployments.pastEmployments}}
+        <div id="pastAffiliations" style="display:none">
+          {{#each person.orcidUserData.userEmployments.pastEmployments}}
+          <li>
+            <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+          </li>
+          {{/each}}
+        </div>
+
+        <input id="displayAffiliations" type="button" name="expandAffiliations" value="Show past affiliations"
+          onclick="showPastAffiliations()" />
+        {{/if}}
+      </ul>
+      {{/if}}
+
+      <br />
+
+      <strong>Educational background:</strong>
+      <ul class="list">
+        {{#each person.orcidUserData.userEducations}}
+        <li>
+          <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+        </li>
+        {{/each}}
+      </ul>
+
+      <br />
+
     </div>
 
-    <div class="col-sm-3" id="sidebar">
-      <h3>Publications</h3>
+    <div class="col-sm-3">
+      <canvas id="userProfileChart" width="250px" height="250px"></canvas>
+    </div>
+  </div>
+
+  {{#if publications.length}}
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Publications</h2>
+
+      <hr>
+
       <ul class="list list-unstyled">
-      {{#each publications}}
-        <li><a href="/publications/view/{{this._id}}">{{this.title}}</a></li>
-      {{/each}}
+        {{#each publications}}
+        <li class="publication-container">
+          <div class="row">
+            <div class="col-sm-9">
+              <p class="publication-type">
+                {{this.type}}
+              </p>
+              <a href="/publications/view/{{this._id}}" target="_blank">
+                <h4 class="publication-title">
+                  {{this.title}}
+                </h4>
+              </a>
+            </div>
+            <div class="col-sm-3">
+              <p>
+                <b>
+                  Date added:
+                </b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+        </li>
+        {{/each}}
       </ul>
     </div>
-
   </div>
+  {{/if}}
+
+  {{#if person.orcidUserData.userWorks}}
+  <br />
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Non-Octopus Publications</h2>
+
+      <hr>
+
+      <ul class="list list-unstyled">
+        {{#each person.orcidUserData.userWorks}}
+
+        <li class="publication-container">
+          <div class="row">
+            <div class="col-sm-9">
+              <p class="publication-type">
+                {{this.type}}
+              </p>
+
+              <a href="{{this.url}}" target="_blank">
+                <h4 class="publication-title">
+                  {{this.title}}
+                </h4>
+              </a>
+
+              <p class="publication-title">
+                {{this.journalTitle}}
+              </p>
+            </div>
+
+            <div class="col-sm-3">
+              <p>
+                <b>
+                  Date added:
+                </b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+  {{/if}}
 </div>
 
 {{> navTop}}
 
 {{> footer}}
+
+<script type="text/javascript" src="/public/vendor/chartjs-2.8.0/chartjs.min.js"></script>
+
+<script>
+  (() => {
+    const userProfileChart = document.getElementById('userProfileChart');
+
+    if (!userProfileChart) {
+      return;
+    }
+
+    const ctx = userProfileChart.getContext('2d');
+
+    const publicationsTypes = "{{pubsCountedByType.types}}".split(",");
+    const publicationsTypesCounter = "{{pubsCountedByType.counters}}".split(",");
+
+    const chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'pie',
+      // The data for our dataset
+      data: {
+        labels: publicationsTypes,
+        datasets: [{
+          label: 'User Publications Ratio',
+          backgroundColor: ['#42C0A3', '#BF72E8', '#D9504F', '0083ff', '#5180BD', 'a90329', '#C99E58', '#F5F56C'],
+          borderColor: '#FFF',
+          data: publicationsTypesCounter,
+        }],
+      },
+
+      // Configuration options go here
+      options: {
+        legend: {
+          position: 'right',
+        },
+      },
+    });
+  })();
+
+  function showPastAffiliations() {
+    document.getElementById('pastAffiliations').style.display = "block";
+    document.getElementById('displayAffiliations').style.display = "none";
+  }
+</script>
