@@ -30,7 +30,7 @@
     "curly": "error",
     "eqeqeq": "warn",
     "wrap-iife": "error",
-    "indent": [ 2, 2 ],
+    "indent": [ 2, 2, { "SwitchCase": 1 } ],
     "no-use-before-define": "warn",
     "no-caller": "error",
     "quotes": [ "warn", "single" ],

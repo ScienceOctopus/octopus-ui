@@ -12,21 +12,21 @@
   "author": "Science Octopus",
   "license": "MIT",
   "dependencies": {
-    "connect-mongo": "^3.0.0",
+    "connect-mongo": "^3.1.2",
     "debug": "^4.1.1",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
-    "express-session": "^1.16.2",
+    "express-session": "^1.17.0",
     "formidable": "^1.2.1",
-    "hbs": "^4.0.4",
+    "hbs": "^4.0.6",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "nodemon": "^1.19.4",
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "eslint": "^6.3.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
   }
