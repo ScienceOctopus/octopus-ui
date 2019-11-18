@@ -1,28 +1,28 @@
 const debug = require('debug');
+const _ = require('lodash');
 
 const api = require('../../lib/api');
 const orcid = require('../../lib/orcid');
 
 // Fetch user educations from orcid
-const getUserEducations = (orcidId) => new Promise((resolve) => {
-  return orcid.getPersonEducations(orcidId, (educationsErr, educations) => {
+const getUserEducations = (orcidId, accessToken) => new Promise((resolve) => {
+  return orcid.getPersonEducations(orcidId, accessToken, (educationsErr, educations) => {
     const allEducations = [];
+    const affiliations = _.get(educations, 'affiliation-group') || [];
 
     // Extract specific data from orcid
-    if (educations && educations['affiliation-group']) {
-      educations['affiliation-group'].forEach((affiliation) => {
-        const summaries = affiliation.summaries;
+    affiliations.forEach((affiliation) => {
+      const summaries = affiliation.summaries;
 
-        summaries.forEach((summary) => {
-          const educationSummary = summary['education-summary'];
-          const organizationName = educationSummary.organization.name;
-          const roleTitle = educationSummary['role-title'];
-          const educationsGroup = { organizationName, roleTitle };
+      summaries.forEach((summary) => {
+        const educationSummary = summary['education-summary'];
+        const organizationName = _.get(educationSummary, 'organization.name');
+        const roleTitle = _.get(educationSummary, 'role-title');
+        const educationsGroup = { organizationName, roleTitle };
 
-          allEducations.push(educationsGroup);
-        });
+        allEducations.push(educationsGroup);
       });
-    }
+    });
 
     // Return it
     resolve(allEducations);
@@ -30,32 +30,32 @@ const getUserEducations = (orcidId) => new Promise((resolve) => {
 });
 
 // Fetch user employments from orcid
-const getUserEmployments = (orcidId) => new Promise((resolve) => {
+const getUserEmployments = (orcidId, accessToken) => new Promise((resolve) => {
   return orcid.getPersonEmployments(
     orcidId,
+    accessToken,
     (employmentsErr, employments) => {
       const currentEmploymentArr = [];
       const pastEmployments = [];
+      const affiliations = _.get(employments, 'affiliation-group') || [];
 
       // Extract specific data from orcid
-      if (employments && employments['affiliation-group']) {
-        employments['affiliation-group'].forEach((affiliation, index) => {
-          const summaries = affiliation.summaries;
+      affiliations.forEach((affiliation, index) => {
+        const summaries = affiliation.summaries;
 
-          summaries.forEach((summary) => {
-            const employmentSummary = summary['employment-summary'];
-            const organizationName = employmentSummary.organization.name;
-            const roleTitle = employmentSummary['role-title'];
-            const employmentsGroup = { organizationName, roleTitle };
+        summaries.forEach((summary) => {
+          const employmentSummary = summary['employment-summary'];
+          const organizationName = _.get(employmentSummary, 'organization.name');
+          const roleTitle = _.get(employmentSummary, 'role-title');
+          const employmentsGroup = { organizationName, roleTitle };
 
-            if (index === 0) {
-              currentEmploymentArr.push(employmentsGroup);
-            } else {
-              pastEmployments.push(employmentsGroup);
-            }
-          });
+          if (index === 0) {
+            currentEmploymentArr.push(employmentsGroup);
+          } else {
+            pastEmployments.push(employmentsGroup);
+          }
         });
-      }
+      });
 
       const currentEmployment = currentEmploymentArr[0];
       const allEmployments = { currentEmployment, pastEmployments };
@@ -67,49 +67,48 @@ const getUserEmployments = (orcidId) => new Promise((resolve) => {
 });
 
 // Fetch user works from orcid
-const getUserWorks = (orcidId) => new Promise((resolve) => {
-  orcid.getPersonWorks(orcidId, (worksErr, works) => {
+const getUserWorks = (orcidId, accessToken) => new Promise((resolve) => {
+  orcid.getPersonWorks(orcidId, accessToken, (worksErr, works) => {
     const allWorks = [];
+    const workGroups = _.get(works, 'group') || [];
 
-    if (works && works.group) {
-      works.group.forEach((work) => {
-        const summaries = work['work-summary'];
+    workGroups.forEach((work) => {
+      const summaries = work['work-summary'];
 
-        if (summaries) {
-          // Extract specific data from orcid
-          summaries.forEach((summary) => {
-            const { title, type } = summary;
-            const externalId = summary['external-ids']['external-id'][0];
-            const journalTitle = summary['journal-title'].value;
-            const createdAt = summary['created-date'].value; // Timestamp format
-            const url = externalId && externalId['external-id-url']
-              ? externalId['external-id-url'].value
-              : null;
+      if (summaries) {
+        // Extract specific data from orcid
+        summaries.forEach((summary) => {
+          const { title, type } = summary;
+          const externalId = _.get(summary, 'external-ids.external-id[0]');
+          const journalTitle = _.get(summary, 'journal-title.value');
+          const createdAt = _.get(summary, 'created-date.value'); // Timestamp format
+          const url = externalId && externalId['external-id-url']
+            ? externalId['external-id-url'].value
+            : null;
 
-            // Transform timestamp into ISO String
-            const date = new Date(createdAt);
-            // Day part from the date
-            const day = date.getDate();
-            // Month part from the date
-            const month = date.getMonth() + 1;
-            // Year part from the date
-            const year = date.getFullYear();
+          // Transform timestamp into ISO String
+          const date = new Date(createdAt);
+          // Day part from the date
+          const day = date.getDate();
+          // Month part from the date
+          const month = date.getMonth() + 1;
+          // Year part from the date
+          const year = date.getFullYear();
 
-            const createdDate = `${year}-${month}-${day}`;
+          const createdDate = `${year}-${month}-${day}`;
 
-            const workData = {
-              title: title && title.title ? title.title.value : '',
-              journalTitle,
-              type,
-              createdDate,
-              url,
-            };
+          const workData = {
+            title: title && title.title ? title.title.value : '',
+            journalTitle,
+            type,
+            createdDate,
+            url,
+          };
 
-            allWorks.push(workData);
-          });
-        }
-      });
-    }
+          allWorks.push(workData);
+        });
+      }
+    });
 
     // Return it
     resolve(allWorks);
@@ -117,10 +116,10 @@ const getUserWorks = (orcidId) => new Promise((resolve) => {
 });
 
 // Fetch user given-name and family-name from orcid
-const getUserFullName = (orcidId) => new Promise((resolve) => {
+const getUserFullName = (orcidId, accessToken) => new Promise((resolve) => {
   return orcid.getPersonDetails(
     orcidId,
-    null,
+    accessToken,
     (personDetailsErr, personDetails) => {
       if (personDetails) {
         // Combine given and family names into fullName
@@ -189,18 +188,24 @@ module.exports = async (req, res) => {
   const orcidId = req.params.orcid;
   const { publicationTypes } = res.locals;
 
+  const accessToken = _.get(req, "session.authOrcid.accessToken");
+
   debug('octopus:ui:debug')(`Showing User Profile: ${orcidId}`);
 
   // Fetch all data for user profile page
-  const userWorks = await getUserWorks(orcidId);
-  const userEducations = await getUserEducations(orcidId);
-  const userEmployments = await getUserEmployments(orcidId);
-  const userFullName = await getUserFullName(orcidId);
-  const userPublications = await getUserPublications(orcidId);
-  const pubsCountedByType = await countPublicationsByType(
+  const [
+    userWorks,
+    userEducations,
+    userEmployments,
+    userFullName,
     userPublications,
-    publicationTypes,
-  );
+  ] = await Promise.all([
+    getUserWorks(orcidId, accessToken),
+    getUserEducations(orcidId, accessToken),
+    getUserEmployments(orcidId, accessToken),
+    getUserFullName(orcidId, accessToken),
+    getUserPublications(orcidId),
+  ]);
 
   const orcidUserData = {
     userWorks,
@@ -208,6 +213,11 @@ module.exports = async (req, res) => {
     userEmployments,
     userFullName,
   };
+
+  const pubsCountedByType = await countPublicationsByType(
+    userPublications,
+    publicationTypes,
+  );
 
   res.locals.publications = userPublications;
   res.locals.pubsCountedByType = pubsCountedByType;
