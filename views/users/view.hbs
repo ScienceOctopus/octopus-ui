@@ -19,21 +19,170 @@
         <span title="This link opens in a new tab." class="fa fa-external-link"></span>
       </a>
 
-      <!-- <pre>{{json user}}</pre> -->
+      <br /> <br />
+
+      <strong>Current and past affiliations:</strong>
+      {{#if person.orcidUserData.userEmployments.currentEmployment}}
+      <ul class="list">
+        <li>
+          <b>{{person.orcidUserData.userEmployments.currentEmployment.organizationName}}</b> -
+          {{person.orcidUserData.userEmployments.currentEmployment.roleTitle}}
+        </li>
+
+        {{#if person.orcidUserData.userEmployments.pastEmployments}}
+        <div id="pastAffiliations" style="display:none">
+          {{#each person.orcidUserData.userEmployments.pastEmployments}}
+          <li>
+            <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+          </li>
+          {{/each}}
+        </div>
+
+        <input id="displayAffiliations" type="button" name="expandAffiliations" value="Show past affiliations"
+          onclick="showPastAffiliations()" />
+        {{/if}}
+      </ul>
+      {{/if}}
+
+      <br />
+
+      <strong>Educational background:</strong>
+      <ul class="list">
+        {{#each person.orcidUserData.userEducations}}
+        <li>
+          <b>{{this.organizationName}}</b> - {{this.roleTitle}}
+        </li>
+        {{/each}}
+      </ul>
+
+      <br />
+
     </div>
 
-    <div class="col-sm-3" id="sidebar">
-      <h3>Publications</h3>
+    <div class="col-sm-3">
+      {{#if publications.length}}
+      <canvas id="myChart" width="250px" height="250px"></canvas>
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if publications.length}}
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Publications</h1>
+
+      <hr>
+
       <ul class="list list-unstyled">
         {{#each publications}}
-        <li><a href="/publications/view/{{this._id}}">{{this.title}}</a></li>
+        <li class="publication-container" onclick="window.location='/publications/view/{{this._id}}'">
+          <div class="row">
+            <div class="col-sm-9">
+              <p class="publication-type">
+                {{this.type}}
+              </p>
+              <h4 class="publication-title">
+                {{this.title}}
+              </h4>
+            </div>
+            
+            <div class="col-sm-3">
+              <p>
+                <b>
+                  Date added:
+                </b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+        </li>
         {{/each}}
       </ul>
     </div>
-
   </div>
+  {{/if}}
+
+  {{#if person.orcidUserData.userWorks}}
+  <br />
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Non-Octopus Publications</h1>
+
+      <hr>
+
+      <ul class="list list-unstyled">
+        {{#each person.orcidUserData.userWorks}}
+
+        <li class="publication-container" onclick="window.location='{{this.url}}'" target="_blank">
+          <div class="row">
+            <div class="col-sm-9">
+              <p class="publication-type">
+                {{this.type}}
+              </p>
+
+              <h4 class="publication-title">
+                {{this.title}}
+              </h4>
+
+              <p class="publication-title">
+                {{this.journalTitle}}
+              </p>
+            </div>
+
+            <div class="col-sm-3">
+              <p>
+                <b>
+                  Date added:
+                </b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+  {{/if}}
 </div>
 
 {{> navTop}}
 
 {{> footer}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<script>
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  const publicationsTypes = "{{pubsCountedByType.types}}".split(",");
+  const publicationsTypesCounter = "{{pubsCountedByType.counters}}".split(",");
+
+  const chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'pie',
+    // The data for our dataset
+    data: {
+      labels: publicationsTypes,
+      datasets: [{
+        label: 'User Publications Ratio',
+        backgroundColor: ['#42C0A3', '#BF72E8', '#D9504F', '0083ff', '#5180BD', 'a90329', '#C99E58', '#F5F56C'],
+        borderColor: '#FFF',
+        data: publicationsTypesCounter,
+      }],
+    },
+
+    // Configuration options go here
+    options: {
+      legend: {
+        position: 'right',
+      },
+    },
+  });
+
+  function showPastAffiliations() {
+    document.getElementById('pastAffiliations').style.display = "block";
+    document.getElementById('displayAffiliations').style.display = "none";
+  }
+</script>

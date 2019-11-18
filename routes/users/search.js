@@ -18,7 +18,7 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
   }
 
   // Otherwise, search for it
-  return orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => {
+  return orcid.getPersonDetails(userOrcID, null, (userErr, userData) => {
     // Cache it
     if (userData) {
       userDetailsCache[userOrcID] = userData;
