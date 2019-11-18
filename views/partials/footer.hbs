@@ -1,4 +1,4 @@
-<footer>
+<footer class="hidden-print">
 
   <div class="row">
     <div class="col-sm-2 col-xs-6">
@@ -33,12 +33,12 @@
       </div>
   </div>
 
-  <div class="hide">
-    <strong>DEBUG</strong>
-    <pre>username: {{json username}}</pre>
-    <pre>url: {{json url}}</pre>
-  </div>
 </footer>
+
+<div id="printFooter" class="visible-print">
+  <span>This page has been printed from https://app.science-octopus.org{{url}}</span>
+</div>
+
 
 </body>
 </html>

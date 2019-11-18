@@ -1,4 +1,4 @@
-<nav id="navTop" role="navigation">
+<nav id="navTop" role="navigation" class="hidden-print">
   <ul class="list list-inline">
     <li>
       <a href="/" {{#if (equals url '/')}} class="active"{{/if}}>
@@ -52,3 +52,9 @@
     </li>
   </ul>
 </nav>
+
+<div id="printHeader" class="visible-print">
+  <img class="logo" src="/public/octopus.svg" />
+  <span class="branding strong">Octopus.</span>
+  <span>Built for scientists.</span>
+</div>
