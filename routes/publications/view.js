@@ -1,4 +1,5 @@
 const debug = require('debug');
+const _ = require('lodash');
 
 const api = require('../../lib/api');
 
@@ -6,7 +7,7 @@ module.exports = (req, res) => {
   const publicationID = req.params.publicationID;
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
 
-  return api.getPublicationByID(publicationID, (publicationErr, publication) => {
+  return api.getPublicationByID(publicationID, async (publicationErr, publication) => {
     if (publicationErr || !publication) {
       debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
       return res.render('publications/error');
@@ -17,6 +18,28 @@ module.exports = (req, res) => {
       req.flash('info', 'This publication has still not been published. Redirecting to edit mode.');
       return res.redirect(`/publications/edit/${publicationID}`);
     }
+
+    // Augment the publications with the author data
+    if (publication.collaborators) {
+      let authors = _.filter(publication.collaborators, { role: 'author', status: 'CONFIRMED' });
+
+      // Grab the user info for each collaborator
+      authors = await Promise.all(authors.map((author) => new Promise((resolve) => {
+        return api.getUserByORCiD(author.userID, (userErr, userData) => {
+          if (userErr) {
+            resolve();
+          }
+          // We're only interested in the name and the orcid
+          const { name, orcid } = userData;
+          resolve({ name, orcid });
+        })
+      })));
+
+      // Filter our undefined entries
+      authors = authors.filter((author) => author);
+
+      publication.authors = authors;
+    };
 
     res.locals.publication = publication;
 
