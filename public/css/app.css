@@ -42,8 +42,9 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 
 /* Top search input */
 .searchTopFormInput {padding: 10px; border: 1px solid #ccc; border-top-left-radius: 4px; border-bottom-left-radius: 4px;}
-.searchTopFormSubmitBtn {height: 42px; border-left: none;}
+.searchTopFormSubmitBtn {height: 42px;}
 .searchTopFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
+.searchTopFormType {border-radius: 0;}
 
 /* Sidebar styling */
 #sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
