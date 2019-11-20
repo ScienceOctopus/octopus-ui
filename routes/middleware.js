@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 
   res.locals.user = req.session.user;
   res.locals.url = req.url;
-  console.log('req.url', req.url);
+
   switch (req.url) {
     case '/about':
       res.locals.customTitleTag = 'About';
