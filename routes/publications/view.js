@@ -5,6 +5,8 @@ const api = require('../../lib/api');
 
 module.exports = (req, res) => {
   const publicationID = req.params.publicationID;
+  const { publicationTypes } = res.locals;
+
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
 
   return api.getPublicationByID(publicationID, async (publicationErr, publication) => {
@@ -41,7 +43,10 @@ module.exports = (req, res) => {
       publication.authors = authors;
     }
 
+    const pubType = publicationTypes.filter((type) => type.key === publication.type)[0];
+
     res.locals.publication = publication;
+    res.locals.customTitleTag = `${pubType.title}: ${publication.title} - Octopus`;
 
     // debug('octopus:ui:trace')(res.locals);
     return res.render('publications/view', res.locals);

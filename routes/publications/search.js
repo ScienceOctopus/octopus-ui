@@ -50,6 +50,7 @@ module.exports = (req, res) => {
       displayedCount: data && data.results ? data.results.length : 0,
       results,
     };
+    res.locals.customTitleTag = 'Publication Search';
 
     return res.render('publications/search', res.locals);
   });

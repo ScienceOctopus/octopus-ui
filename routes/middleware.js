@@ -12,6 +12,21 @@ module.exports = (req, res, next) => {
 
   res.locals.user = req.session.user;
   res.locals.url = req.url;
+  console.log('req.url', req.url);
+  switch (req.url) {
+    case '/about':
+      res.locals.customTitleTag = 'About';
+      break;
+    case '/faq':
+      res.locals.customTitleTag = 'Faq';
+      break;
+    case '/feedback':
+      res.locals.customTitleTag = 'Feedback';
+      break;
+    default:
+      res.locals.customTitleTag = 'Octopus. Built for Scientists.';
+      break;
+  }
 
   api.getPublicationTypes((publicationTypesErr, publicationTypes) => {
     if (publicationTypesErr || !publicationTypes || !publicationTypes.results) {

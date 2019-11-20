@@ -5,40 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>
-    {{#if publication}}
-    Publication: {{publication.title}} - Octopus
-    {{else}}
-    {{#if problem}}
-    Problem: {{problem.title}} - Octopus
-    {{else}}
-    {{#if person}}
-    {{person.orcidUserData.userFullName}}
-    {{else}}
-    {{#if users}}
-    Author Search
-    {{else}}
-    {{#if publications}}
-    Publication Search
-    {{else}}
-    {{#if (equals url '/publish')}}
-    Publish your work
-    {{else}}
-    {{#if (equals url '/about')}}
-    About
-    {{else}}
-    {{#if (equals url '/faq')}}
-    About
-    {{else}}
-    Octopus. Built for Scientists.
-    {{/if}}
-    {{/if}}
-    {{/if}}
-    {{/if}}
-    {{/if}}
-    {{/if}}
-    {{/if}}
-    {{/if}}
+    {{customTitleTag}}
   </title>
+
   <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="/public/css/app.css" rel="stylesheet" type="text/css">
 

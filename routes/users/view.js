@@ -221,6 +221,7 @@ module.exports = async (req, res) => {
 
   res.locals.publications = userPublications;
   res.locals.pubsCountedByType = pubsCountedByType;
+  res.locals.customTitleTag = userFullName;
 
   return api.getUserByORCiD(orcidId, (userErr, userData) => {
     res.locals.person = { userData, orcidUserData, orcidId };
