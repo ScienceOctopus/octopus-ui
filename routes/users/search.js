@@ -96,6 +96,8 @@ module.exports = (req, res) => {
       results,
     };
 
+    res.locals.customTitleTag = 'Author Search';
+
     return res.render('users/search', res.locals);
   });
 };

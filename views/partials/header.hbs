@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>
-    {{#if publication}}
-     Publication: {{publication.title}} - Octopus
+    {{#if customTitleTag}}
+    {{customTitleTag}}
     {{else}}
-      {{#if problem}}
-      Problem: {{problem.title}} - Octopus
-      {{else}}
-       Octopus. Built for Scientists.
-     {{/if}}
-   {{/if}}
+    Octopus. Built for Scientists.
+    {{/if}}
   </title>
+
   <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="/public/css/app.css" rel="stylesheet" type="text/css">
 
@@ -27,15 +25,14 @@
 </head>
 
 <body>
-
-<div id="globalAlerts">
-  {{#each messages.error}}
+  <div id="globalAlerts">
+    {{#each messages.error}}
     <div class="alert alert-error">{{ this }}</div>
-  {{/each}}
-  {{#each messages.info}}
+    {{/each}}
+    {{#each messages.info}}
     <div class="alert alert-info">{{ this }}</div>
-  {{/each}}
-  {{#each messages.success}}
+    {{/each}}
+    {{#each messages.success}}
     <div class="alert alert-success">{{ this }}</div>
-  {{/each}}
-</div>
+    {{/each}}
+  </div>

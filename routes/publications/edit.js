@@ -18,6 +18,7 @@ module.exports = (req, res) => {
     }
 
     res.locals.publication = publication;
+    res.locals.customTitleTag = `Edit ${publication.title}`;
 
     // debug('octopus:ui:trace')(res.locals);
     return res.render('publications/edit', res.locals);
