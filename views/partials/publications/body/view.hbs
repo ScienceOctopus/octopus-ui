@@ -4,6 +4,13 @@
 
       <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
+      <form action="/publications/download-pdf/{{publication._id}}" method="GET">
+        <button type="submit" class="btn btn-default downloadPublicationBtn">
+          <span class="fa fa-download"></span>
+          <span>Download as PDF</span>
+        </button>
+      </form>
+
       <p>Authors: {{> authorsList authors=publication.authors }}</p>
       <p>Date added: {{formatDate publication.dateCreated}}</p>
 
