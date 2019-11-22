@@ -68,3 +68,14 @@ function toggleSearchScope(event, url) {
   $('#searchFormTop').attr('action', url);
   $('#searchFormTop .dropdown-selection').text(selection.text());
 }
+
+// Trigger form search action
+function triggerSearch(){
+  const searchInputValue = $('#searchTopFormTopInput').val()
+  const valueWhiteSpaces = searchInputValue.replace(/\s/g, '').length
+  
+  // check if input contains characters and the characters are other than ' ' (whitespace)
+  if(searchInputValue && valueWhiteSpaces){
+    $('#searchFormTop').submit();
+  }
+}
