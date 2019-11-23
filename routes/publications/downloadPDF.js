@@ -10,17 +10,18 @@ module.exports = (req, res) => {
 
   return api.downloadPublicationPDF(
     publicationID,
-    async (publicationErr, publicationPDF) => {
-      if (publicationErr || !publicationPDF) {
+    async (publicationErr, publicationPDFBuffer) => {
+      if (publicationErr || !publicationPDFBuffer) {
         debug('octopus:ui:error')(
           `Error when trying to download Publication ${publicationID}: ${publicationErr}`
         );
         return res.render('publications/error');
       }
-      console.log('publicationPDF', publicationPDF);
-      // debug('octopus:ui:trace')(res.locals);
-      return res.send('haatz');
-      return res.render('publications/view', res.locals);
+
+      const publicationPDF = Buffer.from(publicationPDFBuffer);
+
+      res.setHeader('Content-disposition', `attachment; filename=${publicationID}.pdf`);
+      res.end(publicationPDF, '');
     }
   );
 };
