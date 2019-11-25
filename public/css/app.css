@@ -87,6 +87,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .typeColumn:first-of-type { margin-left: 0; }
 .pubItem { background: #f7f7f7; color: #777; padding: 5px; border-radius: 5px; border: 1px solid #aaa; font-size: 0.75em }
 .pubItem.active { background: #9f8fed; color: white; border: 1px solid #7864e6 }
+.downloadPublicationBtn { margin-bottom: 10px; border-color: #DED9F3; }
 
 /* Publication chain minimised state */
 .pubChainContainer { height: 240px; transition: height 0.35s ease-out; }

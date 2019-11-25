@@ -52,6 +52,7 @@ function startApp() {
 
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));
+  app.get('/publications/download-pdf/:publicationID', require('./routes/publications/downloadPDF'));
   app.get('/publications/edit/:publicationID', require('./routes/publications/edit'));
   app.post('/publications/publish/:publicationID', require('./routes/publications/publish'));
 
