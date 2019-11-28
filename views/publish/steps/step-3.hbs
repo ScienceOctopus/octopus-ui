@@ -6,8 +6,10 @@
   <h2>
     <span class="small">Step 3 of 3</span>
     <br />
-    Upload publication file
+    Upload or write publication
   </h2>
+
+  <br/>
 
   <form method="POST" action="/publish/save" enctype="multipart/form-data">
     <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
@@ -20,11 +22,9 @@
     <input type="hidden" name="coiDeclaration" value="{{publication.coiDeclaration}}" />
 
     <div class="form-group">
-      <label for="publicationFile">Upload your publication in pdf, doc or docx format.</label>
+      <label for="publicationFile">You can upload your publication in pdf, doc or docx format, or enter the content of your publication in the editor.</label>
 
-      <p>This step is optional - you can simply enter the content of your publication
-        in the next step where you will also have a chance to edit the imported file
-        before publishing.</p>
+      <p>If you upload a publication you will be able to edit it before submission.</p>
 
       <br />
 
