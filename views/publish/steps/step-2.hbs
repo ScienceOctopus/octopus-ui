@@ -9,20 +9,39 @@
     Enter publication details
   </h2>
 
+  <br/>
+
   <form method="POST" action="/publish/step/3">
     <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
 
     <div class="form-group">
       <label for="parentPublications">1. Publications to link to</label>
-      <p>Publications need to be linked to a publication of an immediately preceding type (i.e. "analysis" must be linked to a "result" publication).</p>
-      <select id="parentPublications" class="form-control" name="parentPublications">
-        <option disabled selected></option>
-        {{#each allLinkablePublications}}
-          <option value="{{this._id}}">{{this.type}}: {{this.title}}</option>
-        {{/each}}
-      </select>
-      <!-- <a href="#" id="linkedPublicationsBtn" onclick="showLinkablePublications({{publication.publicationType}})">Select one or more publications to link to</a>. -->
+      {{#if allLinkablePublications}}
+        <p>
+          Your <span class="lowercase">{{publication.publicationType}}</span> needs to be linked to an existing
+          <span class="inline-flex">
+            {{#each allLinkablePublications}}
+              {{#if @index}}
+                  {{#if @last}}
+                  <span>&nbsp;or&nbsp;</span>
+                {{else}}
+                  <span>,&nbsp;</span>
+                {{/if}}
+              {{/if}}
+              <span class="lowercase">{{this.type}}</span>
+            {{/each}}
+          </span>. Please select which you wish to link to:
+        </p>
+        <select id="parentPublications" class="form-control selectpicker" name="parentPublications" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" multiple>
+          {{#each allLinkablePublications}}
+            <option value="{{this._id}}" title="{{this.title}}" data-subtext="{{this.type}}">{{this.title}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        <p>No publications available.</p>
+      {{/if}}
     </div>
+
 
     <div class="form-group">
       <label for="publicationTitle">2. Publication title</label>
@@ -70,6 +89,9 @@
     <button type="submit" class="btn btn-md btn-primary">Next</button>
   </form>
 </div>
+
+<link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
+<script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
 
 {{> publishingInfoModal}}
 
