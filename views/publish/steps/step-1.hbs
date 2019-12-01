@@ -1,18 +1,15 @@
 {{> header}}
 
 <div class="container" role="main">
-  <h1>Publish your work</h1>
-
-  <h2>
-    <span class="small">Step 1 of 3</span>
+  <h1>
+    <span class="small">Step 1 of 4</span>
     <br />
     Choose a publication type
-  </h2>
+  </h1>
 
   <br/>
 
   <form method="POST" action="/publish/step/2" class="form-inline">
-    <input type="hidden" name="userId" value="{{user.orcid}}" />
     <div class="form-group">
       <label for="publicationType">I'd like to publish</label>
 
@@ -31,9 +28,9 @@
     <button type="submit" class="btn btn-md btn-primary">Next</button>
   </form>
 
-  <br/><br/>
+  <br/>
 
-  <h4>Quick guide to Octopus publishing types:</h4>
+  <h2>Quick guide to Octopus publishing types:</h2>
 
   <br/>
 

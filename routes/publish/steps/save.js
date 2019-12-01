@@ -13,25 +13,13 @@ module.exports = (req, res) => {
 
     debug('octopus:ui:trace')(`Saving a file for publication ${newPublication}`);
 
-    helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
-      if (uploadErr) {
-        return res.send('ERROR');
+    return api.createPublication(newPublication, (createPubErr, createPubResult) => {
+      if (createPubErr || !createPubResult || !createPubResult.insertedId) {
+        return res.render('publish/error', { error: createPubErr });
       }
 
-      newPublication.text = _.get(uploadResult, 'text');
-      newPublication.publicationFiles = _.get(uploadResult, '_id');
-
-      // debug('octopus:ui:trace')(newPublication);
-      // debug('octopus:ui:trace')(res.locals);
-
-      return api.createPublication(newPublication, (createPubErr, createPubResult) => {
-        if (createPubErr || !createPubResult || !createPubResult.insertedId) {
-          return res.render('publish/error', { error: createPubErr });
-        }
-
-        // eslint-disable-next-line
-        return res.redirect(`/publications/view/${createPubResult.insertedId}`);
-      });
+      // eslint-disable-next-line
+      return res.redirect(`/publications/view/${createPubResult.insertedId}`);
     });
   });
 };

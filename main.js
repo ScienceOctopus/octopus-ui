@@ -48,6 +48,7 @@ function startApp() {
 
   app.get('/publish', require('./routes/publish/main'));
   app.post('/publish/step/:stepNumber', require('./routes/publish/steps/dispatch'));
+  app.post('/publish/upload', require('./routes/publish/steps/upload'));
   app.post('/publish/save', require('./routes/publish/steps/save'));
 
   app.get('/publications/search', require('./routes/publications/search'));

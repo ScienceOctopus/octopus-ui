@@ -109,3 +109,12 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .publication-container { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; margin-bottom: 10px; }
 .publication-type { text-transform: capitalize; color: #ADA3ED; font-weight: bold; margin-top: 0px; }
 .publication-title { margin-bottom: 0px; }
+
+/* Spacing utility classes */
+.mb-1 { margin-bottom: 4px; }
+
+/* Bootstrap-select */
+.bootstrap-select .bs-placeholder:not([title="Nothing selected"]) .filter-option { color: #333; }
+
+/* Bootstrap panels */
+.panel-body.scroll { max-height: 450px; overflow-y: auto; }

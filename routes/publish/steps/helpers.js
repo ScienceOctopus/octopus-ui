@@ -70,16 +70,17 @@ function createNewPublicationObject(data) {
     dateLastActivity: new Date(),
 
     type: data.publicationType,
-    parentProblems: (data.parentProblems || '').split(','),
-    parentPublications: (data.parentPublications || '').split(','),
+    linkedPublications: data.linkedPublications,
+    authors: data.publicationAuthors,
     title: data.publicationTitle,
     summary: data.publicationSummary,
-    text: '',
-    keywords: [data.publicationKeywords],
-    collaborators: data.collaborators,
+    dataLink: data.publicationDataLink,
+    ethicalPermissions: data.ethicalPermissions,
+    keywords: data.publicationKeywords,
     fundingStatement: data.fundingStatement,
     coiDeclaration: data.coiDeclaration,
-    publicationFiles: [],
+    carriedOut: data.publicationCarriedOut,
+    text: data.publicationText
   };
 
   return newPublication;

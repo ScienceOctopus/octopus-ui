@@ -56,10 +56,10 @@
 function toggleSearchScope(event, url) {
   if (event) {
     event.preventDefault();
-    url = $(event.currentTarget).attr("data-url");
+    url = $(event.currentTarget).attr('data-url');
   }
 
-  const selection = $(`#searchFormTop a[data-url="${url}"]`);
+  const selection = $(`#searchFormTop a[data-url='${url}']`);
 
   if (!selection.length) {
     return;
@@ -70,12 +70,40 @@ function toggleSearchScope(event, url) {
 }
 
 // Trigger form search action
-function triggerSearch(){
-  const searchInputValue = $('#searchTopFormTopInput').val()
-  const valueWhiteSpaces = searchInputValue.replace(/\s/g, '').length
-  
+function triggerSearch() {
+  const searchInputValue = $('#searchTopFormTopInput').val();
+  const valueWhiteSpaces = searchInputValue.replace(/\s/g, '').length;
+
   // check if input contains characters and the characters are other than ' ' (whitespace)
-  if(searchInputValue && valueWhiteSpaces){
+  if (searchInputValue && valueWhiteSpaces) {
     $('#searchFormTop').submit();
   }
+}
+
+// DOM HELPERS
+function duplicatePrevNode(source) {
+  const $source = $(source);
+  const $clone = $source.prev().clone();
+  const $input = $clone.find('input');
+
+  if ($input && $input.val()) {
+    $input.val('');
+  }
+
+  $clone.insertBefore($source);
+  return false;
+}
+
+function removeInputEntry(source, inputSelector, parentSelector) {
+  const $source = $(source);
+  const $parent = $source.closest(parentSelector);
+  const $input = $parent.find(inputSelector);
+
+  if ($(parentSelector).length > 1) {         // Remove last entry if there are multiple ones
+    $source.closest(parentSelector).remove();
+  } else {                                    // Delete the contents
+    $input.val('');
+  }
+
+  return false;
 }

@@ -1,0 +1,25 @@
+{{#if this.type}}
+<input type="hidden" name="publicationType" value="{{this.type}}" />
+{{/if}}{{#if this.linkedPublications}}
+<input type="hidden" name="linkedPublications" value="{{this.linkedPublications}}" />
+{{/if}}{{#if this.authors}}
+<input type="hidden" name="publicationAuthors" value="{{this.authors}}" />
+{{/if}}{{#if this.title}}
+<input type="hidden" name="publicationTitle" value="{{this.title}}" />
+{{/if}}{{#if this.summary}}
+<input type="hidden" name="publicationSummary" value="{{this.summary}}" />
+{{/if}}{{#if this.dataLink}}
+<input type="hidden" name="publicationDataLink" value="{{this.dataLink}}" />
+{{/if}}{{#if this.ethicalPermissions}}
+<input type="hidden" name="ethicalPermissions" value="{{this.ethicalPermissions}}" />
+{{/if}}{{#if this.keywords}}
+<input type="hidden" name="publicationKeywords" value="{{this.keywords}}" />
+{{/if}}{{#if this.fundingStatement}}
+<input type="hidden" name="fundingStatement" value="{{this.fundingStatement}}" />
+{{/if}}{{#if this.coiDeclaration}}
+<input type="hidden" name="coiDeclaration" value="{{this.coiDeclaration}}" />
+{{/if}}{{#if this.carriedOut}}
+<input type="hidden" name="publicationCarriedOut" value="{{this.carriedOut}}" />
+{{/if}}{{#if this.text}}
+<input type="hidden" name="publicationText" value="{{this.text}}" />
+{{/if}}

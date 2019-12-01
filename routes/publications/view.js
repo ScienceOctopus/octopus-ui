@@ -22,8 +22,8 @@ module.exports = (req, res) => {
     }
 
     // Augment the publications with the author data
-    if (publication.collaborators) {
-      let authors = _.filter(publication.collaborators, { role: 'author', status: 'CONFIRMED' });
+    if (publication.authors) {
+      let authors = _.filter(publication.authors, { role: 'author', status: 'CONFIRMED' });
 
       // Grab the user info for each collaborator
       authors = await Promise.all(authors.map((author) => new Promise((resolve) => {
