@@ -28,9 +28,9 @@
               {{/if}}
               <span class="lowercase">{{this.type}}</span>
             {{/each}}
-          </span>. Please select which you wish to link to:
+          </span>.
         </p>
-        <select id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" multiple>
+        <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
           {{#each allLinkablePublications}}
             <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}">{{this.title}}</option>
           {{/each}}
@@ -44,16 +44,8 @@
       <label>2. Authors</label>
 
       <p>All authors need to have an ORCiD number with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
-
-      <div class="input-group input-group-entry mb-1">
-        <input class="form-control" name="publicationCollaborators" type="text" placeholder="Please select your co-author" pattern="\d{4}-\d{4}-\d{4}-\d{4}"/ title="Co-author ORCiD">
-        <div class="input-group-btn">
-          <button type="button" class="btn btn-default" onclick="removeInputEntry(this, 'input', '.input-group-entry')">
-            <i class="fa fa-trash-o"></i>
-          </button>
-        </div>
-      </div>
-      <a href="#" onclick="duplicatePrevNode(this)">+ Add another author</a>
+      <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
+      </select>
     </div>
 
     <div class="form-group">
@@ -67,11 +59,11 @@
     </div>
 
      <div class="form-group">
-      <label for="publicationDataLink">5. Link to raw data file(s)/Link to detailed protocol/Ethical permission details/Link to analytical code</label>
+      <label for="publicationDataUrl">5. Link to raw data file(s)/Link to detailed protocol/Ethical permission details/Link to analytical code</label>
 
       <p>If you have used a specialist data repository/code-sharing platform/protocol-sharing platform please enter the URL or DOI here:</p>
 
-      <input id="publicationDataLink" class="form-control" name="publicationDataLink"/>
+      <input id="publicationDataUrl" class="form-control" name="publicationDataUrl"/>
 
       <br/>
 

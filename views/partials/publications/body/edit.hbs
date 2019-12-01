@@ -39,7 +39,7 @@
         <p>
           <strong>Keywords:</strong>
           <br />
-          <input class="form-control" id="publicationKeywords" name="publicationKeywords" />{{publication.keywords}}
+          <input class="form-control" id="publicationKeywords" name="publicationKeywords" value="{{publication.keywords}}"/>
         </p>
         <p>
           <strong>Files:</strong>
@@ -66,5 +66,7 @@
 <script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
 
 <script>
-  var editor = new Jodit('#publicationText');
+  var editor = new Jodit('#publicationText', {
+    height: 450
+  });
 </script>

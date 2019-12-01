@@ -63,6 +63,7 @@ const sortUsers = (query, a, b) => {
 
 module.exports = (req, res) => {
   const query = {
+    json: _.get(req, 'query.json'),
     phrase: _.get(req, 'query.phrase'),
     filter: _.get(req, 'query.filter'),
     sort: _.get(req, 'query.sort'),
@@ -98,6 +99,8 @@ module.exports = (req, res) => {
 
     res.locals.customTitleTag = 'Author Search';
 
-    return res.render('users/search', res.locals);
+    return query.json
+      ? res.json(res.locals.users)
+      : res.render('users/search', res.locals);
   });
 };

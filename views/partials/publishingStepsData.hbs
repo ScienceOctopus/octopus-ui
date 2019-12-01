@@ -8,8 +8,8 @@
 <input type="hidden" name="publicationTitle" value="{{this.title}}" />
 {{/if}}{{#if this.summary}}
 <input type="hidden" name="publicationSummary" value="{{this.summary}}" />
-{{/if}}{{#if this.dataLink}}
-<input type="hidden" name="publicationDataLink" value="{{this.dataLink}}" />
+{{/if}}{{#if this.dataUrl}}
+<input type="hidden" name="publicationDataUrl" value="{{this.dataUrl}}" />
 {{/if}}{{#if this.ethicalPermissions}}
 <input type="hidden" name="ethicalPermissions" value="{{this.ethicalPermissions}}" />
 {{/if}}{{#if this.keywords}}
@@ -22,4 +22,8 @@
 <input type="hidden" name="publicationCarriedOut" value="{{this.carriedOut}}" />
 {{/if}}{{#if this.text}}
 <input type="hidden" name="publicationText" value="{{this.text}}" />
+{{/if}}{{#if this.file}}
+<input type="hidden" name="publicationFile" value="{{this.file}}" />
+{{/if}}{{#if this.fileId}}
+<input type="hidden" name="publicationFileId" value="{{this.fileId}}" />
 {{/if}}

@@ -11,13 +11,15 @@ function aggregatePublicationFormState(fields) {
     collaborators: fields.publicationCollaborators,
     title: fields.publicationTitle,
     summary: fields.publicationSummary,
-    dataLink: fields.publicationDataLink,
+    dataUrl: fields.publicationDataUrl,
     ethicalPermissions: fields.ethicalPermissions,
     keywords: fields.publicationKeywords,
     fundingStatement: fields.fundingStatement,
     coiDeclaration: fields.coiDeclaration,
     carriedOut: fields.publicationCarriedOut,
-    text: fields.publicationText
+    text: fields.publicationText,
+    file: fields.publicationFile,
+    fileId: fields.publicationFileId
   };
 
   return publicationState;
@@ -49,10 +51,11 @@ module.exports = (req, res) => {
   }
 
   return helpers.parseForm(req, (err, fields, files) => {
+    const fileData = _.first(files);
     const data = { ...fields, userId: req.session.user.orcid };
     const publicationFormState = aggregatePublicationFormState(data);
 
-    console.log(data);
+    console.log(fields);
 
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
     res.locals.publishStepNumber = stepNumber;
@@ -73,6 +76,18 @@ module.exports = (req, res) => {
       });
     }
 
-    return res.render(`publish/steps/step-${stepNumber}`, res.locals);
+    if (fileData) {
+      helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
+        if (uploadErr) {
+          return res.send('ERROR');
+        }
+
+        res.locals.publication.text = _.get(uploadResult, 'text');
+        res.locals.publication.publicationFileId = _.get(uploadResult, '_id');
+        return res.render(`publish/steps/step-${stepNumber}`, res.locals);
+      });
+    } else {
+      return res.render(`publish/steps/step-${stepNumber}`, res.locals);
+    }
   });
 };

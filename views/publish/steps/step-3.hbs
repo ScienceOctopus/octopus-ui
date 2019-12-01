@@ -9,7 +9,11 @@
 
   <br/>
 
-  <form method="POST" action="/publish/upload" enctype="multipart/form-data">
+  {{log publication}}
+
+  <form method="POST" action="/publish/step/3" enctype="multipart/form-data">
+    {{> publishingStepsData publication }}
+
     <div class="form-group">
       <label for="publicationFile">You can upload your publication in pdf, doc or docx format, or enter the content of your publication in the editor.</label>
 
@@ -17,7 +21,7 @@
 
       <br />
 
-      <input id="publicationFile" name="publicationFile" type="file" value="" onchange="form.submit()"/>
+      <input id="publicationFile" name="publicationFile" type="file" value="{{publication.publicationFile}}" onchange="form.submit()"/>
     </div>
   </form>
 
@@ -44,5 +48,7 @@
 <script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
 
 <script>
-  var editor = new Jodit('#publicationText');
+  var editor = new Jodit('#publicationText', {
+    height: 450
+  });
 </script>
