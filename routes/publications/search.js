@@ -20,7 +20,7 @@ module.exports = (req, res) => {
     let results = data ? data.results || [] : [];
 
     // Augment the publications with the author data
-    results = await Promise.all(results.map((publication) => new Promise(async (resolve) => {
+    results = await Promise.all(results.map((publication) => new Promise((resolve) => {
       if (!publication.collaborators) {
         return resolve(publication);
       }
@@ -28,16 +28,18 @@ module.exports = (req, res) => {
       let authors = _.filter(publication.collaborators, { role: 'author', status: 'CONFIRMED' });
 
       // Grab the user info for each collaborator
-      authors = await Promise.all(authors.map((author) => new Promise((authorResolve) => {
-        return api.getUserByORCiD(author.userID, (userErr, userData) => {
-          if (userErr) {
-            authorResolve();
-          }
-          // We're only interested in the name and the orcid
-          const { name, orcid } = userData;
-          authorResolve({ name, orcid });
-        });
-      })));
+      (async () => {
+        authors = await Promise.all(authors.map((author) => new Promise((authorResolve) => {
+          return api.getUserByORCiD(author.userID, (userErr, userData) => {
+            if (userErr) {
+              authorResolve();
+            }
+            // We're only interested in the name and the orcid
+            const { name, orcid } = userData;
+            authorResolve({ name, orcid });
+          });
+        })));
+      })();
 
       // Filter our undefined entries
       authors = authors.filter((author) => author);

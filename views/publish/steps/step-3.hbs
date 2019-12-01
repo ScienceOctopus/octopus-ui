@@ -30,7 +30,7 @@
 
     <h2>Publication Text</h2>
 
-    <textarea id="publicationText" name="publicationText">{{publication.text}}</textarea>
+    <textarea id="publicationText" name="publicationText">{{{publication.text}}}</textarea>
 
     <br/>
     <button type="submit" class="btn btn-md btn-primary">View draft</button>
@@ -49,6 +49,6 @@
 
 <script>
   var editor = new Jodit('#publicationText', {
-    height: 450
+    height: 350,
   });
 </script>

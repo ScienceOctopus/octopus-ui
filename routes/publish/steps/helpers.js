@@ -6,6 +6,9 @@ const formidable = require('formidable');
 const api = require('../../../lib/api');
 const config = require('../../../lib/config');
 
+function toArray(string) {
+  return (string || '').split(/,|\s/).filter(_.identity);
+}
 
 function parseForm(req, callback) {
   const form = new formidable.IncomingForm();
@@ -78,14 +81,10 @@ function createNewPublicationObject(data) {
     carriedOut: !!data.publicationCarriedOut,
     text: data.publicationText,
     file: data.publicationFile,
-    fileId: data.publicationFileId
+    fileId: data.publicationFileId,
   };
 
   return newPublication;
-}
-
-function toArray (string) {
-  return (string || '').split(/,|\s/).filter(_.identity);
 }
 
 module.exports = {

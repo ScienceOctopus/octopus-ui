@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const debug = require('debug');
 
-const api = require('../../lib/api');
 const orcid = require('../../lib/orcid');
 
 // Hash maps of the user details
@@ -18,7 +17,7 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
   }
 
   // Otherwise, search for it
-  return orcid.getPersonDetails(userOrcID, null, (userErr, userData) => {
+  return orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => {
     // Cache it
     if (userData) {
       userDetailsCache[userOrcID] = userData;

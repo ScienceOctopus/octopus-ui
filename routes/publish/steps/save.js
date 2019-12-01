@@ -13,19 +13,19 @@ module.exports = (req, res) => {
     return res.render('publish/error', res.locals);
   }
 
-  helpers.parseForm(req, (err, fields, files) => {
+  return helpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
     const data = { ...fields, userId: req.session.user.orcid };
     const newPublication = helpers.createNewPublicationObject(data);
 
     debug('octopus:ui:trace')(`Saving a file for publication ${newPublication}`);
+    debug('octopus:ui:trace')(`Publication file data ${fileData}`);
 
     return api.createPublication(newPublication, (createPubErr, createPubResult) => {
       if (createPubErr || !createPubResult || !createPubResult.insertedId) {
         return res.render('publish/error', { error: createPubErr });
       }
 
-      // eslint-disable-next-line
       return res.redirect(`/publications/view/${createPubResult.insertedId}`);
     });
   });

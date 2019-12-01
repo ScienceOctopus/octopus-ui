@@ -26,11 +26,13 @@
 
   <form method="POST" action="/publish/step/3" class="inline-flex">
     {{> publishingStepsData publication }}
+    <input type="hidden" name="publicationText" value="{{publication.text}}"/>
     <button type="submit" class="btn btn-default">Edit</button></a>
   </form>
 
   <form method="POST" action="/publish/save" class="inline-flex">
     {{> publishingStepsData publication }}
+    <input type="hidden" name="publicationText" value="{{publication.text}}"/>
     <button type="submit" class="btn btn-primary">Submit</button></a>
   </form>
 </div>

@@ -114,7 +114,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .mb-1 { margin-bottom: 4px; }
 
 /* Bootstrap panels */
-.panel-body.scroll { max-height: 450px; overflow-y: auto; }
+.panel-body.scroll { max-height: 350px; overflow-y: auto; }
 
 /* Bootstrap select
   Hide the "No results" message since we're using a query to populate it

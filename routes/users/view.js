@@ -188,7 +188,7 @@ module.exports = async (req, res) => {
   const orcidId = req.params.orcid;
   const { publicationTypes } = res.locals;
 
-  const accessToken = _.get(req, "session.authOrcid.accessToken");
+  const accessToken = _.get(req, 'session.authOrcid.accessToken');
 
   debug('octopus:ui:debug')(`Showing User Profile: ${orcidId}`);
 

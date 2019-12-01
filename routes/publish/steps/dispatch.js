@@ -19,7 +19,7 @@ function aggregatePublicationFormState(fields) {
     carriedOut: fields.publicationCarriedOut,
     text: fields.publicationText,
     file: fields.publicationFile,
-    fileId: fields.publicationFileId
+    fileId: fields.publicationFileId,
   };
 
   return publicationState;
@@ -55,8 +55,6 @@ module.exports = (req, res) => {
     const data = { ...fields, userId: req.session.user.orcid };
     const publicationFormState = aggregatePublicationFormState(data);
 
-    console.log(fields);
-
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
     res.locals.publishStepNumber = stepNumber;
     res.locals.publication = publicationFormState;
@@ -77,7 +75,7 @@ module.exports = (req, res) => {
     }
 
     if (fileData) {
-      helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
+      return helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
         if (uploadErr) {
           return res.send('ERROR');
         }
@@ -86,8 +84,7 @@ module.exports = (req, res) => {
         res.locals.publication.publicationFileId = _.get(uploadResult, '_id');
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
-    } else {
-      return res.render(`publish/steps/step-${stepNumber}`, res.locals);
     }
+    return res.render(`publish/steps/step-${stepNumber}`, res.locals);
   });
 };

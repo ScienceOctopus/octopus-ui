@@ -1,4 +1,5 @@
 // perform auth logic after returning from ORCiD
+const debug = require('debug');
 const api = require('../../../lib/api');
 const orcid = require('../../../lib/orcid');
 
@@ -27,6 +28,8 @@ function orcidAuthVerify(req, res) {
         console.log('getEmailForPerson emailErr', emailErr);
       }
 
+      debug('octopus:ui:trace')(email);
+
       // resolve user from DB or create a new one
 
       const userData = {
@@ -47,11 +50,11 @@ function orcidAuthVerify(req, res) {
           where: { orcid: userData.orcid },
           data: userData,
         },
-        (err, success) => {
-          if (err) {
-            console.error('err', err);
+        (userErr, success) => {
+          if (userErr) {
+            console.error('err', userErr);
           }
-          // console.log('success', success);
+          debug('octopus:ui:trace')(success);
 
           // TODO: sanitise url
           return res.redirect(finalRedirect || '/');

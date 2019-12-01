@@ -9,7 +9,9 @@ module.exports = (req, res) => {
 
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
 
-  return api.getPublicationByID(publicationID, async (publicationErr, publication) => {
+  return api.getPublicationByID(publicationID, async (publicationErr, publicationData) => {
+    const publication = { ...publicationData };
+
     if (publicationErr || !publication) {
       debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
       return res.render('publications/error');
