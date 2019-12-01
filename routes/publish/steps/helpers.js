@@ -70,13 +70,13 @@ function createNewPublicationObject(data) {
     dateLastActivity: new Date(),
 
     type: data.publicationType,
-    linkedPublications: data.linkedPublications,
-    authors: data.publicationAuthors,
+    linkedPublications: toArray(data.linkedPublications),
+    collaborators: toArray(data.publicationCollaborators),
     title: data.publicationTitle,
     summary: data.publicationSummary,
     dataLink: data.publicationDataLink,
     ethicalPermissions: data.ethicalPermissions,
-    keywords: data.publicationKeywords,
+    keywords: toArray(data.publicationKeywords),
     fundingStatement: data.fundingStatement,
     coiDeclaration: data.coiDeclaration,
     carriedOut: data.publicationCarriedOut,
@@ -84,6 +84,10 @@ function createNewPublicationObject(data) {
   };
 
   return newPublication;
+}
+
+function toArray (string) {
+  return (string || '').split(/,|\s/).filter(_.identity);
 }
 
 module.exports = {

@@ -8,7 +8,7 @@ function aggregatePublicationFormState(fields) {
     userId: fields.userId,
     type: fields.publicationType,
     linkedPublications: fields.linkedPublications,
-    authors: fields.publicationAuthors,
+    collaborators: fields.publicationCollaborators,
     title: fields.publicationTitle,
     summary: fields.publicationSummary,
     dataLink: fields.publicationDataLink,

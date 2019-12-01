@@ -7,9 +7,16 @@ const helpers = require('./helpers');
 module.exports = (req, res) => {
   debug('octopus:ui:debug')('Saving a publication');
 
+  if (!req.session.user) {
+    // TODO redirect to /users/login with a flash message
+    res.locals.error = new Error('User not logged in.');
+    return res.render('publish/error', res.locals);
+  }
+
   helpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
-    const newPublication = helpers.createNewPublicationObject(fields);
+    const data = { ...fields, userId: req.session.user.orcid };
+    const newPublication = helpers.createNewPublicationObject(data);
 
     debug('octopus:ui:trace')(`Saving a file for publication ${newPublication}`);
 
