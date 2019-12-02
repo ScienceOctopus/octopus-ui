@@ -64,6 +64,8 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .text-strong { font-weight: 600 }
 .text-truncate { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .alert { border-radius: 0; border-width: 1px 0}
+.inline-flex { display: inline-flex; }
+.lowercase { text-transform: lowercase; }
 
 /* Homepage */
 .homepageJumbotron p { line-height: 2em; margin: 30px 0 50px; font-size: 16px; }
@@ -88,6 +90,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pubItem { background: #f7f7f7; color: #777; padding: 5px; border-radius: 5px; border: 1px solid #aaa; font-size: 0.75em }
 .pubItem.active { background: #9f8fed; color: white; border: 1px solid #7864e6 }
 .downloadPublicationBtn { margin-bottom: 10px; border-color: #DED9F3; }
+.publishingInfoList li { margin-bottom: 8px };
 
 /* Publication chain minimised state */
 .pubChainContainer { height: 240px; transition: height 0.35s ease-out; }
@@ -107,5 +110,13 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .publication-type { text-transform: capitalize; color: #ADA3ED; font-weight: bold; margin-top: 0px; }
 .publication-title { margin-bottom: 0px; }
 
-/* Authors list links */
-.authors-list .authors-list-items { display: inline-flex; }
+/* Spacing utility classes */
+.mb-1 { margin-bottom: 4px; }
+
+/* Bootstrap panels */
+.panel-body.scroll { max-height: 350px; overflow-y: auto; }
+
+/* Bootstrap select
+  Hide the "No results" message since we're using a query to populate it
+*/
+#publicationCollaborators ~ .dropdown-menu .no-results { display: none; }

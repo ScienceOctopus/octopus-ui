@@ -3,9 +3,9 @@
 <div class="container" role="main">
   <h1>Publish your work</h1>
 
-  <br /><br />
+  <br />
 
-  <p>Publishing is easy with Octopus.</p>
+  <p>Publishing is easy and instant with Octopus.</p>
 
   <p>We'll walk you through our 3 step upload process.</p>
 
@@ -15,14 +15,14 @@
     </a>
   </p>
 
-  <br /><br />
+  <br />
 
   {{#if user}}
     <form method="POST" action="/publish/step/1">
-      <button type="submit" class="btn btn-md btn-primary">Publish your work with Octopus</button>
+      <button type="submit" class="btn btn-md btn-primary">Publish your work</button>
     </form>
   {{else}}
-    You have to log in via ORCiD before proceeding.
+    You have to log in via ORCiD before proceeding. If you don’t have an ORCiD account you can register on the link below.
     <br />
     <a href="/auth/orcid/login?returnPath=/publish" class="btn btn-md btn-primary">Log in via ORCiD<a/>
   {{/if}}

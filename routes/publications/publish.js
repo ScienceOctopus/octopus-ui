@@ -23,15 +23,18 @@ module.exports = (req, res) => {
     }
 
     return helpers.parseForm(req, (err, fields, files) => {
+      if (err) {
+        return res.render('publish/error', { error: err });
+      }
+
+      debug('octopus:ui:trace')(fields, files);
+
       // update publication object
       return api.updatePublication(publicationData, (updateErr, updateData) => {
-        // debug('octopus:ui:trace')(res.locals);
-        // return res.redirect(`/publications/view/${publicationID}`);
         if (updateErr || !updateData) {
           return res.render('publish/error', { error: updateErr });
         }
 
-        // eslint-disable-next-line
         return res.redirect(`/publications/view/${publicationID}`);
       });
     });

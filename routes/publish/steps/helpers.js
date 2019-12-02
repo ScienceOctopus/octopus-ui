@@ -6,6 +6,9 @@ const formidable = require('formidable');
 const api = require('../../../lib/api');
 const config = require('../../../lib/config');
 
+function toArray(string) {
+  return (string || '').split(/,|\s/).filter(_.identity);
+}
 
 function parseForm(req, callback) {
   const form = new formidable.IncomingForm();
@@ -28,7 +31,6 @@ function parseForm(req, callback) {
         return;
       }
       const mappedFile = {
-        linkedPublicationID: fields.linkedPublicationID,
         filetype: key,
         filesize: f.size,
         filename: f.name.trim(),
@@ -40,15 +42,12 @@ function parseForm(req, callback) {
       filesData.push(mappedFile);
     });
 
-    // console.log('fields', fields);
-    console.log('filesData', filesData);
     return callback(null, fields, filesData);
   });
 }
 
 function handleFileUpload(fileData, callback) {
   debug('octopus:ui:trace')(`handleFileUpload: ${fileData}`);
-  // return callback(null, 'hi');
 
   if (!fileData) {
     return callback();
@@ -70,16 +69,19 @@ function createNewPublicationObject(data) {
     dateLastActivity: new Date(),
 
     type: data.publicationType,
-    parentProblems: (data.parentProblems || '').split(','),
-    parentPublications: (data.parentPublications || '').split(','),
+    linkedPublications: toArray(data.linkedPublications),
+    collaborators: toArray(data.publicationCollaborators),
     title: data.publicationTitle,
     summary: data.publicationSummary,
-    text: '',
-    keywords: [data.publicationKeywords],
-    collaborators: data.collaborators,
+    dataUrl: data.publicationDataUrl,
+    ethicalPermissions: data.ethicalPermissions,
+    keywords: toArray(data.publicationKeywords),
     fundingStatement: data.fundingStatement,
     coiDeclaration: data.coiDeclaration,
-    publicationFiles: [],
+    carriedOut: !!data.publicationCarriedOut,
+    text: data.publicationText,
+    file: data.publicationFile,
+    fileId: data.publicationFileId,
   };
 
   return newPublication;

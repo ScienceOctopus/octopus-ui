@@ -1,75 +1,116 @@
 {{> header}}
 
 <div class="container" role="main">
-  <h1>Publish your work</h1>
-
-  <h2>
-    <span class="small">Step 2 of 3</span>
+  <h1>
+    <span class="small">Step 2 of 4</span>
     <br />
     Enter publication details
-  </h2>
+  </h1>
+
+  <br/>
 
   <form method="POST" action="/publish/step/3">
-    <input type="hidden" name="publicationType" value="{{publication.publicationType}}" />
+    {{> publishingStepsData publication }}
 
     <div class="form-group">
-      <label for="parentPublications">1. Publications to link to</label>
-      <p>Publications need to be linked to a publication of an immediately preceding type (i.e. "analysis" must be linked to a "result" publication).</p>
-      <select id="parentPublications" class="form-control" name="parentPublications">
-        <option disabled selected></option>
-        {{#each allLinkablePublications}}
-          <option value="{{this._id}}">{{this.type}}: {{this.title}}</option>
-        {{/each}}
+      <label for="linkedPublications">1. Publications to link to</label>
+      {{#if allLinkablePublications}}
+        <p>
+          Your <span class="lowercase">{{publication.type}}</span> needs to be linked to an existing
+          <span class="inline-flex">
+            {{#each allLinkablePublications}}
+              {{#if @index}}
+                  {{#if @last}}
+                  <span>&nbsp;or&nbsp;</span>
+                {{else}}
+                  <span>,&nbsp;</span>
+                {{/if}}
+              {{/if}}
+              <span class="lowercase">{{this.type}}</span>
+            {{/each}}
+          </span>.
+        </p>
+        <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
+          {{#each allLinkablePublications}}
+            <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}">{{this.title}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        <p>No publications available.</p>
+      {{/if}}
+    </div>
+
+    <div class="form-group">
+      <label>2. Authors</label>
+
+      <p>All authors need to have an ORCiD number with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
+      <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
       </select>
-      <!-- <a href="#" id="linkedPublicationsBtn" onclick="showLinkablePublications({{publication.publicationType}})">Select one or more publications to link to</a>. -->
     </div>
 
     <div class="form-group">
-      <label for="publicationTitle">2. Publication title</label>
-      <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter publication title" />
+      <label for="publicationTitle">3. Publication title</label>
+      <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter a title that gives readers as good an idea as possible of the content of the publication. Max characters 100" maxlength="100"/>
     </div>
 
     <div class="form-group">
-      <label for="publicationSummary">3. Publication summary</label>
-      <textarea required id="publicationSummary" class="form-control" name="publicationSummary" placeholder="Enter publication summary"></textarea>
+      <label for="publicationSummary">4. Publication summary</label>
+      <textarea required id="publicationSummary" class="form-control" name="publicationSummary" placeholder="Enter a sentence that gives readers more detail of the publication. Max characters 200" maxlength="100"></textarea>
+    </div>
+
+     <div class="form-group">
+      <label for="publicationDataUrl">5. Link to raw data file(s)/Link to detailed protocol/Ethical permission details/Link to analytical code</label>
+
+      <p>If you have used a specialist data repository/code-sharing platform/protocol-sharing platform please enter the URL or DOI here:</p>
+
+      <input id="publicationDataUrl" class="form-control" name="publicationDataUrl"/>
+
+      <br/>
+
+      <p>If data collection involved human or animal subjects, please give details of the ethical permissions here:</p>
+
+      <textarea id="ethicalPermissions" class="form-control" name="ethicalPermissions" placeholder="Please enter full details of the ethical permission granted, including the ethical board name and permission number" maxlength="100"></textarea>
     </div>
 
     <div class="form-group">
-      <label for="publicationKeywords">4. Publication keywords</label>
-      <input required id="publicationKeywords" class="form-control" name="publicationKeywords" type="text" value="" placeholder="Enter publication keywords" />
+      <label for="publicationKeywords">6. Publication keywords (optional)</label>
+      <input id="publicationKeywords" class="form-control" name="publicationKeywords" type="text" value="" placeholder="Enter up to 5 keywords to help search engines find your publication" />
     </div>
 
     <div class="form-group">
-      <label for="collaborators">5. Collaborators</label>
-      <input required id="collaborators" class="form-control" name="collaborators" type="text" value="{{user.orcid}}" placeholder="Enter collaborators ORCiD identifiers" />
-    </div>
+      <label for="fundingStatement">7. Funding statement</label>
 
-    <div class="form-group">
-      <label for="fundingStatement">6. Funding statement</label>
-
-      <p>
-        If this research has any funding sources you think readers should be aware of, add them here.<br />
-        For example, funded by the British Council. If no funding sources need to be stated, feel free to enter "None".
-      </p>
+      <p>Please acknowledge all sources of funding for this work and supporting each of the authors.<br/>If the rare case that no funding sources need to be stated, feel free to enter "None".</p>
 
       <textarea required id="fundingStatement" class="form-control" name="fundingStatement" placeholder="Enter funding statement"></textarea>
     </div>
 
-
     <div class="form-group">
-      <label for="coiDeclaration">7. Conflict of Interest declaration</label>
+      <label for="coiDeclaration">8. Conflict of Interest declaration</label>
 
-      <p>
-        Declare any potential conflicts of interest this publication may have.<br />
-        If there aren't any, just type "No conflicts of interest".
+      <p>Declare any potential conflicts of interest this publication may have. This includes past and present financial support relevant to this publication; employment or volunteer positions of any authors or their close family for organisations who might be perceived as having an interest in this publication; intellectual interests (such as Intellectual Property rights held by the authors).<br/>If in doubt whether an interest is relevant, declare it! If there aren't any, just type "No conflicts of interest".
       </p>
 
-      <textarea required id="coiDeclaration" class="form-control" name="coiDeclaration" placeholder="Publication Title here"></textarea>
+      <textarea required id="coiDeclaration" class="form-control" name="coiDeclaration" placeholder="Enter Conflict of Interest declaration"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>9. Has this method already been carried out?</label>
+
+      <div class="checkbox">
+        <label>
+          <input id="publicationCarriedOut" name="publicationCarriedOut" type="checkbox" class="form-check-input"/>
+          If this method is being published before it has been carried out and results collected (the equivalent of a Registered Report) please tick this box.
+        </label>
+      </div>
     </div>
 
     <button type="submit" class="btn btn-md btn-primary">Next</button>
   </form>
 </div>
+
+<link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
+<script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
 
 {{> publishingInfoModal}}
 

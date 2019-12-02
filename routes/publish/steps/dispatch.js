@@ -5,18 +5,23 @@ const api = require('../../../lib/api');
 
 function aggregatePublicationFormState(fields) {
   const publicationState = {
-    publicationType: fields.publicationType,
-    parentProblems: fields.parentProblems,
-    parentPublications: fields.parentPublications,
-    publicationTitle: fields.publicationTitle,
-    publicationSummary: fields.publicationSummary,
-    publicationKeywords: fields.publicationKeywords,
-    collaborators: fields.collaborators,
+    userId: fields.userId,
+    type: fields.publicationType,
+    linkedPublications: fields.linkedPublications,
+    collaborators: fields.publicationCollaborators,
+    title: fields.publicationTitle,
+    summary: fields.publicationSummary,
+    dataUrl: fields.publicationDataUrl,
+    ethicalPermissions: fields.ethicalPermissions,
+    keywords: fields.publicationKeywords,
     fundingStatement: fields.fundingStatement,
     coiDeclaration: fields.coiDeclaration,
-    publicationFile: fields.publicationFile,
-    userId: fields.userId,
+    carriedOut: fields.publicationCarriedOut,
+    text: fields.publicationText,
+    file: fields.publicationFile,
+    fileId: fields.publicationFileId,
   };
+
   return publicationState;
 }
 
@@ -34,7 +39,7 @@ module.exports = (req, res) => {
   debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
 
   // if wrong step redirect to error page
-  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 3) {
+  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 4) {
     res.locals.error = new Error(`Step "${stepNumber}" not found.`);
     return res.render('publish/error', res.locals);
   }
@@ -46,7 +51,9 @@ module.exports = (req, res) => {
   }
 
   return helpers.parseForm(req, (err, fields, files) => {
-    const publicationFormState = aggregatePublicationFormState(fields);
+    const fileData = _.first(files);
+    const data = { ...fields, userId: req.session.user.orcid };
+    const publicationFormState = aggregatePublicationFormState(data);
 
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
     res.locals.publishStepNumber = stepNumber;
@@ -54,7 +61,7 @@ module.exports = (req, res) => {
     debug('octopus:ui:trace')(res.locals);
 
     if (stepNumber === 2) {
-      const publicationTypeDef = _.find(res.locals.publicationTypes, { key: res.locals.publication.publicationType });
+      const publicationTypeDef = _.find(res.locals.publicationTypes, { key: res.locals.publication.type });
 
       const filters = {};
       if (publicationTypeDef.linksTo[0] !== '*') {
@@ -67,6 +74,17 @@ module.exports = (req, res) => {
       });
     }
 
+    if (fileData) {
+      return helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
+        if (uploadErr) {
+          return res.send('ERROR');
+        }
+
+        res.locals.publication.text = _.get(uploadResult, 'text');
+        res.locals.publication.publicationFileId = _.get(uploadResult, '_id');
+        return res.render(`publish/steps/step-${stepNumber}`, res.locals);
+      });
+    }
     return res.render(`publish/steps/step-${stepNumber}`, res.locals);
   });
 };

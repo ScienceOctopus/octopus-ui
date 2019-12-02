@@ -11,13 +11,8 @@
         </button>
       </a>
 
-      <p>Authors: {{> authorsList authors=publication.authors }}</p>
+      <p>Authors: {{> authorsList authors=publication.collaborators }}</p>
       <p>Date added: {{formatDate publication.dateCreated}}</p>
-
-      <hr />
-
-      <p>Part of problems: {{publication.parentProblems}}</p>
-      <p>Parent publications: {{publication.parentPublication}}</p>
 
       <hr />
 

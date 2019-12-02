@@ -1,5 +1,4 @@
 const debug = require('debug');
-const _ = require('lodash');
 
 const api = require('../../lib/api');
 
@@ -14,7 +13,7 @@ module.exports = (req, res) => {
     async (publicationErr, publicationPDFBuffer) => {
       if (publicationErr || !publicationPDFBuffer) {
         debug('octopus:ui:error')(
-          `Error when trying to download Publication ${publicationID}: ${publicationErr}`
+          `Error when trying to download Publication ${publicationID}: ${publicationErr}`,
         );
       }
 
@@ -22,9 +21,9 @@ module.exports = (req, res) => {
 
       res.setHeader(
         'Content-disposition',
-        `attachment; filename=${publicationID}.pdf`
+        `attachment; filename=${publicationID}.pdf`,
       );
       res.end(publicationPDF, '');
-    }
+    },
   );
 };

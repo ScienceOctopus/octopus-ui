@@ -7,31 +7,26 @@ const helpers = require('./helpers');
 module.exports = (req, res) => {
   debug('octopus:ui:debug')('Saving a publication');
 
-  helpers.parseForm(req, (err, fields, files) => {
+  if (!req.session.user) {
+    // TODO redirect to /users/login with a flash message
+    res.locals.error = new Error('User not logged in.');
+    return res.render('publish/error', res.locals);
+  }
+
+  return helpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
-    const newPublication = helpers.createNewPublicationObject(fields);
+    const data = { ...fields, userId: req.session.user.orcid };
+    const newPublication = helpers.createNewPublicationObject(data);
 
     debug('octopus:ui:trace')(`Saving a file for publication ${newPublication}`);
+    debug('octopus:ui:trace')(`Publication file data ${fileData}`);
 
-    helpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
-      if (uploadErr) {
-        return res.send('ERROR');
+    return api.createPublication(newPublication, (createPubErr, createPubResult) => {
+      if (createPubErr || !createPubResult || !createPubResult.insertedId) {
+        return res.render('publish/error', { error: createPubErr });
       }
 
-      newPublication.text = _.get(uploadResult, 'text');
-      newPublication.publicationFiles = _.get(uploadResult, '_id');
-
-      // debug('octopus:ui:trace')(newPublication);
-      // debug('octopus:ui:trace')(res.locals);
-
-      return api.createPublication(newPublication, (createPubErr, createPubResult) => {
-        if (createPubErr || !createPubResult || !createPubResult.insertedId) {
-          return res.render('publish/error', { error: createPubErr });
-        }
-
-        // eslint-disable-next-line
-        return res.redirect(`/publications/view/${createPubResult.insertedId}`);
-      });
+      return res.redirect(`/publications/view/${createPubResult.insertedId}`);
     });
   });
 };
