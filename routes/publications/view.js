@@ -17,12 +17,6 @@ module.exports = (req, res) => {
       return res.render('publications/error');
     }
 
-    if (publication.status === 'DRAFT') {
-      // TODO check if user is on the list of collaborators - otherwise error / a new "not-yet-published" screen
-      req.flash('info', 'This publication has still not been published. Redirecting to edit mode.');
-      return res.redirect(`/publications/edit/${publicationID}`);
-    }
-
     // Augment the publications with the author data
     if (publication.collaborators) {
       let authors = _.filter(publication.collaborators, { role: 'author', status: 'CONFIRMED' });

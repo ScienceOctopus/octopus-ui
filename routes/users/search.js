@@ -16,15 +16,23 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
     return resolve(userDetailsCache[userOrcID]);
   }
 
-  // Otherwise, search for it
-  return orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => {
-    // Cache it
-    if (userData) {
-      userDetailsCache[userOrcID] = userData;
+  (async () => {
+    const [userDetails, userEmployments] = await Promise.all([
+      new Promise((detailsResolve) => orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => detailsResolve(userData))),
+      new Promise((employmentsResolve) => orcid.getPersonEmployments(userOrcID, accessToken, (userErr, userData) => employmentsResolve(userData)))
+    ]);
+
+    if (userDetails) {
+      // Include the organization info
+      const organization = _.get(userEmployments, ['affiliation-group', '0', 'summaries', '0', 'employment-summary', 'organization'], null);
+      const user = { ...userDetails, organization };
+      // Cache it
+      userDetailsCache[userOrcID] = user;
+      return resolve(user);
     }
-    // Return it
-    resolve(userData);
-  });
+
+    resolve(userDetails);
+  })();
 });
 
 /* Filters out users based on the phase and filter type */

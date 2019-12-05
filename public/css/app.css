@@ -101,6 +101,10 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pubChainContainer.minimised .typeColumn { height: 40px; }
 .pubChainContainer.minimised .pubItem { opacity: 0; }
 
+.publishing-guide .panel { margin-bottom: 10px; }
+.publishing-guide .panel p + p { margin: 0; }
+.publishing-guide .panel-heading { padding: 5px 15px; }
+
 .form-group { margin-bottom: 35px; }
 
 /* User Profile Page */

@@ -2,7 +2,7 @@
 
 <div class="container" role="main">
   <h1>
-    <span class="small">Step 3 of 4</span>
+    <span class="small">Step 3 of 3</span>
     <br />
     Upload or write publication
   </h1>
@@ -25,7 +25,7 @@
     </div>
   </form>
 
-  <form method="POST" action="/publish/step/4">
+  <form method="POST" action="/publish/save">
     {{> publishingStepsData publication }}
 
     <h2>Publication Text</h2>
@@ -34,7 +34,6 @@
 
     <br/>
     <button type="submit" class="btn btn-md btn-primary">View draft</button>
-  </form>
 </div>
 
 {{> publishingInfoModal}}

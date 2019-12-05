@@ -39,7 +39,7 @@ module.exports = (req, res) => {
   debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
 
   // if wrong step redirect to error page
-  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 4) {
+  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 3) {
     res.locals.error = new Error(`Step "${stepNumber}" not found.`);
     return res.render('publish/error', res.locals);
   }

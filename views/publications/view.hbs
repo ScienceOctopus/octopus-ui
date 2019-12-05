@@ -4,6 +4,10 @@
 <div class="alert alert-warning">This is an archival copy of this publication. Newer revision is available.</div>
 {{/if}}
 
+{{#if (equals publication.status 'DRAFT')}}
+<div class="alert alert-warning">This is a draft. You need to publish it before it's visible to others.</div>
+{{/if}}
+
 {{> publications/chain}}
 
 <hr class="octopus-separator" />

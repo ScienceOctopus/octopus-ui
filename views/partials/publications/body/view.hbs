@@ -56,19 +56,23 @@
     </div>
 
     <div class="col-sm-3" id="sidebar">
-      <h2>Ratings</h2>
-      <div>7 ratings</div>
+      <p>You can either submit for publication or re-edit.</p>
+      <br/>
+      <p>Submitting will email your co-authors for authorisation
+      <p>As the sole author, submitting will mean this publication is immediately live</p>
+      <p>You are the last co-author to check the publication, so clicking submit will mean this publication is immediately live</p>
 
-      <h2>Reviews</h2>
-      <div>3 reviews</div>
-
-      <br />
       <hr />
-      <br />
 
+      {{#if (equals publication.status "DRAFT")}}
+      <form action="/publications/publish/{{publication._id}}" method="POST">
+        <a href="/publications/edit/{{publication._id}}" class="btn btn-md btn-default">Edit</a>
+        <input type="submit" class="btn btn-md btn-primary" value="Publish now"/>
+      </form>
+      {{else}}
       <a href="#" class="btn btn-md btn-default">Write a review</a>
-      <br /><br />
       <a href="#" class="btn btn-md btn-default">Write a linked publication</a>
+      {{/if}}
     </div>
 
   </div>
