@@ -61,11 +61,16 @@ function handleFileUpload(fileData, callback) {
 }
 
 function mapCollaborators(collaborators, currentUserId) {
-  const status = "UNCONFIRMED";
+  const status = 'UNCONFIRMED';
   const dateCreated = new Date();
   return toArray(collaborators).map((userId) => {
-    const role = userId === currentUserId ? "author" : "collaborator";
-    return { userId, role, dateCreated, status }
+    const role = userId === currentUserId ? 'author' : 'collaborator';
+    return {
+      userId,
+      role,
+      dateCreated,
+      status,
+    };
   });
 }
 

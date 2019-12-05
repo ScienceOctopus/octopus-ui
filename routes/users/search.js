@@ -16,10 +16,10 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
     return resolve(userDetailsCache[userOrcID]);
   }
 
-  (async () => {
+  const includeEmployments = async () => {
     const [userDetails, userEmployments] = await Promise.all([
       new Promise((detailsResolve) => orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => detailsResolve(userData))),
-      new Promise((employmentsResolve) => orcid.getPersonEmployments(userOrcID, accessToken, (userErr, userData) => employmentsResolve(userData)))
+      new Promise((employmentsResolve) => orcid.getPersonEmployments(userOrcID, accessToken, (userErr, userData) => employmentsResolve(userData))),
     ]);
 
     if (userDetails) {
@@ -31,8 +31,10 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
       return resolve(user);
     }
 
-    resolve(userDetails);
-  })();
+    return resolve(userDetails);
+  };
+
+  return includeEmployments();
 });
 
 /* Filters out users based on the phase and filter type */
