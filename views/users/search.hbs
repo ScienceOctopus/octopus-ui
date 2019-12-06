@@ -4,7 +4,6 @@
 
   <div class="row">
     <div class="col-sm-3" id="sidebar">
-
       <h2 class="text-plain">
         <strong>Refine search</strong>
       </h2>
@@ -13,12 +12,12 @@
         <label for="searchFormSidebarInput" class="sr-only">Search term</label>
         <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}"
           placeholder="Search authors" />
-        
         {{#if query.sort}}
         <input name="sort" type="hidden" value="{{query.sort}}" />
-        {{/if}}
-        {{#if query.filter}}
-        <input name="filter" type="hidden" value="{{query.filter}}" />
+        {{/if}}{{#if query.nameFilter}}
+        <input name="name_filter" type="hidden" value="{{query.nameFilter}}" />
+        {{/if}}{{#if query.orgFilter}}
+        <input name="org_filter" type="hidden" value="{{query.orgFilter}}" />
         {{/if}}
 
         <button type="submit" class="btn btn-default searchFormSubmitBtn">
@@ -27,35 +26,63 @@
         </button>
       </form>
 
-      <form method="GET" action="" class="form-horizontal">
-        <strong>Filter by Author name:</strong>
-        <br />
+      <br/>
 
-        {{#radio query.filter}}
+      <h2 class="text-plain">
+        <strong>Filter by Author name:</strong>
+      </h2>
+
+      <form method="GET" action="" class="form-horizontal">
+        {{#radio query.nameFilter}}
         <div class="radio">
           <label>
-            <input type="radio" name="filter" value="full-name" onChange="this.form.submit()" checked>
+            <input type="radio" name="name_filter" value="full-name" onChange="this.form.submit()" checked>
             Full name
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="filter" value="first-name" onChange="this.form.submit()">
+            <input type="radio" name="name_filter" value="first-name" onChange="this.form.submit()">
             First name only
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="filter" value="last-name" onChange="this.form.submit()">
+            <input type="radio" name="name_filter" value="last-name" onChange="this.form.submit()">
             Last name only
           </label>
         </div>
         {{/radio}}
+
         {{#if query.phrase}}
         <input name="phrase" type="hidden" value="{{query.phrase}}" />
-        {{/if}}
-        {{#if query.sort}}
+        {{/if}}{{#if query.sort}}
         <input name="sort" type="hidden" value="{{query.sort}}" />
+        {{/if}}{{#if query.orgFilter}}
+        <input name="org_filter" type="hidden" value="{{query.orgFilter}}" />
+        {{/if}}
+      </form>
+
+      <br/>
+
+      <h2 class="text-plain">
+        <strong>Filter by Institution name:</strong>
+      </h2>
+
+      <form method="GET" action="" class="form-horizontal">
+        <input name="org_filter" class="searchFormInput" type="text" value="{{query.orgFilter}}"
+          placeholder="Filter organizations" />
+        <button type="submit" class="btn btn-default searchFormSubmitBtn">
+          <span class="fa fa-search"></span>
+          <span class="sr-only">Submit search</span>
+        </button>
+
+        {{#if query.phrase}}
+        <input name="phrase" type="hidden" value="{{query.phrase}}" />
+        {{/if}}{{#if query.sort}}
+        <input name="sort" type="hidden" value="{{query.sort}}" />
+        {{/if}}{{#if query.nameFilter}}
+        <input name="name_filter" type="hidden" value="{{query.nameFilter}}" />
         {{/if}}
       </form>
     </div>
@@ -68,7 +95,6 @@
             <strong>Sort by:</strong>
             <select name="sort" onchange="this.form.submit()">
               {{#select query.sort}}
-              <option value="relevance">Relevance</option>
               <option value="name-asc">Name (A-Z)</option>
               <option value="name-desc">Name (Z-A)</option>
               {{/select}}
@@ -76,9 +102,10 @@
           </div>
           {{#if query.phrase}}
           <input name="phrase" type="hidden" value="{{query.phrase}}" />
-          {{/if}}
-          {{#if query.filter}}
-          <input name="filter" type="hidden" value="{{query.filter}}" />
+          {{/if}}{{#if query.nameFilter}}
+          <input name="filter" type="hidden" value="{{query.nameFilter}}" />
+          {{/if}}{{#if query.orgFilter}}
+          <input name="filter" type="hidden" value="{{query.orgFilter}}" />
           {{/if}}
         </form>
       </div>
@@ -107,6 +134,12 @@
         {{#if this.keywords.keyword.length}}
         <div class="col-xs-12">
           <ul class="list-unstyled small">
+              {{#if this.organization}}
+              <li>
+                <strong>Institution:</strong>
+                <span>{{this.organization.name}}</span>
+              </li>
+              {{/if}}
               <li>
                 <strong>Keywords:</strong>
                 {{#each this.keywords.keyword}}

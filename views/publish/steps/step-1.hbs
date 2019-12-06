@@ -9,7 +9,11 @@
 
   <br/>
 
+  {{#if preSelected}}
+  <form method="POST" action="/publish/step/2?id={{preSelected}}" class="form-inline">
+  {{else}}
   <form method="POST" action="/publish/step/2" class="form-inline">
+  {{/if}}
     <div class="form-group">
       <label for="publicationType">I'd like to publish</label>
 

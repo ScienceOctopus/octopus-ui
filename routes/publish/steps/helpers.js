@@ -60,18 +60,16 @@ function handleFileUpload(fileData, callback) {
   });
 }
 
-function mapCollaborators(collaborators, currentUserId) {
+function mapCollaborators(collaborators) {
   const status = 'UNCONFIRMED';
+  const role = 'author';
   const dateCreated = new Date();
-  return toArray(collaborators).map((userId) => {
-    const role = userId === currentUserId ? 'author' : 'collaborator';
-    return {
-      userId,
-      role,
-      dateCreated,
-      status,
-    };
-  });
+  return toArray(collaborators).map((userId) => ({
+    userId,
+    role,
+    dateCreated,
+    status,
+  }));
 }
 
 function createNewPublicationObject(data) {
@@ -83,7 +81,7 @@ function createNewPublicationObject(data) {
     dateLastActivity: new Date(),
 
     type: data.publicationType,
-    linkedPublications: toArray(data.linkedPublications, data.userId),
+    linkedPublications: toArray(data.linkedPublications),
     collaborators: mapCollaborators(data.publicationCollaborators),
     title: data.publicationTitle,
     summary: data.publicationSummary,

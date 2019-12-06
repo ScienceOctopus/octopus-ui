@@ -35,6 +35,10 @@ function mapResultForDropdown(result) {
 }
 
 module.exports = (req, res) => {
+  const query = {
+    linked: _.get(req, 'query.id'),
+  };
+
   const stepNumber = Number(req.params.stepNumber);
   debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
 
@@ -58,6 +62,7 @@ module.exports = (req, res) => {
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
     res.locals.publishStepNumber = stepNumber;
     res.locals.publication = publicationFormState;
+    res.locals.preSelected = query.linked;
     debug('octopus:ui:trace')(res.locals);
 
     if (stepNumber === 2) {
@@ -69,7 +74,8 @@ module.exports = (req, res) => {
       }
 
       return api.findPublications(filters, (publicationsErr, pubData) => {
-        res.locals.allLinkablePublications = pubData && pubData.results ? _.map(pubData.results, mapResultForDropdown) : [];
+        const allLinkablePublications = pubData && pubData.results ? _.map(pubData.results, mapResultForDropdown) : [];
+        res.locals.allLinkablePublications = allLinkablePublications;
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
     }

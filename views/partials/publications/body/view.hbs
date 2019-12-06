@@ -70,8 +70,13 @@
         <input type="submit" class="btn btn-md btn-primary" value="Publish now"/>
       </form>
       {{else}}
-      <a href="#" class="btn btn-md btn-default">Write a review</a>
-      <a href="#" class="btn btn-md btn-default">Write a linked publication</a>
+      <form method="POST" action="/publish/step/2?id={{publication._id}}" class="form-inline">
+        <input type="hidden" name="publicationType" value="REVIEW"/>
+        <input type="submit" class="btn btn-md btn-default" value="Write a review"/>
+      </form>
+      <form method="POST" action="/publish/step/1?id={{publication._id}}">
+        <input type="submit" class="btn btn-md btn-default" value="Write a linked publication">
+      </form>
       {{/if}}
     </div>
 

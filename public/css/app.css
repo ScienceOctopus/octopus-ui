@@ -48,8 +48,8 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 
 /* Sidebar styling */
 #sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
-#sidebar form { padding: 15px 0; border-top: 1px dotted #ccc; }
-#sidebar form:first-of-type { border-top: none }
+#sidebar form { padding: 15px 0; border-bottom: 1px dotted #ccc; }
+#sidebar form:last-of-type { border-bottom: none }
 
 /* Generic styles */
 h1 {font-size: 28px}
