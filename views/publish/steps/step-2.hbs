@@ -2,7 +2,7 @@
 
 <div class="container" role="main">
   <h1>
-    <span class="small">Step 2 of 4</span>
+    <span class="small">Step 2 of 3</span>
     <br />
     Enter publication details
   </h1>
@@ -32,7 +32,10 @@
         </p>
         <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
           {{#each allLinkablePublications}}
-            <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}">{{this.title}}</option>
+            <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
+              {{#if (equals ../preSelected this.id)}}selected{{/if}}>
+              {{this.title}}
+            </option>
           {{/each}}
         </select>
       {{else}}
@@ -45,6 +48,7 @@
 
       <p>All authors need to have an ORCiD number with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
       <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
+        <option default value="{{user.orcid}}" title="{{user.name}}" data-subtext="{{user.organization.name}}" selected>{{user.name}}</option>
       </select>
     </div>
 
@@ -58,18 +62,26 @@
       <textarea required id="publicationSummary" class="form-control" name="publicationSummary" placeholder="Enter a sentence that gives readers more detail of the publication. Max characters 200" maxlength="100"></textarea>
     </div>
 
-     <div class="form-group">
-      <label for="publicationDataUrl">5. Link to raw data file(s)/Link to detailed protocol/Ethical permission details/Link to analytical code</label>
+    <div class="form-group">
+      <label for="publicationDataUrl">5.
+        {{#if (equals publication.type "PROTOCOL")}} Link to detailed protocol
+        {{else if (equals publication.type "RESULT")}} Link to raw data file(s)
+        {{else if (equals publication.type "ANALYSIS")}} Link to analytical code
+        {{else}} Link to any additional or supplementary information about this publication
+        {{/if}}
+      </label>
 
       <p>If you have used a specialist data repository/code-sharing platform/protocol-sharing platform please enter the URL or DOI here:</p>
 
       <input id="publicationDataUrl" class="form-control" name="publicationDataUrl"/>
 
-      <br/>
+      {{#if (equals publication.type "RESULT")}}
+        <br/>
 
-      <p>If data collection involved human or animal subjects, please give details of the ethical permissions here:</p>
+        <p>If data collection involved human or animal subjects, please give details of the ethical permissions here:</p>
 
-      <textarea id="ethicalPermissions" class="form-control" name="ethicalPermissions" placeholder="Please enter full details of the ethical permission granted, including the ethical board name and permission number" maxlength="100"></textarea>
+        <textarea id="ethicalPermissions" class="form-control" name="ethicalPermissions" placeholder="Please enter full details of the ethical permission granted, including the ethical board name and permission number" maxlength="100"></textarea>
+      {{/if}}
     </div>
 
     <div class="form-group">
@@ -94,6 +106,7 @@
       <textarea required id="coiDeclaration" class="form-control" name="coiDeclaration" placeholder="Enter Conflict of Interest declaration"></textarea>
     </div>
 
+    {{#if (equals publication.type "PROTOCOL")}}
     <div class="form-group">
       <label>9. Has this method already been carried out?</label>
 
@@ -104,6 +117,7 @@
         </label>
       </div>
     </div>
+    {{/if}}
 
     <button type="submit" class="btn btn-md btn-primary">Next</button>
   </form>
@@ -111,6 +125,7 @@
 
 <link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
 <script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
+<script src="/public/js/authorsSearch.js"></script>
 
 {{> publishingInfoModal}}
 

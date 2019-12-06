@@ -2,14 +2,18 @@
 
 <div class="container" role="main">
   <h1>
-    <span class="small">Step 1 of 4</span>
+    <span class="small">Step 1 of 3</span>
     <br />
     Choose a publication type
   </h1>
 
   <br/>
 
+  {{#if preSelected}}
+  <form method="POST" action="/publish/step/2?id={{preSelected}}" class="form-inline">
+  {{else}}
   <form method="POST" action="/publish/step/2" class="form-inline">
+  {{/if}}
     <div class="form-group">
       <label for="publicationType">I'd like to publish</label>
 
@@ -34,68 +38,71 @@
 
   <br/>
 
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Problems</b></div>
-    <div class="panel-body">
-      <p>A Problem publication defines a scientific problem. You will need to explain what is known so far about the problem – rather like the ‘Introduction’ to a traditional paper.</p>
-      <p>Problems are rated on their <b>originality</b>, how <b>well defined</b> they are (both intellectually and in the writing explaining them), and how <b>important</b> they are as a scientific problem.</p>
+  <div class="publishing-guide">
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Problems</b></div>
+      <div class="panel-body">
+        <p>A Problem publication defines a scientific problem. You will need to explain what is known so far about the problem – rather like the ‘Introduction’ to a traditional paper.</p>
+        <p>Problems are rated on their <b>originality</b>, how <b>well defined</b> they are (both intellectually and in the writing explaining them), and how <b>important</b> they are as a scientific problem.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Hypotheses/Rationales</b></div>
+      <div class="panel-body">
+        <p>A Hypothesis/Rationale publication sets out the theoretical basis for a potential solution, or partial solution, to the Problem it is linked to. In some fields a formal hypothesis is appropriate, and in some fields it will be more a description of an approach that might be taken.</p>
+        <p>Hypotheses are rated on their <b>originality</b>, how <b>well defined</b> they are (both intellectually and in the writing explaining them), and how <b>scientifically valid</b> they are – which you are likely to need to show through putting them in the context of existing work through references.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Protocols/Methods</b></div>
+      <div class="panel-body">
+        <p>A Protocol/Method publication describes in detail a way of testing a Hypothesis, or carrying out a theoretical rationale. You can include links to sites such as protocols.io to give more detail.</p>
+        <p>Methods are rated on their <b>originality</b>, the <b>clarity</b> of the details laid out (ensuring that it can be carried out by another researcher), and whether the method described forms an appropriate test of the hypothesis to which it is linked.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Results/Data</b></div>
+      <div class="panel-body">
+        <p>A Results publication describes what happened when the Method it is linked to was carried out. It should only describe the data or results themselves, without any analysis, along with details of the exact conditions under which the method was carried out – anything that might be needed for an analysis or interpretation of the results. You can include links to the raw data files.</p>
+        <p>Results are rated on the <b>size of the dataset</b>, how <b>well presented</b> the results are (allowing them to be analysed by others), and how <b>closely the method was followed</b> in order to produce them (or how well deviations from the protocol were recorded).</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Analysis</b></div>
+      <div class="panel-body">
+        <p>An Analysis publication describes manipulations of results to help conclusions be drawn from them. For example, thematic or statistical analysis.</p>
+        <p>Analyses are rated on their <b>originality</b>, whether <b>clear details</b> of the analysis have been described, and whether the analysis performed uses an <b>appropriate methodology</b> given the type of data being analysed.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Interpretation</b></div>
+      <div class="panel-body">
+        <p>An Interpretation publication describes conclusions drawn from an Analysis of results.Interpretations are rated on how <b>insightful</b> they are, how <b>clearly written</b>, and how consistent with the results they appear.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Real-world Application</b></div>
+      <div class="panel-body">
+        <p>An Application publication describes how findings might have (or have had) an impact in the real world. This might be through a practical or policy application, and would be the appropriate publication type for Case Studies.</p>
+        <p>Applications are rated on how <b>impactful</b> they are/could be, how <b>appropriate</b> it would be to implement given the evidence and implications of implementation, and how <b>clearly described</b> the details are.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>(Peer) Review</b></div>
+      <div class="panel-body">
+        <p>A Review publication should be a carefully considered and constructive critique of an existing publication. Your review should help other readers assess the publication, and should be written in the same style as any other kind of publication (with relevant references). Authors may reversion publications in the light of reviews.</p>
+        <p>Reviews are rated simply on a 0-5 scale.</p>
+      </div>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Hypotheses/Rationales</b></div>
-    <div class="panel-body">
-      <p>A Hypothesis/Rationale publication sets out the theoretical basis for a potential solution, or partial solution, to the Problem it is linked to. In some fields a formal hypothesis is appropriate, and in some fields it will be more a description of an approach that might be taken.</p>
-      <p>Hypotheses are rated on their <b>originality</b>, how <b>well defined</b> they are (both intellectually and in the writing explaining them), and how <b>scientifically valid</b> they are – which you are likely to need to show through putting them in the context of existing work through references.</p>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Protocols/Methods</b></div>
-    <div class="panel-body">
-      <p>A Protocol/Method publication describes in detail a way of testing a Hypothesis, or carrying out a theoretical rationale. You can include links to sites such as protocols.io to give more detail.</p>
-      <p>Methods are rated on their <b>originality</b>, the <b>clarity</b> of the details laid out (ensuring that it can be carried out by another researcher), and whether the method described forms an appropriate test of the hypothesis to which it is linked.</p>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Results/Data</b></div>
-    <div class="panel-body">
-      <p>A Results publication describes what happened when the Method it is linked to was carried out. It should only describe the data or results themselves, without any analysis, along with details of the exact conditions under which the method was carried out – anything that might be needed for an analysis or interpretation of the results. You can include links to the raw data files.</p>
-      <p>Results are rated on the <b>size of the dataset</b>, how <b>well presented</b> the results are (allowing them to be analysed by others), and how <b>closely the method was followed</b> in order to produce them (or how well deviations from the protocol were recorded).</p>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Analysis</b></div>
-    <div class="panel-body">
-      <p>An Analysis publication describes manipulations of results to help conclusions be drawn from them. For example, thematic or statistical analysis.</p>
-      <p>Analyses are rated on their <b>originality</b>, whether <b>clear details</b> of the analysis have been described, and whether the analysis performed uses an <b>appropriate methodology</b> given the type of data being analysed.</p>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Interpretation</b></div>
-    <div class="panel-body">
-      <p>An Interpretation publication describes conclusions drawn from an Analysis of results.Interpretations are rated on how <b>insightful</b> they are, how <b>clearly written</b>, and how consistent with the results they appear.</p>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>Real-world Application</b></div>
-    <div class="panel-body">
-      <p>An Application publication describes how findings might have (or have had) an impact in the real world. This might be through a practical or policy application, and would be the appropriate publication type for Case Studies.</p>
-      <p>Applications are rated on how <b>impactful</b> they are/could be, how <b>appropriate</b> it would be to implement given the evidence and implications of implementation, and how <b>clearly described</b> the details are.</p>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><b>(Peer) Review</b></div>
-    <div class="panel-body">
-      <p>A Review publication should be a carefully considered and constructive critique of an existing publication. Your review should help other readers assess the publication, and should be written in the same style as any other kind of publication (with relevant references). Authors may reversion publications in the light of reviews.</p>
-      <p>Reviews are rated simply on a 0-5 scale.</p>
-    </div>
-  </div>
 </div>
 
 {{> publishingInfoModal}}

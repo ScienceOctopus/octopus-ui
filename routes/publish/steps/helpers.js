@@ -60,6 +60,18 @@ function handleFileUpload(fileData, callback) {
   });
 }
 
+function mapCollaborators(collaborators) {
+  const status = 'UNCONFIRMED';
+  const role = 'author';
+  const dateCreated = new Date();
+  return toArray(collaborators).map((userId) => ({
+    userId,
+    role,
+    dateCreated,
+    status,
+  }));
+}
+
 function createNewPublicationObject(data) {
   const newPublication = {
     status: 'DRAFT',
@@ -70,7 +82,7 @@ function createNewPublicationObject(data) {
 
     type: data.publicationType,
     linkedPublications: toArray(data.linkedPublications),
-    collaborators: toArray(data.publicationCollaborators),
+    collaborators: mapCollaborators(data.publicationCollaborators),
     title: data.publicationTitle,
     summary: data.publicationSummary,
     dataUrl: data.publicationDataUrl,

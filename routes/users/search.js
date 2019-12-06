@@ -16,37 +16,26 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
     return resolve(userDetailsCache[userOrcID]);
   }
 
-  // Otherwise, search for it
-  return orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => {
-    // Cache it
-    if (userData) {
-      userDetailsCache[userOrcID] = userData;
+  const includeEmployments = async () => {
+    const [userDetails, userEmployments] = await Promise.all([
+      new Promise((detailsResolve) => orcid.getPersonDetails(userOrcID, accessToken, (userErr, userData) => detailsResolve(userData))),
+      new Promise((employmentsResolve) => orcid.getPersonEmployments(userOrcID, accessToken, (userErr, userData) => employmentsResolve(userData))),
+    ]);
+
+    if (userDetails) {
+      // Include the organization info
+      const organization = _.get(userEmployments, ['affiliation-group', '0', 'summaries', '0', 'employment-summary', 'organization'], null);
+      const user = { ...userDetails, organization };
+      // Cache it
+      userDetailsCache[userOrcID] = user;
+      return resolve(user);
     }
-    // Return it
-    resolve(userData);
-  });
+
+    return resolve(userDetails);
+  };
+
+  return includeEmployments();
 });
-
-/* Filters out users based on the phase and filter type */
-const filterUser = (query, result) => {
-  if (!result) {
-    return false;
-  }
-
-  if (!query.phrase) {
-    return true;
-  }
-
-  const userFirstName = _.get(result, 'name.given-names.value') || '';
-  const userLastName = _.get(result, 'name.family-name.value') || '';
-  const queryPhase = query.phrase.toLowerCase().trim();
-
-  switch (query.filter) {
-    case 'first-name': return userFirstName.toLowerCase().includes(queryPhase);
-    case 'last-name': return userLastName.toLowerCase().includes(queryPhase);
-    default: return true;
-  }
-};
 
 /* Sort users based on the sort type */
 const sortUsers = (query, a, b) => {
@@ -54,17 +43,39 @@ const sortUsers = (query, a, b) => {
   const userNameB = _.get(b, 'name.given-names.value') + ' ' + _.get(b, 'name.family-name.value');
 
   switch (query.sort) {
-    case 'name-asc': return userNameA.localeCompare(userNameB);
     case 'name-desc': return userNameB.localeCompare(userNameA);
-    default: return 0;
+    case 'name-asc':
+    default: return userNameA.localeCompare(userNameB);
   }
+};
+
+const getOrcidQuery = (query) => {
+  const { phrase, nameFilter, orgFilter } = query;
+  let orcidQuery = '';
+
+  if (!phrase) {
+    return orcidQuery;
+  }
+
+  switch (nameFilter) {
+    case 'first-name': orcidQuery = `given-names:${phrase}`; break;
+    case 'last-name': orcidQuery = `family-name:${phrase}`; break;
+    default: orcidQuery = `family-name:${phrase}+OR+given-names:${phrase}`;
+  }
+
+  if (orgFilter) {
+    orcidQuery = `+AND+${orgFilter}`;
+  }
+
+  return orcidQuery;
 };
 
 module.exports = (req, res) => {
   const query = {
     json: _.get(req, 'query.json'),
     phrase: _.get(req, 'query.phrase'),
-    filter: _.get(req, 'query.filter'),
+    nameFilter: _.get(req, 'query.name_filter'),
+    orgFilter: _.get(req, 'query.org_filter'),
     sort: _.get(req, 'query.sort'),
   };
 
@@ -72,7 +83,9 @@ module.exports = (req, res) => {
 
   debug('octopus:ui:debug')(`Searching for Users. Query: "${query.phrase || ''}"`);
 
-  return orcid.search(query.phrase, accessToken, async (usersErr, usersData) => {
+  const orcidQuery = getOrcidQuery(query);
+
+  return orcid.search(orcidQuery, accessToken, async (usersErr, usersData) => {
     const data = usersData;
 
     res.locals.query = query;
@@ -83,8 +96,8 @@ module.exports = (req, res) => {
     // Attach the user details for each result we got back
     results = await Promise.all(results.map((result) => findUser(result, accessToken)));
 
-    // Filter them
-    results = results.filter((result) => filterUser(query, result));
+    // Remove empty entries
+    results = results.filter(_.identity);
 
     // Sort them
     results = results.sort((a, b) => sortUsers(query, a, b));

@@ -48,8 +48,8 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 
 /* Sidebar styling */
 #sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
-#sidebar form { padding: 15px 0; border-top: 1px dotted #ccc; }
-#sidebar form:first-of-type { border-top: none }
+#sidebar form { padding: 15px 0; border-bottom: 1px dotted #ccc; }
+#sidebar form:last-of-type { border-bottom: none }
 
 /* Generic styles */
 h1 {font-size: 28px}
@@ -100,6 +100,10 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pubChainContainer.minimised { height: 66px; }
 .pubChainContainer.minimised .typeColumn { height: 40px; }
 .pubChainContainer.minimised .pubItem { opacity: 0; }
+
+.publishing-guide .panel { margin-bottom: 10px; }
+.publishing-guide .panel p + p { margin: 0; }
+.publishing-guide .panel-heading { padding: 5px 15px; }
 
 .form-group { margin-bottom: 35px; }
 
