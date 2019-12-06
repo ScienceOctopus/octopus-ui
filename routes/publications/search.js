@@ -30,7 +30,7 @@ module.exports = (req, res) => {
       let authors = _.filter(publication.collaborators, { status: 'CONFIRMED' });
 
       // Grab the user info for each collaborator
-      (async () => {
+      return (async () => {
         authors = await Promise.all(authors.map((author) => new Promise((authorResolve) => {
           return api.getUserByORCiD(author.userID, (userErr, userData) => {
             if (userErr) {
@@ -70,8 +70,6 @@ module.exports = (req, res) => {
 
         return resolve({ ...publication, authors });
       })();
-
-      return resolve(publication);
     })));
 
     res.locals.publications = {
