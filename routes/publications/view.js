@@ -2,7 +2,7 @@ const debug = require('debug');
 const _ = require('lodash');
 
 const api = require('../../lib/api');
-const orcid = require('../../lib/orcid.js');
+const userHelpers = require('../users/helpers');
 
 module.exports = (req, res) => {
   const accessToken = _.get(req, 'session.authOrcid.accessToken');
@@ -22,46 +22,12 @@ module.exports = (req, res) => {
     // Augment the publications with the author data
     if (publication.collaborators) {
       let authors = _.filter(publication.collaborators, { status: 'CONFIRMED' });
-
-      // Grab the user info for each collaborator
-      authors = await Promise.all(authors.map((author) => new Promise((resolve) => {
-        return api.getUserByORCiD(author.userID, (userErr, userData) => {
-          if (userErr) {
-            debug('octopus:ui:trace')(`Failed finding user ${author.userID}`);
-          }
-
-          // We have it in our db
-          if (userData) {
-            return resolve({
-              name: userData.name,
-              orcid: userData.orcid,
-            });
-          }
-
-          // Look for it on orcid
-          return orcid.getPersonDetails(author.userID, accessToken, (orcidError, orcidUser) => {
-            if (orcidError) {
-              return resolve();
-            }
-
-            if (orcidUser) {
-              const firstName = _.get(orcidUser, 'name.given-names.value', '');
-              const lastName = _.get(orcidUser, 'name.family-name.value', '');
-              return resolve({
-                name: `${firstName} ${lastName}`,
-                orcid: author.userID,
-              });
-            }
-
-            return resolve();
-          });
-        });
-      })));
-
+      // Augment authors list
+      authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)));
       // Filter our undefined entries
       authors = authors.filter((author) => author);
 
-      publication.collaborators = authors;
+      publication.authors = authors;
     }
 
     const pubType = publicationTypes.filter((type) => type.key === publication.type)[0];

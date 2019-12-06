@@ -2,7 +2,7 @@ const _ = require('lodash');
 const debug = require('debug');
 
 const api = require('../../lib/api');
-const orcid = require('../../lib/orcid');
+const userHelpers = require('../users/helpers');
 
 module.exports = (req, res) => {
   const accessToken = _.get(req, 'session.authOrcid.accessToken');
@@ -29,42 +29,8 @@ module.exports = (req, res) => {
 
       let authors = _.filter(publication.collaborators, { status: 'CONFIRMED' });
 
-      // Grab the user info for each collaborator
       return (async () => {
-        authors = await Promise.all(authors.map((author) => new Promise((authorResolve) => {
-          return api.getUserByORCiD(author.userID, (userErr, userData) => {
-            if (userErr) {
-              debug('octopus:ui:trace')(`Failed finding user ${author.userID}`);
-            }
-
-            // We have it in our db
-            if (userData) {
-              return authorResolve({
-                name: userData.name,
-                orcid: userData.orcid,
-              });
-            }
-
-            // Look for it on orcid
-            return orcid.getPersonDetails(author.userID, accessToken, (orcidError, orcidUser) => {
-              if (orcidError) {
-                return authorResolve();
-              }
-
-              if (orcidUser) {
-                const firstName = _.get(orcidUser, 'name.given-names.value', '');
-                const lastName = _.get(orcidUser, 'name.family-name.value', '');
-                return authorResolve({
-                  name: `${firstName} ${lastName}`,
-                  orcid: author.userID,
-                });
-              }
-
-              return authorResolve();
-            });
-          });
-        })));
-
+        authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)));
         // Filter our undefined entries
         authors = authors.filter((author) => author);
 

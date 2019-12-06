@@ -2,6 +2,7 @@ const _ = require('lodash');
 const debug = require('debug');
 
 const orcid = require('../../lib/orcid');
+const userHelpers = require('../users/helpers');
 
 // Hash maps of the user details
 // This will help us when we're requesting details for the same users
@@ -39,8 +40,8 @@ const findUser = (result, accessToken) => new Promise((resolve) => {
 
 /* Sort users based on the sort type */
 const sortUsers = (query, a, b) => {
-  const userNameA = _.get(a, 'name.given-names.value') + ' ' + _.get(a, 'name.family-name.value');
-  const userNameB = _.get(b, 'name.given-names.value') + ' ' + _.get(b, 'name.family-name.value');
+  const userNameA = userHelpers.getOrchidUserFullName(a);
+  const userNameB = userHelpers.getOrchidUserFullName(b);
 
   switch (query.sort) {
     case 'name-desc': return userNameB.localeCompare(userNameA);
