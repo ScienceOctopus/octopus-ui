@@ -34,5 +34,5 @@ module.exports = (req, res) => {
 
       return res.redirect(`/publications/view/${publicationID}`);
     });
-  })
+  });
 };
