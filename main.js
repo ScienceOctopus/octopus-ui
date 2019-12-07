@@ -29,6 +29,10 @@ function startApp() {
   hbs.registerHelper('endsWith', hbsHelpers.endsWith);
   hbs.registerHelper('select', hbsHelpers.select);
   hbs.registerHelper('radio', hbsHelpers.radio);
+  hbs.registerHelper('times', hbsHelpers.times);
+  hbs.registerHelper('math', hbsHelpers.math);
+  hbs.registerHelper('get', hbsHelpers.get);
+  hbs.registerHelper('checkRating', hbsHelpers.checkRating);
 
   // eslint-disable-next-line no-underscore-dangle
   app.engine('hbs', hbs.__express);
@@ -37,6 +41,7 @@ function startApp() {
   /* eslint-disable global-require */
   app.use('/public', express.static('public'));
 
+  app.use(express.urlencoded({ extended: false }));
   app.use(sessionMiddleware);
   app.use(flash());
 
@@ -55,6 +60,7 @@ function startApp() {
   app.get('/publications/download-pdf/:publicationID', require('./routes/publications/downloadPDF'));
   app.get('/publications/edit/:publicationID', require('./routes/publications/edit'));
   app.post('/publications/publish/:publicationID', require('./routes/publications/publish'));
+  app.post('/publications/rate/:publicationID', require('./routes/publications/rate'));
 
   app.get('/users/view/:orcid', require('./routes/users/view'));
   app.get('/users/search', require('./routes/users/search'));

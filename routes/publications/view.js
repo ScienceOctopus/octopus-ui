@@ -5,6 +5,7 @@ const api = require('../../lib/api');
 const userHelpers = require('../users/helpers');
 
 module.exports = (req, res) => {
+  const userId = _.get(req, 'session.user.orcid');
   const accessToken = _.get(req, 'session.authOrcid.accessToken');
   const publicationID = req.params.publicationID;
   const { publicationTypes } = res.locals;
@@ -30,10 +31,17 @@ module.exports = (req, res) => {
       publication.authors = authors;
     }
 
-    const pubType = publicationTypes.filter((type) => type.key === publication.type)[0];
+    // Send back the ratings average
+    const total = _.keys(publication.ratings).length;
+    const rated = _.has(publication.ratings, userId);
+    const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
+    publication.ratings = { rated, total, values };
+
+    const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
 
     res.locals.publication = publication;
-    res.locals.customTitleTag = `${pubType.title}: ${publication.title} - Octopus`;
+    res.locals.publicationType = publicationType;
+    res.locals.customTitleTag = `${publicationType.title}: ${publication.title} - Octopus`;
 
     // debug('octopus:ui:trace')(res.locals);
     return res.render('publications/view', res.locals);

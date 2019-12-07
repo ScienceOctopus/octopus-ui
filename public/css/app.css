@@ -124,3 +124,15 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
   Hide the "No results" message since we're using a query to populate it
 */
 #publicationCollaborators ~ .dropdown-menu .no-results { display: none; }
+
+/* Rating */
+.star-rating { font-size: 0; margin-bottom: 10px; }
+.star-rating__wrap { display: inline-block; font-size: 1.5rem; }
+.star-rating__wrap:after { content: ""; display: table; clear: both; }
+.star-rating__ico { float: right; padding-left: 2px; cursor: pointer; color: #FFB300; }
+.star-rating__ico:last-child { padding-left: 0; }
+.star-rating__input { display: none; }
+.star-rating__ico:hover:before,
+.star-rating__ico:hover ~ .star-rating__ico:before,
+.star-rating__input:checked ~ .star-rating__ico:before { content: "\f005"; }
+.star-rating__input[disabled] + .star-rating__ico { pointer-events: none; }
