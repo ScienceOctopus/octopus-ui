@@ -33,9 +33,9 @@ module.exports = (req, res) => {
 
     // Send back the ratings average
     const total = _.keys(publication.ratings).length;
-    const rated = _.has(publication.ratings, userId);
+    const disabled = _.has(publication.ratings, userId) || !req.session.user;
     const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
-    publication.ratings = { rated, total, values };
+    publication.ratings = { disabled, total, values };
 
     const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
 

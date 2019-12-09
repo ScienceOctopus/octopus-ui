@@ -14,6 +14,12 @@ module.exports = (req, res) => {
 
   debug('octopus:ui:debug')(`Rating Publication ${publicationID}`);
 
+  // Cannot rate if you're not logged in
+  if (!req.session.user) {
+    res.locals.error = new Error('User not logged in.');
+    return res.render('publish/error', res.locals);
+  }
+
   return api.getPublicationByID(publicationID, (publicationErr, publication) => {
     if (publicationErr || !publication) {
       debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
