@@ -2,7 +2,7 @@ const _ = require('lodash');
 const debug = require('debug');
 
 const api = require('../../lib/api');
-const helpers = require('../publish/steps/helpers');
+const formHelpers = require('../../lib/form');
 
 module.exports = (req, res) => {
   const publicationID = req.params.publicationID;
@@ -22,7 +22,7 @@ module.exports = (req, res) => {
       return res.redirect(`/publications/view/${publicationID}`);
     }
 
-    return helpers.parseForm(req, (err, fields, files) => {
+    return formHelpers.parseForm(req, (err, fields, files) => {
       if (err) {
         return res.render('publish/error', { error: err });
       }

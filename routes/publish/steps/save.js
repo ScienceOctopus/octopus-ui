@@ -3,6 +3,7 @@ const debug = require('debug');
 
 const api = require('../../../lib/api');
 const helpers = require('./helpers');
+const formHelpers = require('../../../lib/form');
 
 module.exports = (req, res) => {
   debug('octopus:ui:debug')('Saving a publication');
@@ -13,7 +14,7 @@ module.exports = (req, res) => {
     return res.render('publish/error', res.locals);
   }
 
-  return helpers.parseForm(req, (err, fields, files) => {
+  return formHelpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
     const data = { ...fields, userId: req.session.user.orcid };
     const newPublication = helpers.createNewPublicationObject(data);

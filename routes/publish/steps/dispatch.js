@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const debug = require('debug');
 const helpers = require('./helpers');
+const formHelpers = require('../../../lib/form');
 const api = require('../../../lib/api');
 
 function aggregatePublicationFormState(fields) {
@@ -54,7 +55,7 @@ module.exports = (req, res) => {
     return res.render('publish/error', res.locals);
   }
 
-  return helpers.parseForm(req, (err, fields, files) => {
+  return formHelpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
     const data = { ...fields, userId: req.session.user.orcid };
     const publicationFormState = aggregatePublicationFormState(data);

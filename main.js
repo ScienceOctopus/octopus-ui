@@ -41,7 +41,6 @@ function startApp() {
   /* eslint-disable global-require */
   app.use('/public', express.static('public'));
 
-  app.use(express.urlencoded({ extended: false }));
   app.use(sessionMiddleware);
   app.use(flash());
 
