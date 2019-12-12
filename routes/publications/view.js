@@ -24,7 +24,7 @@ module.exports = (req, res) => {
     if (publication.collaborators) {
       let authors = publication.collaborators;
       // Augment authors list
-      authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userId, accessToken)));
+      authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)));
       // Filter our undefined entries
       authors = authors.filter((author) => author);
 
@@ -33,10 +33,9 @@ module.exports = (req, res) => {
 
     // Send back the ratings average
     const total = _.keys(publication.ratings).length;
-    const disabled = _.has(publication.ratings, userId) || !req.session.user;
+    const disabled = !req.session.user || _.has(publication.ratings, userId) || _.find(publication.authors, { orcid: userId });
     const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
     publication.ratings = { disabled, total, values };
-
     const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
 
     res.locals.publication = publication;
