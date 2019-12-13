@@ -5,7 +5,6 @@
 
       <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
-      <p>Authors: {{> authorsList authors=publication.collaborators}}</p>
       <p>Date added: {{formatDate publication.dateCreated}}</p>
 
       <hr />
@@ -13,6 +12,16 @@
       <div>
         <h3>Summary</h3>
         <textarea class="form-control" id="publicationSummary" name="publicationSummary">{{publication.summary}}</textarea>
+      </div>
+
+      <hr />
+      <div>
+        <h3>Authors</h3>
+        <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
+        {{#each publication.authors}}
+        <option default value="{{this.orcid}}" title="{{this.name}}" selected>{{this.name}}</option>
+        {{/each}}
+      </select>
       </div>
 
       <hr />
@@ -63,7 +72,10 @@
 
 <!-- EDIT MODE ENABLED -->
 <link type="text/css" rel="stylesheet" href="/public/vendor/jodit-3.2.46/jodit.min.css">
+<link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
 <script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
+<script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
+<script src="/public/js/authorsSearch.js"></script>
 
 <script>
   var editor = new Jodit('#publicationText', {
