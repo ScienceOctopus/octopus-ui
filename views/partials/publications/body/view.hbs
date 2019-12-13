@@ -59,10 +59,11 @@
       {{> rating}}
 
       <p>You can either submit for publication or re-edit.</p>
-      <br/>
       <p>Submitting will email your co-authors for authorisation
+      <!--
       <p>As the sole author, submitting will mean this publication is immediately live</p>
       <p>You are the last co-author to check the publication, so clicking submit will mean this publication is immediately live</p>
+      -->
 
       <hr />
 
@@ -72,11 +73,11 @@
         <input type="submit" class="btn btn-md btn-primary" value="Publish now"/>
       </form>
       {{else}}
-      <form method="POST" action="/publish/step/2?id={{publication._id}}" class="form-inline">
+      <form method="POST" action="/publish/step/2?linked={{publication._id}}" class="form-inline">
         <input type="hidden" name="publicationType" value="REVIEW"/>
         <input type="submit" class="btn btn-md btn-default" value="Write a review"/>
       </form>
-      <form method="POST" action="/publish/step/1?id={{publication._id}}">
+      <form method="POST" action="/publish/step/1?linked={{publication._id}}">
         <input type="submit" class="btn btn-md btn-default" value="Write a linked publication">
       </form>
       {{/if}}
