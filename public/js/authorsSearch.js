@@ -56,13 +56,11 @@ function initCollaboratorsSearch() {
             </option>\n`;
         }, '');
 
-        if ($collaboratorsSelect.find("option[default]")) {
-          // If we have a default option in place, append the new options
-          $collaboratorsSelect.append(options);
-        } else {
-          // Else, use the new set
-          $collaboratorsSelect.html(options);
-        }
+        // Remove all options, keeping the default one selected
+        $collaboratorsSelect.find('option:not([default])').remove();
+        // Append the search result
+        $collaboratorsSelect.append(options);
+
         // Update select-picker
         $collaboratorsSelect.selectpicker('refresh');
 
