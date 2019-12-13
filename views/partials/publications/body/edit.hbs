@@ -10,18 +10,19 @@
       <hr />
 
       <div>
-        <h3>Summary</h3>
-        <textarea class="form-control" id="publicationSummary" name="publicationSummary">{{publication.summary}}</textarea>
-      </div>
-
-      <hr />
-      <div>
         <h3>Authors</h3>
         <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
         {{#each publication.authors}}
         <option default value="{{this.orcid}}" title="{{this.name}}" selected>{{this.name}}</option>
         {{/each}}
       </select>
+      </div>
+
+      <hr />
+
+      <div>
+        <h3>Summary</h3>
+        <textarea class="form-control" id="publicationSummary" name="publicationSummary">{{publication.summary}}</textarea>
       </div>
 
       <hr />
