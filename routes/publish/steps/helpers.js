@@ -26,8 +26,8 @@ function mapCollaborators(collaborators) {
   const status = 'UNCONFIRMED';
   const role = 'author';
   const dateCreated = new Date();
-  return toArray(collaborators).map((userId) => ({
-    userId,
+  return toArray(collaborators).map((userID) => ({
+    userID,
     role,
     dateCreated,
     status,

@@ -33,6 +33,7 @@ function startApp() {
   hbs.registerHelper('math', hbsHelpers.math);
   hbs.registerHelper('get', hbsHelpers.get);
   hbs.registerHelper('checkRating', hbsHelpers.checkRating);
+  hbs.registerHelper('publicationTypesOptions', hbsHelpers.publicationTypesOptions);
 
   // eslint-disable-next-line no-underscore-dangle
   app.engine('hbs', hbs.__express);

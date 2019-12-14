@@ -33,7 +33,7 @@
         <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
           {{#each allLinkablePublications}}
             <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
-              {{#if (equals ../preSelected this.id)}}selected{{/if}}>
+              {{#if (equals ../linkedPublicationId this.id)}}selected{{/if}}>
               {{this.title}}
             </option>
           {{/each}}
@@ -126,8 +126,6 @@
 <link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
 <script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
 <script src="/public/js/authorsSearch.js"></script>
-
-{{> publishingInfoModal}}
 
 {{> navTop}}
 

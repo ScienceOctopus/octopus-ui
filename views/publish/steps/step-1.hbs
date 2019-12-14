@@ -9,15 +9,15 @@
 
   <br/>
 
-  {{#if preSelected}}
-  <form method="POST" action="/publish/step/2?id={{preSelected}}" class="form-inline">
+  {{#if linkedPublicationId}}
+  <form method="POST" action="/publish/step/2?linked={{linkedPublicationId}}" class="form-inline">
   {{else}}
   <form method="POST" action="/publish/step/2" class="form-inline">
   {{/if}}
     <div class="form-group">
       <label for="publicationType">I'd like to publish</label>
-
       <select name="publicationType" id="publicationType" class="form-control">
+        {{#publicationTypesOptions linksTo}}
         <option value="PROBLEM">a problem</option>
         <option value="HYPOTHESIS">a hypothesis (rationale)</option>
         <option value="PROTOCOL">a protocol (method)</option>
@@ -26,6 +26,7 @@
         <option value="INTERPRETATION">an interpretation</option>
         <option value="APPLICATION">a real world application</option>
         <option value="REVIEW">a peer review</option>
+        {{/publicationTypesOptions}}
       </select>
     </div>
 
@@ -104,8 +105,6 @@
   </div>
 
 </div>
-
-{{> publishingInfoModal}}
 
 {{> navTop}}
 
