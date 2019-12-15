@@ -13,7 +13,7 @@
 							type="radio"
 							name="rating{{@key}}"
 							class="star-rating__input"
-							id="star-rating-{{@key}}{{math "add" @index 1}}"
+							id="star-rating-{{@key}}{{@pos}}"
 							value="{{math "sub" 5 @index}}"
 							onchange="$(form).serializeArray().length === 3 && form.submit()"
 							{{checkRating ../publication.ratings.values @key @index 5 ../publication.ratings.disabled}}
@@ -21,7 +21,7 @@
 							>
 						<label
 							class="star-rating__ico fa fa-star-o fa-lg"
-							for="star-rating-{{@key}}{{math "add" @index 1}}"
+							for="star-rating-{{@key}}{{@pos}}"
 							title="{{math "sub" 5 @index}} out of 5 stars"></label>
 					{{/times}}
 				</div>
