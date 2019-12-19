@@ -53,13 +53,14 @@ function startApp() {
 
   app.get('/publish', require('./routes/publish/main'));
   app.post('/publish/step/:stepNumber', require('./routes/publish/steps/dispatch'));
-  app.post('/publish/save', require('./routes/publish/steps/save'));
+  app.post('/publish/create', require('./routes/publish/steps/create'));
 
   app.get('/publications/search', require('./routes/publications/search'));
   app.get('/publications/view/:publicationID', require('./routes/publications/view'));
   app.get('/publications/download-pdf/:publicationID', require('./routes/publications/downloadPDF'));
   app.get('/publications/edit/:publicationID', require('./routes/publications/edit'));
-  app.get('/publications/reversion/:publicationID', require('./routes/publications/reversion'));
+  app.post('/publications/save/:publicationID', require('./routes/publications/save'));
+  app.get('/publications/archive/:publicationID', require('./routes/publications/archive'));
   app.post('/publications/publish/:publicationID', require('./routes/publications/publish'));
   app.post('/publications/rate/:publicationID', require('./routes/publications/rate'));
 

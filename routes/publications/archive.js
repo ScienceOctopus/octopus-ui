@@ -6,9 +6,9 @@ const api = require('../../lib/api');
 module.exports = (req, res) => {
   const publicationID = _.get(req, 'params.publicationID');
 
-  debug('octopus:ui:debug')(`Reversioning Publication ${publicationID}`);
+  debug('octopus:ui:debug')(`Archiving Publication ${publicationID}`);
 
-  // Cannot reversion if you're not logged in
+  // Cannot archive if you're not logged in
   if (!req.session.user) {
     res.locals.error = new Error('User not logged in.');
     return res.render('publish/error', res.locals);
@@ -23,22 +23,28 @@ module.exports = (req, res) => {
       return res.render('publications/error');
     }
 
-    // Reversion the current publication
-    const reversion = _.omit({ ...publicationData, publicationID, status: 'ARCHIVE' }, '_id');
-    return api.createReversion(reversion, (reversionErr, reversionData) => {
-      if (reversionErr || !reversionData) {
-        debug('octopus:ui:error')(`Error when trying to create Reversion ${publicationID}: ${reversionErr}`);
+    // Achive the current publication
+    const archive = _.omit({ ...publicationData, publicationID, status: 'ARCHIVE' }, '_id');
+    return api.createArchive(archive, (archiveErr, archiveData) => {
+      if (archiveErr || !archiveData) {
+        debug('octopus:ui:error')(`Error when trying to create Archive ${publicationID}: ${archiveErr}`);
         return res.render('publications/error');
       }
 
-      // Update revision number
-      const revision = publicationData.revision + 1;
-      return api.updatePublication({ _id: publicationID, revision }, (updateErr, updateData) => {
+      const updatedPublication = {
+        _id: publicationID,
+        revision: parseInt(publicationData.revision, 10) + 1,
+        dateCreated: new Date(),
+        dateLastActivity: new Date(),
+        ratings: [],
+      };
+
+      return api.updatePublication(updatedPublication, (updateErr, updateData) => {
         if (updateErr || !updateData) {
           return res.render('publications/error');
         }
 
-        return res.redirect(`/publications/view/${publicationID}`);
+        return res.redirect(`/publications/edit/${publicationID}`);
       });
     });
   });

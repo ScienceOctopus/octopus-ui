@@ -5,6 +5,9 @@ const debug = require('debug');
 const api = require('../../../lib/api');
 
 function toArray(string) {
+  if (typeof string !== 'string') {
+    return string;
+  }
   return (string || '').split(/,|\s/).filter(_.identity);
 }
 
@@ -25,23 +28,15 @@ function handleFileUpload(fileData, callback) {
 function mapCollaborators(collaborators) {
   const status = 'UNCONFIRMED';
   const role = 'author';
-  const dateCreated = new Date();
   return toArray(collaborators).map((userID) => ({
     userID,
     role,
-    dateCreated,
     status,
   }));
 }
 
-function createNewPublicationObject(data) {
-  const newPublication = {
-    status: 'DRAFT',
-    revision: 1,
-    createdByUser: data.userId,
-    dateCreated: new Date(),
-    dateLastActivity: new Date(),
-
+function mapPublicationData(data) {
+  return {
     type: data.publicationType,
     linkedPublications: toArray(data.linkedPublications),
     collaborators: mapCollaborators(data.publicationCollaborators),
@@ -57,11 +52,46 @@ function createNewPublicationObject(data) {
     file: data.publicationFile,
     fileId: data.publicationFileId,
   };
+}
+
+function createNewPublicationObject(data) {
+  const newPublication = {
+    status: 'DRAFT',
+    revision: 1,
+    createdByUser: data.userId,
+    dateCreated: new Date(),
+    dateLastActivity: new Date(),
+    ...mapPublicationData(data),
+  };
 
   return newPublication;
 }
 
+function aggregatePublicationFormState(fields) {
+  const publicationState = {
+    userId: fields.userId,
+    type: fields.publicationType,
+    linkedPublications: fields.linkedPublications,
+    collaborators: fields.publicationCollaborators,
+    title: fields.publicationTitle,
+    summary: fields.publicationSummary,
+    dataUrl: fields.publicationDataUrl,
+    ethicalPermissions: fields.ethicalPermissions,
+    keywords: fields.publicationKeywords,
+    fundingStatement: fields.fundingStatement,
+    coiDeclaration: fields.coiDeclaration,
+    carriedOut: fields.publicationCarriedOut,
+    text: fields.publicationText,
+    file: fields.publicationFile,
+    fileId: fields.publicationFileId,
+  };
+
+  return publicationState;
+}
+
 module.exports = {
   handleFileUpload,
+  mapPublicationData,
   createNewPublicationObject,
+  aggregatePublicationFormState,
 };

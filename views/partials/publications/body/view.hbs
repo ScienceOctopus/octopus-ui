@@ -1,31 +1,7 @@
 <div class="container-fluid" id="mainBody" role="main">
   <div class="row">
     <div class="col-sm-9">
-      <ul class="nav nav-tabs">
-        {{#if version}} {{!-- Revision view --}}
-          {{#times publication.revision}}
-            <li role="presentation" {{#if (equals version @pos)}}class="active"{{/if}}>
-              {{#if (equals version @pos)}} <a>Version {{@pos}}</a>
-              {{else if @last}} <a href="{{publication._id}}">Version {{@pos}}</a>
-              {{else}} <a href="{{publication._id}}?v={{@pos}}">Version {{@pos}}</a>
-              {{/if}}
-            </li>
-          {{/times}} {{!-- END Revision view --}}
-        {{else}} {{!-- Current view --}}
-          {{#times publication.revision}}
-            <li role="presentation" {{#if @last}}class="active"{{/if}}>
-              {{#if @last}} <a>Version {{@pos}}</a>
-              {{else}} <a href="{{publication._id}}?v={{@pos}}">Version {{@pos}}</a>
-              {{/if}}
-            </li>
-          {{/times}}
-          <li>
-            <a href="/publications/reversion/{{publication._id}}">
-              <span class="fa fa-plus"></span>&nbsp;&nbsp;Reversion this publication
-            </a>
-          </li> {{!-- END Current view --}}
-        {{/if}}
-      </ul>
+      {{> publications/versionTabs version=version publication=publication}}
 
       <div class="row">
         <div class="col-sm-9">

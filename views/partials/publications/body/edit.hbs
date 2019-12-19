@@ -1,7 +1,8 @@
 <div class="container-fluid" id="mainBody" role="main">
-<form action="/publications/publish/{{publication._id}}" method="POST">
+  <form action="/publications/save/{{publication._id}}" method="POST">
   <div class="row">
     <div class="col-sm-9">
+      {{> publications/versionTabs version=version publication=publication}}
 
       <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
 
@@ -11,18 +12,21 @@
 
       <div>
         <h3>Authors</h3>
-        <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
-        {{#each publication.authors}}
-        <option default value="{{this.orcid}}" title="{{this.name}}" selected>{{this.name}}</option>
-        {{/each}}
-      </select>
+        <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker"
+          data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check"
+          data-none-selected-text="Please select your co-author" data-size="10">
+          {{#each publication.authors}}
+          <option default value="{{this.orcid}}" title="{{this.name}}" selected>{{this.name}}</option>
+          {{/each}}
+        </select>
       </div>
 
       <hr />
 
       <div>
         <h3>Summary</h3>
-        <textarea class="form-control" id="publicationSummary" name="publicationSummary">{{publication.summary}}</textarea>
+        <textarea class="form-control" id="publicationSummary"
+          name="publicationSummary">{{publication.summary}}</textarea>
       </div>
 
       <hr />
@@ -39,17 +43,20 @@
         <p>
           <strong>Funding Statement:</strong>
           <br />
-          <textarea class="form-control" id="publicationFundingStatement" name="publicationFundingStatement">{{publication.fundingStatement}}</textarea>
+          <textarea class="form-control" id="publicationFundingStatement"
+            name="publicationFundingStatement">{{publication.fundingStatement}}</textarea>
         </p>
         <p>
           <strong>Conflict of Interest Declaration:</strong>
           <br />
-          <textarea class="form-control" id="publicationCoiDeclaration" name="publicationCoiDeclaration">{{publication.coiDeclaration}}</textarea>
+          <textarea class="form-control" id="publicationCoiDeclaration"
+            name="publicationCoiDeclaration">{{publication.coiDeclaration}}</textarea>
         </p>
         <p>
           <strong>Keywords:</strong>
           <br />
-          <input class="form-control" id="publicationKeywords" name="publicationKeywords" value="{{publication.keywords}}"/>
+          <input class="form-control" id="publicationKeywords" name="publicationKeywords"
+            value="{{publication.keywords}}" />
         </p>
         <p>
           <strong>Files:</strong>
@@ -58,15 +65,23 @@
         </p>
       </div>
     </div>
-
     <div class="col-sm-3" id="sidebar">
       <p>This publication is still a draft visible only to you and other authors.</p>
       <p>You need to publish it before this publication is visible in Octopus.</p>
-      <input type="submit" class="btn btn-md btn-primary" value="Publish now" />
+
+      <hr />
+
+      <div class="inline-flex">
+        <input type="submit" class="btn btn-md btn-primary" value="Save changes" />
+        &nbsp;&nbsp;
+        <form action="/publications/publish/{{publication._id}}" method="POST" class="form-inline">
+          <input type="submit" class="btn btn-md btn-default" value="Publish now" />
+        </form>
+      </div>
     </div>
 
   </div>
-</form>
+  </form>
 </div>
 
 <!-- EDIT MODE ENABLED -->

@@ -4,28 +4,6 @@ const helpers = require('./helpers');
 const formHelpers = require('../../../lib/form');
 const api = require('../../../lib/api');
 
-function aggregatePublicationFormState(fields) {
-  const publicationState = {
-    userId: fields.userId,
-    type: fields.publicationType,
-    linkedPublications: fields.linkedPublications,
-    collaborators: fields.publicationCollaborators,
-    title: fields.publicationTitle,
-    summary: fields.publicationSummary,
-    dataUrl: fields.publicationDataUrl,
-    ethicalPermissions: fields.ethicalPermissions,
-    keywords: fields.publicationKeywords,
-    fundingStatement: fields.fundingStatement,
-    coiDeclaration: fields.coiDeclaration,
-    carriedOut: fields.publicationCarriedOut,
-    text: fields.publicationText,
-    file: fields.publicationFile,
-    fileId: fields.publicationFileId,
-  };
-
-  return publicationState;
-}
-
 function mapResultForDropdown(result) {
   return {
     // eslint-disable-next-line no-underscore-dangle
@@ -58,7 +36,7 @@ module.exports = (req, res) => {
   return formHelpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
     const data = { ...fields, userId: req.session.user.orcid };
-    const publicationFormState = aggregatePublicationFormState(data);
+    const publicationFormState = helpers.aggregatePublicationFormState(data);
 
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
     res.locals.publishStepNumber = stepNumber;

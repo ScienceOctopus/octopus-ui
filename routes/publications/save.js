@@ -1,14 +1,13 @@
-const _ = require('lodash');
 const debug = require('debug');
 
 const api = require('../../lib/api');
 const formHelpers = require('../../lib/form');
+const publishHelpers = require('../publish/steps/helpers');
 
 module.exports = (req, res) => {
   const publicationID = req.params.publicationID;
-  const publicationData = _.merge({}, req.body, { _id: publicationID, status: 'LIVE' });
 
-  debug('octopus:ui:debug')(`Publishing Publication ${publicationID}`);
+  debug('octopus:ui:debug')(`Saving Publication ${publicationID}`);
 
   return api.getPublicationByID(publicationID, (publicationErr, publication) => {
     if (publicationErr || !publication) {
@@ -17,8 +16,8 @@ module.exports = (req, res) => {
     }
 
     if (publication.status !== 'DRAFT') {
-      // TODO check if user is on the list of collaborators - otherwise error / a new "not-yet-published" screen
-      req.flash('info', 'You can only publish drafts.');
+      // TODO check if user is on the list of collaborators - otherwise error / a new 'not-yet-published' screen
+      req.flash('info', 'You can only save drafts.');
       return res.redirect(`/publications/view/${publicationID}`);
     }
 
@@ -28,10 +27,15 @@ module.exports = (req, res) => {
         return res.render('publish/error', { error: err });
       }
 
+      const publicationData = publishHelpers.mapPublicationData(fields);
+      const updatedPublication = { _id: publicationID, ...publicationData };
+
       debug('octopus:ui:trace')(fields, files);
 
+      console.log(publicationData);
+
       // update publication object
-      return api.updatePublication(publicationData, (updateErr, updateData) => {
+      return api.updatePublication(updatedPublication, (updateErr, updateData) => {
         if (updateErr || !updateData) {
           return res.render('publish/error', { error: updateErr });
         }

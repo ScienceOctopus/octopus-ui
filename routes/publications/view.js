@@ -16,9 +16,22 @@ const attachAuthors = async (publication, accessToken) => {
 };
 
 const attachRatings = (publication, userId) => {
+  // No ratings for draft publications
+  if (publication.status === 'DRAFT') {
+    return null;
+  }
+
   const total = _.keys(publication.ratings).length;
-  const disabled = !userId || _.has(publication.ratings, userId) || _.find(publication.authors, { orcid: userId });
   const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
+
+  // Handle the archive case
+  if (publication.status === 'ARCHIVE') {
+    const disabled = true;
+    return { disabled, total, values };
+  }
+
+  // Default
+  const disabled = !userId || _.has(publication.ratings, userId) || _.find(publication.authors, { orcid: userId });
   return { disabled, total, values };
 };
 
@@ -42,19 +55,19 @@ module.exports = (req, res) => {
 
     // Check if there is a request for an older version
     if (version) {
-      const reversion = await new Promise((resolve) => {
-        return api.getReversion(publicationID, version, (reversionError, reversionData) => {
-          if (reversionError || _.isEmpty(reversionData)) {
-            debug('octopus:ui:error')(`Error when trying to load Reversion ${publicationID}: ${publicationErr}`);
+      const archive = await new Promise((resolve) => {
+        return api.getArchive(publicationID, version, (archiveError, archiveData) => {
+          if (archiveError || _.isEmpty(archiveData)) {
+            debug('octopus:ui:error')(`Error when trying to load Archive ${publicationID}: ${publicationErr}`);
             return resolve({});
           }
-          return resolve(reversionData);
+          return resolve(archiveData);
         });
       });
       // Our publication becomes the revision.
       // We need to keep the _id and the revision original values
       const { _id, revision } = publication;
-      publication = { ...reversion, _id, revision };
+      publication = { ...archive, _id, revision };
     }
 
     publication.authors = await attachAuthors(publication, accessToken);
