@@ -8,7 +8,7 @@ const computePublicationRatings = (publication) => {
   const total = _.keys(publication.ratings).length;
   const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
   return { total, values };
-}
+};
 
 const attachAuthors = async (publication, accessToken) => {
   if (!publication.collaborators || !publication.collaborators.length) {
