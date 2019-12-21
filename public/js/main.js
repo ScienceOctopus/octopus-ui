@@ -13,6 +13,10 @@
     $('[data-toggle="tooltip"]').tooltip();
   }
 
+  function enablePopovers() {
+    $('[data-toggle="popover"]').popover();
+  }
+
   function togglePubChainVisibility() {
     console.log('togglePubChainVisibility');
 
@@ -45,6 +49,7 @@
 
   $(document).ready(() => {
     enableTooltips();
+    enablePopovers();
     toggleSearchScope(null, location.pathname);
 
     OctopusAppElements.$pubChainContainer = $('.pubChainContainer');

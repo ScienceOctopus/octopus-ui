@@ -4,6 +4,12 @@ const _ = require('lodash');
 const api = require('../../lib/api');
 const userHelpers = require('../users/helpers');
 
+const computePublicationRatings = (publication) => {
+  const total = _.keys(publication.ratings).length;
+  const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
+  return { total, values };
+}
+
 const attachAuthors = async (publication, accessToken) => {
   if (!publication.collaborators || !publication.collaborators.length) {
     return [];
@@ -21,8 +27,7 @@ const attachRatings = (publication, userId) => {
     return null;
   }
 
-  const total = _.keys(publication.ratings).length;
-  const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
+  const { total, values } = computePublicationRatings(publication);
 
   // Handle the archive case
   if (publication.status === 'ARCHIVE') {
@@ -33,6 +38,28 @@ const attachRatings = (publication, userId) => {
   // Default
   const disabled = !userId || _.has(publication.ratings, userId) || _.find(publication.authors, { orcid: userId });
   return { disabled, total, values };
+};
+
+const attachPreviousRatings = async ({ _id }) => {
+  // Get all archives
+  let archives = await new Promise((resolve) => api.getArchive(_id, null, (err, data) => resolve(data)));
+  // No prev ratings available
+  if (_.isEmpty(archives)) {
+    return null;
+  }
+  // Filter - get the ones with ratings
+  archives = _.filter(archives, (a) => !_.isEmpty(a.ratings));
+  // Compute values
+  const prevRatings = _.reduce(archives, (acc, archive) => {
+    const { total, values } = computePublicationRatings(archive);
+    const newTotal = acc.total + total;
+    const newValues = acc.values.map((v, i) => v + values[i]);
+    return { total: newTotal, values: newValues };
+  }, { total: 0, values: [0, 0, 0] });
+  // Average them
+  prevRatings.values = prevRatings.values.map((v) => Math.round(v / prevRatings.total));
+  // return
+  return prevRatings;
 };
 
 module.exports = (req, res) => {
@@ -61,13 +88,17 @@ module.exports = (req, res) => {
             debug('octopus:ui:error')(`Error when trying to load Archive ${publicationID}: ${publicationErr}`);
             return resolve({});
           }
-          return resolve(archiveData);
+
+          return resolve(_.first(archiveData));
         });
       });
       // Our publication becomes the revision.
       // We need to keep the _id and the revision original values
       const { _id, revision } = publication;
       publication = { ...archive, _id, revision };
+    } else {
+      // Current version - attach prev versions
+      publication.prevRatings = await attachPreviousRatings(publication);
     }
 
     publication.authors = await attachAuthors(publication, accessToken);
