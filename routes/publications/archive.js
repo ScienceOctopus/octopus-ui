@@ -36,6 +36,7 @@ module.exports = (req, res) => {
         revision: parseInt(publicationData.revision, 10) + 1,
         dateCreated: new Date(),
         dateLastActivity: new Date(),
+        status: 'DRAFT',
         ratings: [],
       };
 
