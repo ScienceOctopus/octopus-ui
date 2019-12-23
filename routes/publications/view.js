@@ -111,6 +111,8 @@ module.exports = (req, res) => {
     res.locals.publicationType = publicationType;
     res.locals.customTitleTag = `${publicationType.title}: ${publication.title} - Octopus`;
 
+    publication.text = encodeURIComponent(publication.text);
+
     // debug('octopus:ui:trace')(res.locals);
     return res.render('publications/view', res.locals);
   });

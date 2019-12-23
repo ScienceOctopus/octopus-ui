@@ -36,10 +36,8 @@
 
       <hr />
 
-      <div>
-        <h3>Full text</h3>
-        {{{publication.text}}}
-      </div>
+      <h3>Full text</h3>
+      <iframe src="data:text/html,{{{publication.text}}}'" class="publication-iframe"></iframe>
 
       <hr />
 
@@ -102,3 +100,20 @@
 
   </div>
 </div>
+
+{{!-- <script>
+  var publicationText = '{{{publicationText}}}';
+  $(document).ready(() => {
+      const frame = document.querySelector('.publicationText');
+      frame.contentWindow.document.open('text/html', 'replace');
+      frame.contentWindow.document.write(publicationText);
+      frame.contentWindow.document.close();
+  });
+
+</script> --}}
+
+<script>
+  function insertPublicationText(content) {
+    console.log(content);
+  }
+</script>
