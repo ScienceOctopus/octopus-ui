@@ -62,7 +62,8 @@ module.exports = (req, res) => {
       }
 
       return api.findPublications(filters, (publicationsErr, pubData) => {
-        const allLinkablePublications = pubData && pubData.results ? _.map(pubData.results, mapResultForDropdown) : [];
+        let allLinkablePublications = pubData && pubData.results ? _.map(pubData.results, mapResultForDropdown) : [];
+        allLinkablePublications = _.uniqBy(allLinkablePublications, (p) => p.type);
         res.locals.allLinkablePublications = allLinkablePublications;
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
