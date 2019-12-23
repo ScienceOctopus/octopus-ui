@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-  {{#if version}} {{!-- Revision view --}}
+  {{#if version}}
   {{#times publication.revision}}
   <li role="presentation" {{#if (equals version @pos)}}class="active" {{/if}}>
     {{#if (equals version @pos)}} <a>Version {{@pos}}</a>
@@ -16,10 +16,12 @@
     {{/if}}
   </li>
   {{/times}}
+  {{#if (equals publication.status "LIVE")}}
   <li>
     <a href="/publications/archive/{{publication._id}}">
       <span class="fa fa-plus"></span>&nbsp;&nbsp;Reversion this publication
     </a>
-  </li> {{!-- END Current view --}}
+  </li>
+  {{/if}}
   {{/if}}
 </ul>
