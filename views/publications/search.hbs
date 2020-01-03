@@ -5,10 +5,7 @@
   <div class="row">
     <div class="col-sm-3" id="sidebar">
 
-      <h2 class="text-plain">
-        <strong>Refine search</strong>
-      </h2>
-
+      <h5><strong>Refine search</strong></h5>
       <form method="GET" action="" class="form-inline" id="searchFormSidebar">
         <!-- <div class="form-group"> -->
           <label for="searchFormSidebarInput" class="sr-only">Search term</label>
@@ -21,24 +18,21 @@
         <!-- </div> -->
       </form>
 
-      <form method="GET" action="" class="form-horizontal">
-        <!-- <div class="form-group"> -->
-          <strong>Filter by Publication type:</strong>
-          <br />
+      <br/>
 
+      <h5><strong>Filter by Publication type:</strong></h5>
+      <form method="GET" action="" class="form-horizontal">
           {{#each publicationTypes}}
           <div class="checkbox"><label>
             <input type="checkbox" checked="checked" name="publicationTypes" value="{{this.key}}" /> {{this.plural}}
           </label></div>
           {{/each}}
-        <!-- </div> -->
       </form>
 
-      <form method="GET" action="" class="form-horizontal">
-        <!-- <div class="form-group"> -->
-          <strong>Filter by Publication date:</strong>
-          <br />
+      <br/>
 
+      <h5><strong>Filter by Publication date:</strong></h5>
+      <form method="GET" action="" class="form-horizontal">
           <div class="radio"><label>
             <input type="radio" name="publicationDate" value="now-1m" /> Last month
           </label></div>
@@ -48,7 +42,6 @@
           <div class="radio"><label>
             <input type="radio" checked="checked" name="publicationDate" value="all" /> All
           </label></div>
-        <!-- </div> -->
       </form>
     </div>
 
@@ -90,8 +83,8 @@
             <!-- <blockquote>{{{markHits this.summary ../query.phrase}}}</blockquote> -->
 
             <ul class="list-unstyled small">
-              <li><strong>Authors:</strong>{{> authorsList authors=this.authors}}</li>
               <li><strong>Date added:</strong> {{formatDate this.dateCreated}} &nbsp;</li>
+              <li><strong>Authors:</strong>{{> authorsList authors=this.authors}}</li>
             </ul>
           </div>
         </div>

@@ -27,7 +27,8 @@ module.exports = (req, res) => {
         return resolve(publication);
       }
 
-      let authors = _.filter(publication.collaborators, { status: 'CONFIRMED' });
+      // let authors = _.filter(publication.collaborators, { status: 'CONFIRMED' });
+      let authors = _.filter(publication.collaborators);
 
       return (async () => {
         authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)));

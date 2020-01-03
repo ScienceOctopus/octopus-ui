@@ -4,10 +4,8 @@
 
   <div class="row">
     <div class="col-sm-3" id="sidebar">
-      <h2 class="text-plain">
-        <strong>Refine search</strong>
-      </h2>
 
+      <h5><strong>Refine search</strong></h5>
       <form method="GET" action="" class="form-inline" id="searchFormSidebar">
         <label for="searchFormSidebarInput" class="sr-only">Search term</label>
         <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}"
@@ -28,10 +26,7 @@
 
       <br/>
 
-      <h2 class="text-plain">
-        <strong>Filter by Author name:</strong>
-      </h2>
-
+      <h5><strong>Filter by Author name:</strong></h5>
       <form method="GET" action="" class="form-horizontal">
         {{#radio query.nameFilter}}
         <div class="radio">
@@ -65,10 +60,7 @@
 
       <br/>
 
-      <h2 class="text-plain">
-        <strong>Filter by Institution name:</strong>
-      </h2>
-
+      <h5><strong>Filter by Institution name:</strong></h5>
       <form method="GET" action="" class="form-horizontal">
         <input name="org_filter" class="searchFormInput" type="text" value="{{query.orgFilter}}"
           placeholder="Filter organizations" />
