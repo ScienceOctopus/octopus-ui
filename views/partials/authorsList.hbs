@@ -1,13 +1,11 @@
 <span class="authors-list">
   {{#each authors}}
-  {{#if @index}}
-  <span class="authors-list-item-separator">,&nbsp;</span>
-  {{/if}}
-  <span class="authors-list-item">
-    {{#if this.orcid}}
-    <a href="/users/view/{{this.orcid}}">{{this.name}}</a>
-    {{else}}
-    {{this.name}}
+  {{!-- separator --}}
+  {{#if @index}}<span class="authors-list-separator">,&nbsp;</span>{{/if}}
+  {{!-- items --}}
+  <span>
+    {{#if this.orcid}}<a href="/users/view/{{this.orcid}}">{{this.name}}</a>
+    {{else}}{{this.name}}
     {{/if}}
   </span>
   {{/each}}

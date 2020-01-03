@@ -87,7 +87,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .typeColumn:first-of-type { margin-left: 0; }
 .pubItem { background: #f7f7f7; color: #777; padding: 5px; border-radius: 5px; border: 1px solid #aaa; font-size: 0.75em }
 .pubItem.active { background: #9f8fed; color: white; border: 1px solid #7864e6 }
-.publishingInfoList li { margin-bottom: 8px };
+.publishingInfoList, .versioningInfoList li { margin-bottom: 8px };
 
 /* Publication chain minimised state */
 .pubChainContainer { height: 240px; transition: height 0.35s ease-out; }
@@ -107,10 +107,13 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 /* User Profile Page */
 #displayAffiliations { background: transparent; color: #337ab7; border: none; margin-left: -6px; }
 #displayAffiliations:hover { color: #23527c; }
+
 .publication-container { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; margin-bottom: 10px; }
-.publication-iframe { width: 100%; height: 450px; border: 1px solid #e3e3e3; border-radius: 5px; padding: 10px;}
+.publication-iframe { width: 100%; min-height: 350px; border: 1px solid #e3e3e3; border-radius: 5px; padding: 10px;}
 .publication-type { text-transform: capitalize; color: #ADA3ED; font-weight: bold; margin-top: 0px; }
 .publication-title { margin-bottom: 0px; }
+.authors-list { font-size: 13px; }
+.authors-list-separator { margin-left: -4px; }
 
 /* Spacing utility classes */
 .mb-1 { margin-bottom: 4px; }
@@ -120,7 +123,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .panel-body.scroll { max-height: 350px; overflow-y: auto; }
 
 /* Bootstrap select
-  Hide the "No results" message since we're using a query to populate it
+Hide the "No results" message since we're using a query to populate it
 */
 #publicationCollaborators ~ .dropdown-menu .no-results { display: none; }
 
@@ -135,3 +138,6 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .star-rating__ico:hover ~ .star-rating__ico:before,
 .star-rating__input:checked ~ .star-rating__ico:before { content: "\f005"; }
 .star-rating__input[disabled] + .star-rating__ico { pointer-events: none; }
+
+/* Versioning */
+.nav-tabs > li > a { padding: 8px 10px; font-size: 13px; }

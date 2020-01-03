@@ -18,10 +18,11 @@
   {{/times}}
   {{#if (equals publication.status "LIVE")}}
   <li>
-    <a href="/publications/archive/{{publication._id}}">
+    <a href="#" data-toggle="modal" data-target="#versioningInfoModal">
       <span class="fa fa-plus"></span>&nbsp;&nbsp;Reversion this publication
     </a>
   </li>
+  {{> versioningInfoModal publication}}
   {{/if}}
   {{/if}}
 </ul>

@@ -1,0 +1,23 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="versioningInfoModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{log this}}
+        <h4 class="modal-title">Reversion "{{this.title}}"</h4>
+      </div>
+      <div class="modal-body">
+        <ul class="versioningInfoList">
+          <li>Publications may be reversioned to correct errors. If these were pointed out by a reviewer please acknowledge this.</li>
+          <li>A maximum of 10 reversions are allowed for any publication.</li>
+          <li>The ratings and reviews of a new version will be reset to zero, but the old versions and their ratings will always be visible to readers for transparency.</li>
+          <li>Do not use reversions to update a publication in the light of new evidence. The publication record should accurately reflect the timeline of when work was done and ideas had.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a href="/publications/archive/{{this._id}}" class="btn btn-primary">Continue</a>
+      </div>
+    </div>
+  </div>
+</div>
