@@ -47,7 +47,7 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 .searchTopFormType {border-radius: 0;}
 
 /* Sidebar styling */
-#sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
+.sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
 
 /* Generic styles */
 h1 {font-size: 28px}
