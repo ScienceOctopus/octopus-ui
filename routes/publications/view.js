@@ -57,7 +57,7 @@ const attachPreviousRatings = async ({ _id }) => {
     return { total: newTotal, values: newValues };
   }, { total: 0, values: [0, 0, 0] });
   // Average them
-  prevRatings.values = prevRatings.values.map((v) => Math.round(v / prevRatings.total));
+  prevRatings.values = prevRatings.values.map((v) => v && Math.round(v / prevRatings.total));
   // return
   return prevRatings;
 };
