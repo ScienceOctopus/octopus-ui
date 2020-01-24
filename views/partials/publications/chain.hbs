@@ -1,26 +1,15 @@
 <div class="pubChainContainer">
   <div class="pubChainControls">
-    <a href="#" class="btn btn-primary btn-md"
-    onclick="OctopusApp.togglePubChainVisibility()"
-    data-toggle="tooltip" data-placement="right"
-    title="Show/hide publication chain."
-    >
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainVisibility()" data-toggle="tooltip"
+      data-placement="right" title="Show/hide publication chain.">
       <span class="fa fa-fw fa-chevron-up"></span>
     </a>
-
-    <a href="#" class="btn btn-primary btn-md"
-    onclick="OctopusApp.togglePubChainAutoshrink()"
-    data-toggle="tooltip" data-placement="right"
-    title="Automatically shrink the columns to fit window width."
-    >
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainAutoshrink()" data-toggle="tooltip"
+      data-placement="right" title="Automatically shrink the columns to fit window width.">
       <span class="fa fa-fw fa-arrows-h" title="Autoshrink columns to fit window width"></span>
     </a>
-
-    <a href="#" class="btn btn-primary btn-md"
-    onclick="OctopusApp.togglePubChainMode()"
-    data-toggle="tooltip" data-placement="right"
-    title="Toggle publication chain mode (columns or graph)"
-    >
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainMode()" data-toggle="tooltip"
+      data-placement="right" title="Toggle publication chain mode (columns or graph)">
       <span class="fa fa-fw fa-sitemap"></span>
     </a>
   </div>
@@ -31,13 +20,34 @@
 
       {{#each publicationTypes}}
         {{#unless (equals this.attributes.displayInPubChain false)}}
-        <div class="typeColumn">
-          <p class="heading">{{this.plural}}</p>
-          <p class="pubItem">Placeholder publication</p>
-        </div>
+          <div>
+            <div class="typeColumn">
+              <p class="heading">{{this.plural}}</p>
+
+              {{#each ../publications}}
+                {{#if (equals type  ../key)}}
+                  <div id={{_id}} class="pubItem" onclick="OctopusApp.toggleHorizontalLinks('{{{_id}}}')">
+                    <h5 class="title">{{title}}</h5>
+
+                    <div>
+                      {{#each authors}}
+                      <a href="/users/view/{{orcid}}">{{name}}</a>
+                      {{/each}}
+                    </div>
+
+                    <div>{{formatDate dateCreated}}</div>
+                    {{!-- {{> rating publication=this publicationType=../this}} --}}
+                  </div>
+                {{/if}}
+              {{/each}}
+            </div>
+
+            <svg height="100%" width="100%" style="position: absolute;">
+              <line x1="100" y1="77" x2="200" y2="127" style="stroke-width: 4; stroke: red;"></line>
+            </svg>
+          </div>
         {{/unless}}
       {{/each}}
-
       <div class="clearfix"></div>
     </div>
   </div>
