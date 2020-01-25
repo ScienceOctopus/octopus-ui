@@ -70,18 +70,23 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pubChainControls .btn { width: 40px; height: 40px; padding: 10px; margin-top: 5px; color: white; background: #9f91ed; border: 1px #9955de; }
 .pubChainControls .btn:first-of-type { margin-top: 0 }
 .pubChain { display: block; margin-left: 50px; overflow: scroll; }
-.pubChainContent { display: block; width: 1500px; }
+.pubChainContent { display: block; width: 1500px; position: relative;}
+.pubChainContent .authors { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.pubChainContent svg { position: absolute; width:100%; height: 100%; max-width: 38px; transform: translateX(-12px); }
+.pubChainContent svg path { stroke: hsla(270,68%,60%,1); stroke-width: 2; fill: transparent; }
 .typeColumn { float: left; width: 200px; margin-left: 15px; border: 1px solid #dedde4; border-radius: 5px; padding:10px; }
 .typeColumn .heading { font-size: 1.1em; font-weight: bold; text-align: center; }
 .typeColumn:first-of-type { margin-left: 0; }
-.pubItem { background: #f7f7f7; color: #777; padding: 5px; margin-bottom: 10px; border-radius: 5px; font-size: 0.75em; cursor: pointer; height: 90px; }
-.pubItem.active { background: #9f8fed; color: white; border: 1px solid #7864e6 }
-.pubItem .title { white-space: nowrap; text-overflow: ellipsis; width: 100%; overflow: hidden; }
+.pubItem { background: #f7f7f7; color: #777; padding: 7px; margin-bottom: 10px; border-radius: 5px; font-size: 0.75em; cursor: pointer; border: 1px solid #dedde4; display: block;}
+.pubItem:hover { text-decoration: none; color: #333;  }
+.pubItem.active { background: #7965e6 !important; color: white; border: 1px solid #7864e6; cursor: default; }
+.pubItem.highlight { background: #ada3ed; color: white; border: 1px solid #7864e6 }
+.pubItem.active, .pubItem.highlight { color: white; text-shadow: 0 1px 1px #777; }
+.pubItem .title { white-space: nowrap; text-overflow: ellipsis; width: 100%; overflow: hidden; margin-top: 0; }
 .publishingInfoList, .versioningInfoList li { margin-bottom: 8px };
 /* Publication chain minimised state */
 .pubChainContainer { height: 240px; transition: height 0.35s ease-out; }
 .pubChainContainer .typeColumn { height: fit-content; transition: height 0.30s ease-out; margin-top: 3px}
-.pubChainContainer .pubItem { opacity: 1; transition: opacity 0.25s ease-out; }
 .pubChainContainer.minimised { height: 66px; }
 .pubChainContainer.minimised .typeColumn { height: 40px; }
 .pubChainContainer.minimised .pubItem { opacity: 0; }

@@ -20,6 +20,7 @@ function startApp() {
    */
   hbs.registerPartials(partialsPath);
   hbs.registerHelper('json', hbsHelpers.json);
+  hbs.registerHelper('toString', hbsHelpers.toString);
   hbs.registerHelper('roundNumber', hbsHelpers.roundNumber);
   hbs.registerHelper('markHits', hbsHelpers.markHits);
   hbs.registerHelper('formatDate', hbsHelpers.formatDate);

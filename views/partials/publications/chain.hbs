@@ -1,4 +1,4 @@
-<div class="pubChainContainer">
+<div class="pubChainContainer" data-publication="{{publication._id}}">
   <div class="pubChainControls">
     <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainVisibility()" data-toggle="tooltip"
       data-placement="right" title="Show/hide publication chain.">
@@ -16,36 +16,28 @@
 
   <div class="pubChain">
     <div class="pubChainContent">
-      <!-- <p>Publication chain:</p> -->
-
       {{#each publicationTypes}}
         {{#unless (equals this.attributes.displayInPubChain false)}}
-          <div>
             <div class="typeColumn">
               <p class="heading">{{this.plural}}</p>
-
               {{#each ../publications}}
                 {{#if (equals type  ../key)}}
-                  <div id={{_id}} class="pubItem" onclick="OctopusApp.toggleHorizontalLinks('{{{_id}}}')">
+                  <a id={{_id}} title="{{title}}" href="/publications/view/{{_id}}" class="pubItem" linked="{{toString linkedPublications}}">
                     <h5 class="title">{{title}}</h5>
 
-                    <div>
+                    <div class="authors">
                       {{#each authors}}
-                      <a href="/users/view/{{orcid}}">{{name}}</a>
+                      <span>{{name}}</span>
                       {{/each}}
                     </div>
 
                     <div>{{formatDate dateCreated}}</div>
                     {{!-- {{> rating publication=this publicationType=../this}} --}}
-                  </div>
+                  </a>
                 {{/if}}
               {{/each}}
             </div>
-
-            <svg height="100%" width="100%" style="position: absolute;">
-              <line x1="100" y1="77" x2="200" y2="127" style="stroke-width: 4; stroke: red;"></line>
-            </svg>
-          </div>
+            <svg></svg>
         {{/unless}}
       {{/each}}
       <div class="clearfix"></div>

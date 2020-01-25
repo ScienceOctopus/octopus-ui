@@ -35,55 +35,125 @@
   function togglePubChainMode() {
     console.log('togglePubChainMode');
   }
-  function toggleHorizontalLinks(_id) {
-    if (lastClickedId !== _id) {
-      // remove active class from previous clicked item
-      OctopusAppElements.$pubItem = $(`.pubItem`);
-      OctopusAppElements.$pubItem.removeClass('active');
-      // add active class to newly clicked item
-      OctopusAppElements.$pubItem = $(`#${_id}`);
-      OctopusAppElements.$pubItem.addClass('active');
-      lastClickedId = _id;
-    } else {
-      // clicked on the same one, remove active class
-      OctopusAppElements.$pubItem = $(`.pubItem`);
-      OctopusAppElements.$pubItem.removeClass('active');
-      lastClickedId = null;
+
+  function drawHorizontalLinks() {
+    // Constants
+    const ITEMS_SPACING = 10;       // Space between publication items
+    const OFFSET_TOP = 46;          // Space taken by the column header (title)
+    const ACTIVE_CLASS = "active";  // State classes - current publication (active)
+    const HIGH_CLASS = "highlight"; // State classes - linked publication (highlighted)
+    const LINK_ATTR = "linked";     // PubItem attribute - linked publications ids
+
+    const { $pubChainContainer, $pubChainColumns } = OctopusAppElements;
+
+    // Nothing to do if we don't have the chain element
+    if (!$pubChainContainer.length) return;
+
+    // Setup
+    const currentPublicationId = $pubChainContainer.data("publication");
+    const activePublicationItem = $pubChainColumns.find(`.pubItem#${currentPublicationId}`);
+
+    // Dimensions
+    const pubItemHeight = $pubChainColumns.find(".pubItem").first().outerHeight();
+
+    // Update the svg viewbox based on the dimensions of the svg
+    $pubChainContainer.find("svg").each((i, svg) => {
+      const width = $(svg).width();
+      const height = $(svg).height();
+      svg.setAttribute("viewBox", `0, 0, ${width}, ${height}`);
+    });
+
+    // Mark the current publication item as active
+    activePublicationItem.addClass(ACTIVE_CLASS);
+    markBackwards(activePublicationItem); // Highlight items going backwards | < ACTIVE
+    markForwards(activePublicationItem);  // Highlight items going forwards  | ACTIVE >
+
+
+    // Go through each column
+    $pubChainColumns.each((colIndex, columnElement) => {
+      // Setup
+      const currentColumnElement = $(columnElement);
+      const nextSvgElement = currentColumnElement.next();
+      const nextColumnElement = nextSvgElement.next();
+
+      // Nothing to do, exit
+      if (!nextColumnElement.length) return;
+
+      // Grab the current marked elements - can be active or highlighted
+      const currentMarkedItems = currentColumnElement.find(`
+        .pubItem.${ACTIVE_CLASS},
+        .pubItem.${HIGH_CLASS}`
+      );
+
+      // Start creating the paths
+      let html = "";
+      currentMarkedItems.each((markedItemIndex, currentMarkedElem) => {
+        const currentMarkedItem = $(currentMarkedElem);
+        // Grab the linked elements from the next column - can be active or highlighted
+        const nextMarkedItems = nextColumnElement.find(`
+          .pubItem.${ACTIVE_CLASS}[linked*='${currentMarkedItem.attr("id")}'],
+          .pubItem.${HIGH_CLASS}[linked*='${currentMarkedItem.attr("id")}']`
+        );
+
+        // Compute the line coordinates
+        const x1 = 0;                                 // x1 is always 0
+        const x2 = nextSvgElement.width();            // x2 is always the width of the svg
+        const y1 = getYCoordinate(currentMarkedItem); // y1 is the line start, y2 is computed below
+
+        nextMarkedItems.each((nextMarkedItemIndex, linkedElement) => {
+          const y2 = getYCoordinate($(linkedElement)) // y2 coordinate - line end
+          html += `<path d="M ${x1} ${y1} C ${x2/2} ${y1}, ${x2/2} ${y2}, ${x2} ${y2}" vector-effect="non-scaling-stroke"></path>`
+        });
+      })
+
+      // Update the SVG
+      nextSvgElement.html(html);
+    });
+
+    function getYCoordinate(currentMarkedItem) {
+      if (!currentMarkedItem.length) return OFFSET_TOP + pubItemHeight / 2;
+      const currentMarkedElementPos = currentMarkedItem.index() - 1;
+      const currentMarkedElementSpacing = OFFSET_TOP + ITEMS_SPACING * currentMarkedElementPos;
+      return currentMarkedElementSpacing + (pubItemHeight * currentMarkedElementPos) + pubItemHeight / 2;
+    };
+
+    function markBackwards(currentMarkedItem) {
+      if (!currentMarkedItem.attr(LINK_ATTR)) return;
+      const prevColumn = currentMarkedItem.parent().prev().prev();
+      const prevMarkedItemsIds = currentMarkedItem.attr(LINK_ATTR).split(",");
+      const prevMarkedItemsSelectors = prevMarkedItemsIds.map(s => `.pubItem#${s}`);
+      const prevFoundItems = prevColumn.find(prevMarkedItemsSelectors.join(","));
+      prevFoundItems.each((i, item) => {
+        $(item).addClass(HIGH_CLASS);
+        markBackwards($(item));
+      });
+    }
+
+    function markForwards(currentMarkedItem) {
+      const nextColumn = currentMarkedItem.parent().next().next();
+      const nextFoundItems = nextColumn.find(`.pubItem[linked*='${currentMarkedItem.attr("id")}']`);
+      nextFoundItems.each((i, item) => {
+        $(item).addClass(HIGH_CLASS);
+        markForwards($(item));
+      });
     }
   }
+
   const OctopusApp = {
     togglePubChainVisibility,
     togglePubChainAutoshrink,
     togglePubChainMode,
-    toggleHorizontalLinks
   };
   window.OctopusApp = OctopusApp;
   $(document).ready(() => {
+    OctopusAppElements.$pubChainContainer = $('.pubChainContainer');
+    OctopusAppElements.$pubChainControls = $('.pubChainControls');
+    OctopusAppElements.$pubChainColumns = $('.typeColumn');
+
     enableTooltips();
     enablePopovers();
     toggleSearchScope(null, location.pathname);
-    OctopusAppElements.$pubChainContainer = $('.pubChainContainer');
-    OctopusAppElements.$pubChainControls = $('.pubChainControls');
-    OctopusAppElements.$pubColumns = $('.typeColumn');
-    let positions = [];
-    Array.from(OctopusAppElements.$pubColumns).forEach((el, idx) => {
-      positions.push({
-        x:
-          el.offsetWidth -
-          (el.offsetWidth - $(el).width()) / 2 +
-          idx * el.offsetWidth,
-        y: 0
-      });
-      // console.log(element)
-      console.log(
-        idx,
-        el.offsetWidth,
-        el.clientWidth,
-        el.paddingLeft,
-        $(el).width()
-      );
-    });
-    // console.log('postions', positions)
+    drawHorizontalLinks();
   });
 })();
 // Search scope
