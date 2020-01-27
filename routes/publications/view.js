@@ -1,12 +1,15 @@
 const debug = require('debug');
 const _ = require('lodash');
-
 const api = require('../../lib/api');
 const userHelpers = require('../users/helpers');
 
 const computePublicationRatings = (publication) => {
   const total = _.keys(publication.ratings).length;
-  const values = _.reduce(publication.ratings, (acc, num) => acc.map((v, i) => v + num[i]), [0, 0, 0]).map((r) => Math.round(r / total) || 0);
+  const values = _.reduce(
+    publication.ratings,
+    (acc, num) => acc.map((v, i) => v + num[i]),
+    [0, 0, 0],
+  ).map((r) => Math.round(r / total) || 0);
   return { total, values };
 };
 
@@ -16,7 +19,10 @@ const attachAuthors = async (publication, accessToken) => {
   }
 
   let authors = publication.collaborators;
-  authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)));
+  authors = await Promise.all(
+    authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)),
+  );
+
   authors = authors.filter((author) => author);
   return authors;
 };
@@ -36,7 +42,10 @@ const attachRatings = (publication, userId) => {
   }
 
   // Default
-  const disabled = !userId || _.has(publication.ratings, userId) || _.find(publication.authors, { orcid: userId });
+  const disabled = !userId
+    || _.has(publication.ratings, userId)
+    || _.find(publication.authors, { orcid: userId });
+
   return { disabled, total, values };
 };
 
@@ -50,14 +59,20 @@ const attachPreviousRatings = async ({ _id }) => {
   // Filter - get the ones with ratings
   archives = _.filter(archives, (a) => !_.isEmpty(a.ratings));
   // Compute values
-  const prevRatings = _.reduce(archives, (acc, archive) => {
-    const { total, values } = computePublicationRatings(archive);
-    const newTotal = acc.total + total;
-    const newValues = acc.values.map((v, i) => v + values[i]);
-    return { total: newTotal, values: newValues };
-  }, { total: 0, values: [0, 0, 0] });
+  const prevRatings = _.reduce(
+    archives,
+    (acc, archive) => {
+      const { total, values } = computePublicationRatings(archive);
+      const newTotal = acc.total + total;
+      const newValues = acc.values.map((v, i) => v + values[i]);
+      return { total: newTotal, values: newValues };
+    },
+    { total: 0, values: [0, 0, 0] },
+  );
   // Average them
-  prevRatings.values = prevRatings.values.map((v) => v && Math.round(v / prevRatings.total));
+  prevRatings.values = prevRatings.values.map(
+    (v) => v && Math.round(v / prevRatings.total),
+  );
   // return
   return prevRatings;
 };
@@ -70,50 +85,83 @@ module.exports = (req, res) => {
   const { publicationTypes } = res.locals;
 
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
-
-  return api.getPublicationByID(publicationID, async (publicationErr, publicationData) => {
-    if (publicationErr || _.isEmpty(publicationData)) {
-      debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
-      return res.render('publications/error');
-    }
-
-    // We should work on a copy
-    let publication = { ...publicationData };
-
-    // Check if there is a request for an older version
-    if (version) {
-      const archive = await new Promise((resolve) => {
-        return api.getArchive(publicationID, version, (archiveError, archiveData) => {
-          if (archiveError || _.isEmpty(archiveData)) {
-            debug('octopus:ui:error')(`Error when trying to load Archive ${publicationID}: ${publicationErr}`);
-            return resolve({});
-          }
-
-          return resolve(_.first(archiveData));
+  return api.getPublicationByID(
+    publicationID,
+    async (publicationErr, publicationData) => {
+      if (publicationErr || _.isEmpty(publicationData)) {
+        debug('octopus:ui:error')(
+          `Error when trying to load Publication ${publicationID}: ${publicationErr}`,
+        );
+        return res.render('publications/error');
+      }
+      // We should work on a copy
+      let publication = { ...publicationData };
+      // Check if there is a request for an older version
+      if (version) {
+        const archive = await new Promise((resolve) => {
+          return api.getArchive(
+            publicationID,
+            version,
+            (archiveError, archiveData) => {
+              if (archiveError || _.isEmpty(archiveData)) {
+                debug('octopus:ui:error')(
+                  `Error when trying to load Archive ${publicationID}: ${publicationErr}`,
+                );
+                return resolve({});
+              }
+              return resolve(_.first(archiveData));
+            },
+          );
+        });
+        // Our publication becomes the revision.
+        // We need to keep the _id and the revision original values
+        const { _id, revision } = publication;
+        publication = { ...archive, _id, revision };
+      } else {
+        // Current version - attach prev versions
+        publication.prevRatings = await attachPreviousRatings(publication);
+      }
+      // get all the publications for showing them in the chain
+      let publications = await new Promise((resolve) => {
+        return api.findPublications({}, async (publicationsErr, pubData) => {
+          const results = pubData ? pubData.results : [];
+          return resolve(results);
         });
       });
-      // Our publication becomes the revision.
-      // We need to keep the _id and the revision original values
-      const { _id, revision } = publication;
-      publication = { ...archive, _id, revision };
-    } else {
-      // Current version - attach prev versions
-      publication.prevRatings = await attachPreviousRatings(publication);
-    }
+      // Augment the publications with the author data
+      publications = await Promise.all(
+        publications.map(
+          (pub) => new Promise((resolve) => {
+            if (!pub.collaborators) {
+              return resolve(pub);
+            }
+            // let authors = _.filter(publication.collaborators, { status: 'CONFIRMED' });
+            let authors = _.filter(pub.collaborators);
+            return (async () => {
+              authors = await Promise.all(
+                authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)),
+              );
+              // Filter our undefined entries
+              authors = authors.filter((author) => author);
+              return resolve({ ...pub, authors });
+            })();
+          }),
+        ),
+      );
 
-    publication.authors = await attachAuthors(publication, accessToken);
-    publication.ratings = attachRatings(publication, userId);
-
-    const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
-
-    res.locals.version = version;
-    res.locals.publication = publication;
-    res.locals.publicationType = publicationType;
-    res.locals.customTitleTag = `${publicationType.title}: ${publication.title} - Octopus`;
-
-    publication.text = encodeURIComponent(publication.text);
-
-    // debug('octopus:ui:trace')(res.locals);
-    return res.render('publications/view', res.locals);
-  });
+      publication.authors = await attachAuthors(publication, accessToken);
+      publication.ratings = attachRatings(publication, userId);
+      const publicationType = publicationTypes.filter(
+        (type) => type.key === publication.type,
+      )[0];
+      res.locals.version = version;
+      res.locals.publication = publication;
+      res.locals.publicationType = publicationType;
+      res.locals.customTitleTag = `${publicationType.title}: ${publication.title} - Octopus`;
+      res.locals.publications = publications;
+      publication.text = encodeURIComponent(publication.text);
+      // debug('octopus:ui:trace')(res.locals);
+      return res.render('publications/view', res.locals);
+    },
+  );
 };

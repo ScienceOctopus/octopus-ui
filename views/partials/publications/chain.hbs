@@ -1,43 +1,45 @@
-<div class="pubChainContainer">
+<div class="pubChainContainer" data-publication="{{publication._id}}">
   <div class="pubChainControls">
-    <a href="#" class="btn btn-primary btn-md"
-    onclick="OctopusApp.togglePubChainVisibility()"
-    data-toggle="tooltip" data-placement="right"
-    title="Show/hide publication chain."
-    >
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainVisibility()" data-toggle="tooltip"
+      data-placement="right" title="Show/hide publication chain.">
       <span class="fa fa-fw fa-chevron-up"></span>
     </a>
-
-    <a href="#" class="btn btn-primary btn-md"
-    onclick="OctopusApp.togglePubChainAutoshrink()"
-    data-toggle="tooltip" data-placement="right"
-    title="Automatically shrink the columns to fit window width."
-    >
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainAutoshrink()" data-toggle="tooltip"
+      data-placement="right" title="Automatically shrink the columns to fit window width.">
       <span class="fa fa-fw fa-arrows-h" title="Autoshrink columns to fit window width"></span>
     </a>
-
-    <a href="#" class="btn btn-primary btn-md"
-    onclick="OctopusApp.togglePubChainMode()"
-    data-toggle="tooltip" data-placement="right"
-    title="Toggle publication chain mode (columns or graph)"
-    >
+    <a href="#" class="btn btn-primary btn-md" onclick="OctopusApp.togglePubChainMode()" data-toggle="tooltip"
+      data-placement="right" title="Toggle publication chain mode (columns or graph)">
       <span class="fa fa-fw fa-sitemap"></span>
     </a>
   </div>
 
   <div class="pubChain">
     <div class="pubChainContent">
-      <!-- <p>Publication chain:</p> -->
-
       {{#each publicationTypes}}
         {{#unless (equals this.attributes.displayInPubChain false)}}
-        <div class="typeColumn">
-          <p class="heading">{{this.plural}}</p>
-          <p class="pubItem">Placeholder publication</p>
-        </div>
+            <div class="typeColumn">
+              <p class="heading">{{this.plural}}</p>
+              {{#each ../publications}}
+                {{#if (equals type  ../key)}}
+                  <a id={{_id}} title="{{title}}" href="/publications/view/{{_id}}" class="pubItem" linked="{{toString linkedPublications}}">
+                    <h5 class="title">{{title}}</h5>
+
+                    <div class="authors">
+                      {{#each authors}}
+                      <span>{{name}}</span>
+                      {{/each}}
+                    </div>
+
+                    <div>{{formatDate dateCreated}}</div>
+                    {{!-- {{> rating publication=this publicationType=../this}} --}}
+                  </a>
+                {{/if}}
+              {{/each}}
+            </div>
+            <svg></svg>
         {{/unless}}
       {{/each}}
-
       <div class="clearfix"></div>
     </div>
   </div>
