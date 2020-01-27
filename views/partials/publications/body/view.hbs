@@ -37,8 +37,12 @@
       <hr />
 
       <h3>Full text</h3>
-      <iframe src="data:text/html,{{{publication.text}}}" class="publication-iframe"></iframe>
-
+      <iframe
+        class="publication-iframe"
+        src="data:text/html,<html>
+          <head><meta charset=UTF-8 /></head>
+          <body>{{publication.text}}</body></html>" >
+      </iframe>
       <hr />
 
       <div>
