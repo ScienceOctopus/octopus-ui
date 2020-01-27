@@ -3,7 +3,6 @@
     pubChainVisibility: true
   };
   const OctopusAppElements = {};
-  let lastClickedId;
   // function autofocusSearch() {
   //   $('input#mainSearchInput').focus();
   // }
