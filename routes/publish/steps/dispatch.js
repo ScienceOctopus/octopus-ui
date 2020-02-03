@@ -56,16 +56,27 @@ module.exports = (req, res) => {
 
     if (stepNumber === 2) {
       const publicationTypeDef = _.find(res.locals.publicationTypes, { key: res.locals.publication.type });
-
       const filters = {};
-      if (publicationTypeDef.linksTo[0] !== '*') {
-        filters.type = publicationTypeDef.linksTo[0];
-      }
 
       return api.findPublications(filters, (publicationsErr, pubData) => {
-        const allLinkablePublications = pubData && pubData.results ? _.map(pubData.results, mapResultForDropdown) : [];
+        // Filter publications based on property linksTo
+        const linkablePublications = pubData && pubData.results ? pubData.results.filter(data => {
+          if (publicationTypeDef.linksTo[0] !== '*') {
+            return data.type === publicationTypeDef.linksTo[0];
+          }
+
+          return data;
+        }) : [];
+
+        const allLinkablePublications = linkablePublications ? _.map(linkablePublications, mapResultForDropdown) : [];
         res.locals.linkableApplicationsText = _.uniqBy(allLinkablePublications, (p) => p.type);
         res.locals.allLinkablePublications = allLinkablePublications;
+
+        const relatablePublications = pubData && pubData.results ? pubData.results : [];
+        const allRelatablePublications = relatablePublications ? _.map(relatablePublications, mapResultForDropdown) : [];
+        res.locals.linkableApplicationsText = _.uniqBy(allRelatablePublications, (p) => p.type);
+        res.locals.allRelatablePublications = allRelatablePublications;
+
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
     }

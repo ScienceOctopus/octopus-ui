@@ -35,7 +35,47 @@ function mapCollaborators(collaborators) {
   }));
 }
 
-function mapPublicationData(data) {
+// manage related publications data
+async function mapRelatedPublications(publications, userID) {
+  let relatedPublicationsIDs = toArray(publications);
+  let relatedPublications = [];
+
+  for (let index in relatedPublicationsIDs) {
+    const publicationID = relatedPublicationsIDs[index]
+    const publicationData = await getPublicationByID(publicationID)
+
+    if (publicationData) {
+      relatedPublications.push({
+        publicationID,
+        publicationTitle: publicationData.title,
+        publicationType: publicationData.type,
+        userID,
+        rating: 0,
+        ratings: []
+      })
+    }
+  }
+
+  return relatedPublications;
+}
+
+// await api to return publication data
+function getPublicationByID(publicationID) {
+  return new Promise(resolve =>
+    api.getPublicationByID(publicationID, (publicationErr, publication) => {
+      if (publicationErr || !publication) {
+        debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
+        return res.render('publications/error');
+      }
+
+      return resolve(publication)
+    })
+  )
+}
+
+async function mapPublicationData(data) {
+  const relatedPublications = await mapRelatedPublications(data.relatedPublications, data.userId)
+
   return {
     type: data.publicationType,
     linkedPublications: toArray(data.linkedPublications),
@@ -47,6 +87,7 @@ function mapPublicationData(data) {
     keywords: toArray(data.publicationKeywords),
     fundingStatement: data.fundingStatement,
     coiDeclaration: data.coiDeclaration,
+    relatedPublications,
     carriedOut: !!data.publicationCarriedOut,
     text: data.publicationText,
     file: data.publicationFile,
@@ -54,14 +95,16 @@ function mapPublicationData(data) {
   };
 }
 
-function createNewPublicationObject(data) {
+async function createNewPublicationObject(data) {
+  const mappedPublicationData = await mapPublicationData(data);
+
   const newPublication = {
     status: 'DRAFT',
     revision: 1,
     createdByUser: data.userId,
     dateCreated: new Date(),
     dateLastActivity: new Date(),
-    ...mapPublicationData(data),
+    ...mappedPublicationData,
   };
 
   return newPublication;
@@ -80,6 +123,7 @@ function aggregatePublicationFormState(fields) {
     keywords: fields.publicationKeywords,
     fundingStatement: fields.fundingStatement,
     coiDeclaration: fields.coiDeclaration,
+    relatedPublications: fields.relatedPublications,
     carriedOut: fields.publicationCarriedOut,
     text: fields.publicationText,
     file: fields.publicationFile,
@@ -92,6 +136,7 @@ function aggregatePublicationFormState(fields) {
 module.exports = {
   handleFileUpload,
   mapPublicationData,
+  mapRelatedPublications,
   createNewPublicationObject,
   aggregatePublicationFormState,
 };

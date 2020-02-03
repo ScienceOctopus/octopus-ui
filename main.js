@@ -35,6 +35,7 @@ function startApp() {
   hbs.registerHelper('get', hbsHelpers.get);
   hbs.registerHelper('checkRating', hbsHelpers.checkRating);
   hbs.registerHelper('publicationTypesOptions', hbsHelpers.publicationTypesOptions);
+  hbs.registerHelper('findItemByKey', hbsHelpers.findItemByKey);
 
   // eslint-disable-next-line no-underscore-dangle
   app.engine('hbs', hbs.__express);
@@ -64,6 +65,8 @@ function startApp() {
   app.get('/publications/archive/:publicationID', require('./routes/publications/archive'));
   app.post('/publications/publish/:publicationID', require('./routes/publications/publish'));
   app.post('/publications/rate/:publicationID', require('./routes/publications/rate'));
+  app.post('/publications/related-publications/:publicationID', require('./routes/publications/relatedPublications/add'));
+  app.post('/publications/related-publications/rate/:publicationID/:relatedPublicationID/:rating', require('./routes/publications/relatedPublications/rate'));
 
   app.get('/users/view/:orcid', require('./routes/users/view'));
   app.get('/users/search', require('./routes/users/search'));

@@ -14,10 +14,10 @@ module.exports = (req, res) => {
     return res.render('publish/error', res.locals);
   }
 
-  return formHelpers.parseForm(req, (err, fields, files) => {
+  return formHelpers.parseForm(req, async (err, fields, files) => {
     const fileData = _.first(files);
     const data = { ...fields, userId: req.session.user.orcid };
-    const newPublication = helpers.createNewPublicationObject(data);
+    const newPublication = await helpers.createNewPublicationObject(data);
 
     debug('octopus:ui:trace')(`Saving a file for publication ${newPublication}`);
     debug('octopus:ui:trace')(`Publication file data ${fileData}`);
