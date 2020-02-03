@@ -8,7 +8,7 @@
     </div>
     <div class="row">
       {{#each relatedPublicationRatings}}
-        <form method="POST" action="/publications/related-publications/rate/{{../publication._id}}/{{../relatedPublication._id}}/{{this}}" style="float: left;">
+        <form method="POST" action="/publications/related-publications/rate/{{../publication._id}}/{{../relatedPublication._id}}/{{this}}" class="fa-pull-left">
             <button type="submit" class="btn btn-default">{{this}}</button>
         </form>
       {{/each}}
