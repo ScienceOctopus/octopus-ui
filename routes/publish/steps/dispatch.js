@@ -24,6 +24,7 @@ module.exports = (req, res) => {
   // if wrong step redirect to error page
   if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > 3) {
     res.locals.error = new Error(`Step "${stepNumber}" not found.`);
+    res.locals.linked = query.linked;
     return res.render('publish/error', res.locals);
   }
 

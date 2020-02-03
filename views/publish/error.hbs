@@ -11,7 +11,13 @@
     <br /><br />
   {{/if}}
 
-  <a class="btn btn-lg btn-primary" href="/publish">Try again</a>
+  {{#if linked}}
+    <form method="POST" action="/publish/step/1?linked={{linked}}">
+      <input type="submit" class="btn btn-lg btn-primary" value="Try again">
+    </form>
+  {{else}}
+    <a class="btn btn-lg btn-primary" href="/publish">Try again</a>
+  {{/if}}
 </div>
 
 {{> navTop}}
