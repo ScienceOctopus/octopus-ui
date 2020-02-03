@@ -1,19 +1,24 @@
-<div>
-  <p> You followed a link from the publication <strong>{{relatedPublication.title}}</strong> How useful or strong would you rate this link (-5 to +5)?</p>
 
-  <div class="related-publication__wrap">
-    <div class="align-center">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <p class="panel-title">
+      You followed a link from the publication <strong>{{relatedPublication.title}}</strong>. How useful or strong would you rate this link (-5 to +5)?
+    </p>
+  </div>
+  <div class="panel-body">
+    <div class="related-publication__wrap">
+    <div class="align-center text-right">
       <strong> Not at all useful </strong>
       <p class="mb-0">(this link should be removed)</p>
     </div>
     <div class="row">
       {{#each relatedPublicationRatings}}
-        <form method="POST" action="/publications/related-publications/rate/{{../publication._id}}/{{../relatedPublication._id}}/{{this}}" class="fa-pull-left">
+        <form method="POST" action="/publications/related-publications/rate/{{../publication._id}}/{{../relatedPublication._id}}/{{this}}" class="fa-pull-left mr-1">
             <button type="submit" class="btn btn-default">{{this}}</button>
         </form>
       {{/each}}
     </div>
     <strong class="align-center">Extremely useful</strong>
   </div>
-
+  </div>
 </div>

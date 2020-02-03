@@ -52,7 +52,7 @@ module.exports = (req, res) => {
         return res.render('publish/error', { error: updateErr });
       }
 
-      return res.redirect(`/publications/view/${publicationID}?related=${relatedPublicationID}`);
+      return res.redirect(`/publications/view/${publicationID}`);
     });
   });
 };

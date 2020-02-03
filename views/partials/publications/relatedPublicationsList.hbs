@@ -1,10 +1,11 @@
 <div>
   {{#if publication.relatedPublications.length}}
     {{#each publicationTypes}}
-      <div>
-        <strong> Related {{plural}} </strong>
-      </div>
-
+      {{#if (findItemByKey ../publication.relatedPublications key "publicationType")}}
+        <div>
+          <strong> Related {{plural}} </strong>
+        </div>
+      {{/if}}
       <div class="mb-2">
         {{#each ../publication.relatedPublications}}
           {{#if (equals publicationType  ../key)}}
