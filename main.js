@@ -64,6 +64,8 @@ function startApp() {
   app.get('/publications/archive/:publicationID', require('./routes/publications/archive'));
   app.post('/publications/publish/:publicationID', require('./routes/publications/publish'));
   app.post('/publications/rate/:publicationID', require('./routes/publications/rate'));
+  app.post('/publications/related-publications/:publicationID', require('./routes/publications/relatedPublications/add'));
+  app.post('/publications/related-publications/rate/:publicationID/:relatedPublicationID/:rating', require('./routes/publications/relatedPublications/rate'));
 
   app.get('/users/view/:orcid', require('./routes/users/view'));
   app.get('/users/search', require('./routes/users/search'));

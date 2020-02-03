@@ -55,6 +55,8 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .text-truncate { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .alert { border-radius: 0; border-width: 1px 0}
 .inline-flex { display: inline-flex; }
+.flex { display: flex; }
+.align-center { align-self: center; }
 .lowercase { text-transform: lowercase; }
 /* Homepage */
 .homepageJumbotron p { line-height: 2em; margin: 30px 0 50px; font-size: 16px; }
@@ -104,8 +106,17 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .authors-list { font-size: 13px; }
 .authors-list-separator { margin-left: -4px; }
 /* Spacing utility classes */
-.mb-1 { margin-bottom: 4px; }
+.mr-0 { margin-right: 0; }
+.mr-1 { margin-right: 4px; }
+.mr-2 { margin-right: 8px; }
 .mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 16px; }
+.ml-0 { margin-left: 0; }
+.ml-1 { margin-left: 4px; }
+.ml-2 { margin-left: 8px; }
 /* Bootstrap panels */
 .panel-body.scroll { max-height: 350px; overflow-y: auto; }
 /* Bootstrap select
@@ -125,3 +136,5 @@ Hide the "No results" message since we're using a query to populate it
 .star-rating__input[disabled] + .star-rating__ico { pointer-events: none; }
 /* Versioning */
 .nav-tabs > li > a { padding: 8px 10px; font-size: 13px; }
+/* Publication related publications */
+.related-publication__wrap { display: flex; justify-content: space-between; width: 100%; }

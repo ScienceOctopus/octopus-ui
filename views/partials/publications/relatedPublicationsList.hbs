@@ -1,0 +1,26 @@
+<div>
+  {{#if publication.relatedPublications.length}}
+    {{#each publicationTypes}}
+      <div>
+        <strong> Related {{plural}} </strong>
+      </div>
+
+      <div class="mb-2">
+        {{#each ../publication.relatedPublications}}
+          {{#if (equals publicationType  ../key)}}
+            <div class="related-publication__wrap">
+              <a id={{publicationID}} title="{{publicationTitle}}" href="/publications/view/{{publicationID}}?related={{../../publication._id}}">
+                {{publicationTitle}}
+              </a>
+
+              <div>{{rating}}</div>
+            </div>
+          {{/if}}
+        {{/each}}
+      </div>
+    {{/each}}
+
+  {{else}}
+    <p>No related publications available.</p>
+  {{/if}}
+</div>

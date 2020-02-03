@@ -1,6 +1,13 @@
 <div class="container-fluid" id="mainBody" role="main">
   <div class="row">
     <div class="col-sm-9">
+      {{#if relatedPublication}}
+        <div class="alert alert-info">
+          {{> publications/rateRelatedPublications publicationID=publication._id relatedPublication=relatedPublication relatedPublicationRatings=relatedPublicationRatings }}
+        </div>
+      {{/if}}
+
+
       {{> publications/versionTabs version=version publication=publication}}
 
       <div class="row">
@@ -68,6 +75,20 @@
           {{publication.files}}
         </p>
       </div>
+
+      <hr />
+
+      <div>
+        <h3>Related publications</h3>
+        {{> publications/relatedPublicationsList publication=publication publicationTypes=publicationTypes}}
+      </div>
+
+      <hr />
+
+      <div>
+        <h3>Add a linked publication</h3>
+        {{> publications/addRelatedPublications publication=publication}}
+      </div>
     </div>
 
     <div class="col-sm-3 sidebar">
@@ -121,3 +142,6 @@
     console.log(content);
   }
 </script>
+
+<link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
+<script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
