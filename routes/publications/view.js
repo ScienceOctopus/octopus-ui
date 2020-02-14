@@ -15,10 +15,10 @@ const computePublicationRatings = (publication) => {
   return { total, values };
 };
 
-const computeRelatedPublicationRatings = ratings => {
+const computeRelatedPublicationRatings = (ratings) => {
   const values = [];
 
-  ratings.forEach(rating => values.push(parseInt(rating.rating)));
+  ratings.forEach((rating) => values.push(parseInt(rating.rating, 10)));
 
   const sum = values.reduce((acc, num) => acc + num, 0);
   const total = values.length;
@@ -174,19 +174,19 @@ module.exports = (req, res) => {
 
       if (relatedPublicationID) {
         relatedPublication = await new Promise((resolve) => {
-          return api.getPublicationByID(relatedPublicationID, (publicationErr, publicationData) => {
-            if (publicationErr || _.isEmpty(publicationData)) {
-              debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
+          return api.getPublicationByID(relatedPublicationID, (foundPublicationErr, foundPublicationData) => {
+            if (foundPublicationErr || _.isEmpty(foundPublicationData)) {
+              debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${foundPublicationErr}`);
               return res.render('publications/error');
             }
 
-            return resolve(publicationData)
-          })
-        })
+            return resolve(foundPublicationData);
+          });
+        });
 
         const specificRelatedPub = await relatedPublicationHelpers.getSpecificRelatedPub(publicationID, relatedPublicationID);
 
-        if ( specificRelatedPub ) {
+        if (specificRelatedPub) {
           const { ratings } = specificRelatedPub;
           const userAlredyRated = ratings.some((userRating) => userRating.createdByUser === userId);
           relatedPublication.userAlredyRated = userAlredyRated;
@@ -196,19 +196,21 @@ module.exports = (req, res) => {
       }
 
       // get all the related publications for current publication
-      let relatedPublications = await new Promise(async (resolve) => {
-        const allRelatedPubsByPubID = await relatedPublicationHelpers.getRelatedPubsByPubID(publicationID);
-        const allRelatedPubsByRelatedTo = await relatedPublicationHelpers.getRelatedPubsByRelatedTo(publicationID);
-        const allRelatedPublications = allRelatedPubsByPubID.concat(allRelatedPubsByRelatedTo);
-        return resolve(allRelatedPublications);
+      const relatedPublications = await new Promise((resolve) => {
+        (async () => {
+          const allRelatedPubsByPubID = await relatedPublicationHelpers.getRelatedPubsByPubID(publicationID);
+          const allRelatedPubsByRelatedTo = await relatedPublicationHelpers.getRelatedPubsByRelatedTo(publicationID);
+          const allRelatedPublications = allRelatedPubsByPubID.concat(allRelatedPubsByRelatedTo);
+          return resolve(allRelatedPublications);
+        })();
       });
 
       // get info for all related publications from the current publication
-      const mapRelatedPublications = await new Promise(async resolve => {
+      const mapRelatedPublications = await new Promise(async (resolve) => {
         const relatedPubs = [];
 
         const mappedRelatedPubs = await Promise.all(
-          relatedPublications.map(async relatedPub => {
+          relatedPublications.map(async (relatedPub) => {
             const { publicationID, relatedTo, ratings } = relatedPub;
             let rating;
 
@@ -219,39 +221,41 @@ module.exports = (req, res) => {
               rating = computeRelatedPublicationRatings(ratings);
             }
 
-
-            const relatedPubByRelatedTo = await new Promise(resolve =>
-              api.getPublicationByID(relatedTo, (err, foundPub) =>
-                !foundPub ? resolve() : resolve({
+            const relatedPubByRelatedTo = await new Promise((resolve) => api.getPublicationByID(relatedTo, (err, foundPub) => {
+              if (foundPub) {
+                return resolve({
                   ...relatedPub,
                   rating,
                   filterID: foundPub._id,
                   publicationType: foundPub.type,
-                  publicationTitle: foundPub.title
-                })
-              )
-            );
+                  publicationTitle: foundPub.title,
+                });
+              }
 
-            const relatedPubByPublicationId = await new Promise(resolve =>
-              api.getPublicationByID(publicationID, (err, foundPub) =>
-                !foundPub ? resolve() :resolve({
+              return resolve();
+            }));
+
+            const relatedPubByPublicationId = await new Promise((resolve) => api.getPublicationByID(publicationID, (err, foundPub) => {
+              if (foundPub) {
+                return resolve({
                   ...relatedPub,
                   rating,
                   filterID: foundPub._id,
                   publicationType: foundPub.type,
-                  publicationTitle: foundPub.title
-                })
-              )
-            );
+                  publicationTitle: foundPub.title,
+                });
+              }
+
+              return resolve();
+            }));
 
             relatedPubs.push(relatedPubByRelatedTo);
             relatedPubs.push(relatedPubByPublicationId);
-            return;
-          })
+          }),
         );
 
         // Remove current publication from relatable publications
-        const filteredPubs = relatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id)
+        const filteredPubs = relatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id);
 
         if (publication.status === 'DRAFT') {
           return resolve(filteredPubs);

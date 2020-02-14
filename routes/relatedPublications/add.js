@@ -5,6 +5,23 @@ const api = require('../../lib/api');
 const formHelpers = require('../../lib/form');
 const helpers = require('./helpers');
 
+function insertRelatedPublications(relatedPublication, res) {
+  api.createRelatedPublication(
+    relatedPublication,
+    (createRelatedPubErr, createRelatedPubResult) => {
+      if (
+        createRelatedPubErr
+        || !createRelatedPubResult
+        || !createRelatedPubResult.insertedId
+      ) {
+        return res.render('publish/error', { error: createRelatedPubErr });
+      }
+
+      return createRelatedPubResult;
+    },
+  );
+}
+
 module.exports = async (req, res) => {
   const publicationID = _.get(req, 'params.publicationID');
   const userId = _.get(req, 'session.user.orcid');
@@ -31,7 +48,6 @@ module.exports = async (req, res) => {
         if (err) {
           return res.render('publish/error', { error: err });
         }
-        
         debug('octopus:ui:trace')(fields, files);
 
         const { addRelatedPublications } = fields;
@@ -40,27 +56,12 @@ module.exports = async (req, res) => {
         const newRelatedPublications = await helpers.mapRelatedPublications(
           publicationID,
           addRelatedPublications,
-          userId
+          userId,
         );
 
-        newRelatedPublications.forEach(pub => insertRelatedPublications(pub));
+        newRelatedPublications.forEach((pub) => insertRelatedPublications(pub, res));
         return res.redirect(`/publications/view/${publicationID}`);
       });
-    }
+    },
   );
 };
-
-function insertRelatedPublications(relatedPublication) {
-  api.createRelatedPublication(
-    relatedPublication,
-    (createRelatedPubErr, createRelatedPubResult) => {
-      if (
-        createRelatedPubErr ||
-        !createRelatedPubResult ||
-        !createRelatedPubResult.insertedId
-      ) {
-        return res.render('publish/error', { error: createRelatedPubErr });
-      }
-    }
-  );
-}

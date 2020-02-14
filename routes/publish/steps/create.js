@@ -6,6 +6,23 @@ const helpers = require('./helpers');
 const formHelpers = require('../../../lib/form');
 const relatedPublicationHelpers = require('../../relatedPublications/helpers');
 
+function insertRelatedPublications(relatedPublication, res) {
+  api.createRelatedPublication(
+    relatedPublication,
+    (createRelatedPubErr, createRelatedPubResult) => {
+      if (
+        createRelatedPubErr
+        || !createRelatedPubResult
+        || !createRelatedPubResult.insertedId
+      ) {
+        return res.render('publish/error', { error: createRelatedPubErr });
+      }
+
+      return createRelatedPubResult;
+    },
+  );
+}
+
 module.exports = (req, res) => {
   debug('octopus:ui:debug')('Saving a publication');
 
@@ -38,28 +55,13 @@ module.exports = (req, res) => {
         const newRelatedPublications = await relatedPublicationHelpers.mapRelatedPublications(
           insertedId,
           relatedPublications,
-          userId
+          userId,
         );
 
-        newRelatedPublications.forEach(pub => insertRelatedPublications(pub));
+        newRelatedPublications.forEach((pub) => insertRelatedPublications(pub, res));
 
         return res.redirect(`/publications/view/${createPubResult.insertedId}`);
-      }
+      },
     );
   });
 };
-
-function insertRelatedPublications(relatedPublication) {
-  api.createRelatedPublication(
-    relatedPublication,
-    (createRelatedPubErr, createRelatedPubResult) => {
-      if (
-        createRelatedPubErr ||
-        !createRelatedPubResult ||
-        !createRelatedPubResult.insertedId
-      ) {
-        return res.render('publish/error', { error: createRelatedPubErr });
-      }
-    }
-  );
-}

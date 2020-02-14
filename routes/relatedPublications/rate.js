@@ -19,22 +19,22 @@ module.exports = async (req, res) => {
   }
 
   // Get Related Publication data by ID
-  let relatedPublication = await helpers.getSpecificRelatedPub(
+  const relatedPublication = await helpers.getSpecificRelatedPub(
     publicationID,
-    relatedPublicationID
+    relatedPublicationID,
   );
   const { ratings } = relatedPublication;
 
   // Check if user already rated
   const userAlredyRated = ratings.some(
-    rating => rating.createdByUser === userId
+    (rating) => rating.createdByUser === userId,
   );
 
   if (!userAlredyRated) {
     const newRating = {
       createdByUser: userId,
       rating: incomingRating,
-      dateCreated: new Date()
+      dateCreated: new Date(),
     };
 
     relatedPublication.ratings.push(newRating);
@@ -48,13 +48,13 @@ module.exports = async (req, res) => {
         }
 
         return res.redirect(
-          `/publications/view/${publicationID}/?related=${relatedPublicationID}`
+          `/publications/view/${publicationID}/?related=${relatedPublicationID}`,
         );
-      }
+      },
     );
   }
 
   return res.render('publish/error', {
-    error: 'You already rated this Related publication'
+    error: 'You already rated this Related publication',
   });
 };

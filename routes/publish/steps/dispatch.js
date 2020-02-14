@@ -64,12 +64,12 @@ module.exports = (req, res) => {
 
       return api.findPublications(filters, (publicationsErr, pubData) => {
         // Filter publications based on property linksTo
-        const linkablePublications = pubData && pubData.results ? pubData.results.filter(data => {
+        const linkablePublications = pubData && pubData.results ? pubData.results.filter((result) => {
           if (publicationTypeDef.linksTo[0] !== '*') {
-            return data.type === publicationTypeDef.linksTo[0];
+            return result.type === publicationTypeDef.linksTo[0];
           }
 
-          return data;
+          return result;
         }) : [];
 
         const allLinkablePublications = linkablePublications ? _.map(linkablePublications, mapResultForDropdown) : [];

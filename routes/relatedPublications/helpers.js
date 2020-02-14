@@ -11,31 +11,33 @@ function toArray(string) {
 }
 
 // get related publications by publicationID
-const getRelatedPubsByPubID = publicationID =>
-  new Promise(resolve =>
-    api.findRelatedPublications(
+const getRelatedPubsByPubID = (publicationID) => {
+  return new Promise((resolve) => {
+    return api.findRelatedPublications(
       { publicationID },
-      (relatedPubErr, relatedPubs) => resolve(relatedPubs)
-    )
-  );
+      (relatedPubErr, relatedPubs) => resolve(relatedPubs),
+    );
+  });
+};
 
 // get related publications by relatedTo
-const getRelatedPubsByRelatedTo = publicationID =>
-  new Promise(resolve =>
-    api.findRelatedPublications(
+const getRelatedPubsByRelatedTo = (publicationID) => {
+  return new Promise((resolve) => {
+    return api.findRelatedPublications(
       { relatedTo: publicationID },
-      (relatedPubErr, relatedPubs) => resolve(relatedPubs)
-    )
-  );
+      (relatedPubErr, relatedPubs) => resolve(relatedPubs),
+    );
+  });
+};
 
 // get related publication by publicationId and relatedTo and vice versa
-const getSpecificRelatedPub = async (publicationID, relatedTo) =>
-  await new Promise(async resolve => {
+const getSpecificRelatedPub = (publicationID, relatedTo) => {
+  return new Promise(async (resolve) => {
     let relatedPublication;
     const query = { publicationID, relatedTo };
 
-    relatedPublication = await new Promise(resolve =>
-      api.findRelatedPublications(
+    relatedPublication = await new Promise((resolve) => {
+      return api.findRelatedPublications(
         query,
         (relatedPublicationsErr, relatedPublication) => {
           if (relatedPublicationsErr) {
@@ -43,18 +45,18 @@ const getSpecificRelatedPub = async (publicationID, relatedTo) =>
           }
 
           return resolve(relatedPublication);
-        }
-      )
-    );
+        },
+      );
+    });
 
     if (_.isEmpty(relatedPublication)) {
       const newQuery = {
         publicationID: relatedTo,
-        relatedTo: publicationID
+        relatedTo: publicationID,
       };
 
-      relatedPublication = await new Promise(resolve =>
-        api.findRelatedPublications(
+      relatedPublication = await new Promise((resolve) => {
+        return api.findRelatedPublications(
           newQuery,
           (relatedPublicationsErr, relatedPublication) => {
             if (relatedPublicationsErr) {
@@ -62,27 +64,28 @@ const getSpecificRelatedPub = async (publicationID, relatedTo) =>
             }
 
             return resolve(relatedPublication);
-          }
-        )
-      );
+          },
+        );
+      });
     }
 
     return resolve(relatedPublication[0]);
   });
+};
 
 // manage related publications data
 async function mapRelatedPublications(publicationID, relatedPubs, userID) {
-  let relatedPublicationsIDs = toArray(relatedPubs);
-  let relatedPublications = [];
+  const relatedPublicationsIDs = toArray(relatedPubs);
+  const relatedPublications = [];
 
-  relatedPublicationsIDs.forEach(relatedPubID => {
+  relatedPublicationsIDs.forEach((relatedPubID) => {
     // publication A is related to publication B
     relatedPublications.push({
       publicationID,
       relatedTo: relatedPubID,
       createdByUser: userID,
       ratings: [],
-      dateCreated: new Date()
+      dateCreated: new Date(),
     });
   });
 
@@ -93,12 +96,12 @@ const attachRelatablePublications = (publications, publication) => {
   const { relatedPublications } = publication;
 
   // Extract only used keys from publications
-  const publicationsData = publications.map(pub => {
+  const publicationsData = publications.map((pub) => {
     return {
       _id: pub._id,
       title: pub.title,
       type: pub.type,
-      createdByUser: pub.createdByUser
+      createdByUser: pub.createdByUser,
     };
   });
 
@@ -108,12 +111,12 @@ const attachRelatablePublications = (publications, publication) => {
     const allRelatablePublications = _.differenceWith(
       publicationsData,
       relatedPublications,
-      (a, b) => a._id === b.relatedTo
+      (a, b) => a._id === b.relatedTo,
     );
 
     // Remove current publication from allRelatablePublications
     const relatablePublications = allRelatablePublications.filter(
-      relatablePub => relatablePub._id !== publication._id
+      (relatablePub) => relatablePub._id !== publication._id,
     );
 
     return relatablePublications;
@@ -121,7 +124,7 @@ const attachRelatablePublications = (publications, publication) => {
 
   // Remove current publication from relatable publications
   const relatablePublications = publicationsData.filter(
-    relatablePub => relatablePub._id !== publication._id
+    (relatablePub) => relatablePub._id !== publication._id,
   );
 
   return relatablePublications;
@@ -132,5 +135,5 @@ module.exports = {
   getRelatedPubsByRelatedTo,
   getSpecificRelatedPub,
   mapRelatedPublications,
-  attachRelatablePublications
+  attachRelatablePublications,
 };

@@ -35,7 +35,9 @@
     "no-caller": "error",
     "quotes": [ "warn", "single" ],
     "no-undef": "error",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-underscore-dangle":  ["error", { "allow": ["_id"] }],
+    "no-async-promise-executor": "off"
   },
 
   "overrides": [
