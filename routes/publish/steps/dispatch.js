@@ -36,13 +36,17 @@ module.exports = (req, res) => {
 
   return formHelpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
+    const { relatedPublications } = fields;
     const data = { ...fields, userId: req.session.user.orcid };
     const publicationFormState = helpers.aggregatePublicationFormState(data);
 
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
+
     res.locals.publishStepNumber = stepNumber;
     res.locals.publication = publicationFormState;
     res.locals.linkedPublicationId = query.linked;
+    res.locals.relatedPublications = relatedPublications;
+
     debug('octopus:ui:trace')(res.locals);
 
     if (stepNumber === 1 && query.linked) {

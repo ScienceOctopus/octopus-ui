@@ -1,14 +1,16 @@
 <div>
-  <p>You can select multiple publications that you think are related to this one and are not already linked to it.</p>
+  <p>You can select multiple publications that you think are related to this one and are not already related to it.</p>
 
-  <form method="POST" action="/publications/related-publications/{{publication._id}}" class="flex">
+  <form method="POST" action="/related-publications/{{publication._id}}" class="flex">
     {{#if publication.relatablePublications}}
-      <select multiple id="addRelatedPublications" name="addRelatedPublications" class="form-control selectpicker mr-1" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
+      <select multiple id="addRelatedPublications" name="addRelatedPublications" class="form-control selectpicker mr-1"
+        data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check"
+        data-none-selected-text="Please select which publication you wish to relate to">
         {{#each publication.relatablePublications}}
           <option value="{{this._id}}" title="{{this.title}}" data-subtext="{{this.type}}">
             {{this.title}}
           </option>
-        {{/each}}
+          {{/each}}
       </select>
 
       <button type="submit" class="btn btn-md btn-primary ml-1">Add</button>
