@@ -90,6 +90,23 @@ const attachPreviousRatings = async ({ _id }) => {
   return prevRatings;
 };
 
+// Count publications based on type
+const typeCounter = (publicationTypes, publications) => {
+  const countedPublications = [];
+
+  publicationTypes.forEach((publicationType) => {
+    const filteredPublications = publications.filter(
+      (publication) => publication.type === publicationType.key,
+    );
+
+    countedPublications.push({
+      type: publicationType.key,
+      counter: filteredPublications.length,
+    });
+  });
+
+  return countedPublications;
+};
 
 module.exports = (req, res) => {
   const userId = _.get(req, 'session.user.orcid');
@@ -277,6 +294,7 @@ module.exports = (req, res) => {
 
       const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
       const relatedPublicationRatings = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+      const countedPublications = typeCounter(publicationTypes, publications);
 
       res.locals.version = version;
       res.locals.publication = publication;
@@ -285,6 +303,7 @@ module.exports = (req, res) => {
       res.locals.publications = publications;
       res.locals.relatedPublication = relatedPublication;
       res.locals.relatedPublicationRatings = relatedPublicationRatings;
+      res.locals.countedPublications = countedPublications;
 
       debug('octopus:ui:trace')(res.locals);
 
