@@ -3,6 +3,7 @@ const _ = require('lodash');
 
 const api = require('../../lib/api');
 const userHelpers = require('../users/helpers');
+const relatedPublicationHelpers = require('../relatedPublications/helpers');
 
 const computePublicationRatings = (publication) => {
   const total = _.keys(publication.ratings).length;
@@ -14,19 +15,16 @@ const computePublicationRatings = (publication) => {
   return { total, values };
 };
 
-// const computeRelatedPublicationRatings = (relatedPublication) => {
-//   console.log('relatedPublication', relatedPublication);
-//   const  { ratings } = relatedPublication;
-//   console.log('ratings', ratings);
-//   const values = [];
+const computeRelatedPublicationRatings = (ratings) => {
+  const values = [];
 
-//   ratings.forEach((rating) => values.push(rating.rating))
+  ratings.forEach((rating) => values.push(parseInt(rating.rating, 10)));
 
-//   const sum = values.reduce((a, b) => a + b, 0);
-//   const total = values.length;
+  const sum = values.reduce((acc, num) => acc + num, 0);
+  const total = values.length;
 
-//   return Math.round(sum / total) || 0;
-// }
+  return Math.round(sum / total) || 0;
+};
 
 const attachAuthors = async (publication, accessToken) => {
   if (!publication.collaborators || !publication.collaborators.length) {
@@ -92,25 +90,6 @@ const attachPreviousRatings = async ({ _id }) => {
   return prevRatings;
 };
 
-const attachRelatablePublications = (publications, publication) => {
-  const { relatedPublications } = publication;
-
-  if (relatedPublications && relatedPublications.length > 0) {
-    // Filter - the ones that have not been already related to current publication
-    // This list contains the current publication too
-    const allRelatablePublications = _.differenceWith(publications, relatedPublications,
-      (a,b) => a._id === b.publicationID
-    );
-
-    // Remove current publication from allRelatablePublications
-    const relatablePublications = allRelatablePublications.filter((relatablePub) => relatablePub._id !== publication._id);
-    return relatablePublications;
-  }
-
-  // Remove current publication from relatable publications
-  const relatablePublications = publications.filter((relatablePub) => relatablePub._id !== publication._id);
-  return relatablePublications;
-}
 
 module.exports = (req, res) => {
   const userId = _.get(req, 'session.user.orcid');
@@ -121,6 +100,7 @@ module.exports = (req, res) => {
 
   const { publicationTypes } = res.locals;
   let relatedPublication;
+
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
 
   return api.getPublicationByID(
@@ -194,21 +174,106 @@ module.exports = (req, res) => {
 
       if (relatedPublicationID) {
         relatedPublication = await new Promise((resolve) => {
-          return api.getPublicationByID(relatedPublicationID, (publicationErr, publicationData) => {
-            if (publicationErr || _.isEmpty(publicationData)) {
-              debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${publicationErr}`);
+          return api.getPublicationByID(relatedPublicationID, (foundPublicationErr, foundPublicationData) => {
+            if (foundPublicationErr || _.isEmpty(foundPublicationData)) {
+              debug('octopus:ui:error')(`Error when trying to load Publication ${publicationID}: ${foundPublicationErr}`);
               return res.render('publications/error');
             }
 
-            return resolve(publicationData)
-          })
-        })
+            return resolve(foundPublicationData);
+          });
+        });
+
+        const specificRelatedPub = await relatedPublicationHelpers.getSpecificRelatedPub(publicationID, relatedPublicationID);
+
+        if (specificRelatedPub) {
+          const { ratings } = specificRelatedPub;
+          const userAlredyRated = ratings.some((userRating) => userRating.createdByUser === userId);
+          relatedPublication.userAlredyRated = userAlredyRated;
+        } else {
+          relatedPublication.relatedPublication = false;
+        }
       }
+
+      // get all the related publications for current publication
+      const relatedPublications = await new Promise((resolve) => {
+        (async () => {
+          const allRelatedPubsByPubID = await relatedPublicationHelpers.getRelatedPubsByPubID(publicationID);
+          const allRelatedPubsByRelatedTo = await relatedPublicationHelpers.getRelatedPubsByRelatedTo(publicationID);
+          const allRelatedPublications = allRelatedPubsByPubID.concat(allRelatedPubsByRelatedTo);
+          return resolve(allRelatedPublications);
+        })();
+      });
+
+      // get info for all related publications from the current publication
+      const mapRelatedPublications = await new Promise(async (resolve) => {
+        const relatedPubs = [];
+
+        const mappedRelatedPubs = await Promise.all(
+          relatedPublications.map(async (relatedPub) => {
+            const { publicationID, relatedTo, ratings } = relatedPub;
+            let rating;
+
+            // No ratings for draft publications
+            if (publication.status === 'DRAFT') {
+              rating = null;
+            } else {
+              rating = computeRelatedPublicationRatings(ratings);
+            }
+
+            const relatedPubByRelatedTo = await new Promise((resolve) => api.getPublicationByID(relatedTo, (err, foundPub) => {
+              if (foundPub) {
+                return resolve({
+                  ...relatedPub,
+                  rating,
+                  filterID: foundPub._id,
+                  publicationType: foundPub.type,
+                  publicationTitle: foundPub.title,
+                });
+              }
+
+              return resolve();
+            }));
+
+            const relatedPubByPublicationId = await new Promise((resolve) => api.getPublicationByID(publicationID, (err, foundPub) => {
+              if (foundPub) {
+                return resolve({
+                  ...relatedPub,
+                  rating,
+                  filterID: foundPub._id,
+                  publicationType: foundPub.type,
+                  publicationTitle: foundPub.title,
+                });
+              }
+
+              return resolve();
+            }));
+
+            relatedPubs.push(relatedPubByRelatedTo);
+            relatedPubs.push(relatedPubByPublicationId);
+          }),
+        );
+
+        // Remove current publication from relatable publications
+        const filteredPubs = relatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id);
+
+        if (publication.status === 'DRAFT') {
+          return resolve(filteredPubs);
+        }
+
+        if (publication.status === 'LIVE') {
+          const filteredRelatedPubs = filteredPubs.filter(({ rating }) => rating >= 0);
+          return resolve(filteredRelatedPubs);
+        }
+
+        return resolve();
+      });
 
       publication.authors = await attachAuthors(publication, accessToken);
       publication.ratings = attachRatings(publication, userId);
-      publication.relatablePublications = attachRelatablePublications(publications, publication);
       publication.text = encodeURIComponent(publication.text);
+      publication.relatedPublications = mapRelatedPublications;
+      publication.relatablePublications = relatedPublicationHelpers.attachRelatablePublications(publications, publication);
 
       const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
       const relatedPublicationRatings = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];

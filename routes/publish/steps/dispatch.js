@@ -36,13 +36,17 @@ module.exports = (req, res) => {
 
   return formHelpers.parseForm(req, (err, fields, files) => {
     const fileData = _.first(files);
+    const { relatedPublications } = fields;
     const data = { ...fields, userId: req.session.user.orcid };
     const publicationFormState = helpers.aggregatePublicationFormState(data);
 
     debug('octopus:ui:trace')(`Step ${stepNumber}, publication ${publicationFormState}`);
+
     res.locals.publishStepNumber = stepNumber;
     res.locals.publication = publicationFormState;
     res.locals.linkedPublicationId = query.linked;
+    res.locals.relatedPublications = relatedPublications;
+
     debug('octopus:ui:trace')(res.locals);
 
     if (stepNumber === 1 && query.linked) {
@@ -60,12 +64,12 @@ module.exports = (req, res) => {
 
       return api.findPublications(filters, (publicationsErr, pubData) => {
         // Filter publications based on property linksTo
-        const linkablePublications = pubData && pubData.results ? pubData.results.filter(data => {
+        const linkablePublications = pubData && pubData.results ? pubData.results.filter((result) => {
           if (publicationTypeDef.linksTo[0] !== '*') {
-            return data.type === publicationTypeDef.linksTo[0];
+            return result.type === publicationTypeDef.linksTo[0];
           }
 
-          return data;
+          return result;
         }) : [];
 
         const allLinkablePublications = linkablePublications ? _.map(linkablePublications, mapResultForDropdown) : [];

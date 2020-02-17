@@ -109,6 +109,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .mr-0 { margin-right: 0; }
 .mr-1 { margin-right: 4px; }
 .mr-2 { margin-right: 8px; }
+.mr-3 { margin-right: 16px; }
 .mt-0 { margin-top: 0; }
 .mb-0 { margin-bottom: 0; }
 .mb-1 { margin-bottom: 4px; }

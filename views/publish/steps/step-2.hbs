@@ -107,13 +107,13 @@
     </div>
 
     <div class="form-group">
-      <label for="relatedPublications">9. Link to related publications</label>
+      <label for="relatedPublications">9. Add related publications</label>
 
       {{#if allRelatablePublications}}
-        <p>Are there any other publications in Octopus that you think readers of this publication should be aware of (excluding those above this one in the publication chain which it will already be linked to)? This is particularly useful for linking between different fields of science.You can make multiple selections.
+        <p>Are there any other publications in Octopus that you think readers of this publication should be aware of (excluding those above this one in the publication chain which it will already be related to)? This is particularly useful for relating between different fields of science.You can make multiple selections.
         </p>
 
-        <select multiple id="relatedPublications" name="relatedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
+        <select multiple id="relatedPublications" name="relatedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to relate to">
           {{#each allRelatablePublications}}
             <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
               {{#if (equals ../relatedPublicationId this.id)}}selected{{/if}}>
