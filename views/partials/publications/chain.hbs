@@ -18,8 +18,15 @@
     <div class="pubChainContent">
       {{#each publicationTypes}}
         {{#unless (equals this.attributes.displayInPubChain false)}}
-            <div class="typeColumn">
+            <div class="typeColumn" style="position: relative;">
               <p class="heading">{{this.plural}}</p>
+
+              {{#each ../countedPublications}}
+                {{#if (equals type  ../key)}}
+                  <div class="counter">{{counter}}</div>
+                {{/if}}
+              {{/each}}
+
               {{#each ../publications}}
                 {{#if (equals type  ../key)}}
                   <a id={{_id}} title="{{title}}" href="/publications/view/{{_id}}" class="pubItem" linked="{{toString linkedPublications}}">
