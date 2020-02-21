@@ -47,9 +47,27 @@
       <label>2. Authors</label>
 
       <p>All authors need to have an ORCiD number with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
-      <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
-        <option default value="{{user.orcid}}" title="{{user.name}}" data-subtext="{{user.organization.name}}" selected>{{user.name}}</option>
-      </select>
+
+      <ul id="publicationCollaboratorsList">
+        <li class="flex mb-3" id="publicationCollaborator0">
+          <i class="btn btn-link">
+            <i class="fa fa-sort"></i>
+          </i>
+
+          <select id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker mr-3 haaaatz" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
+            <option default value="{{user.orcid}}" title="{{user.name}}" data-subtext="{{user.organization.name}}" selected>{{user.name}}</option>
+          </select>
+
+          <button onclick="removeCollaboratorField(0)" class="btn btn-danger ml-3">
+            <i class="fa fa-trash"></i>
+          </button>
+        </li>
+      </ul>
+
+      <button type="button" onClick="addCollaboratorField()" class="btn btn-primary ml-2">
+        <i class="fa fa-plus"></i>
+        Add an author
+      </button>
     </div>
 
     <div class="form-group">
@@ -146,7 +164,44 @@
 <link rel="stylesheet" href="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.css">
 <script src="/public/vendor/bootstrap-select-1.13.9/bootstrap-select.min.js"></script>
 <script src="/public/js/authorsSearch.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 {{> navTop}}
 
 {{> footer}}
+
+<script>
+  let fieldCounter = 1;
+  function addCollaboratorField() {
+    const selectField = `
+      <li class="flex mb-3" id="publicationCollaborator${fieldCounter}">
+        <i class="btn btn-link">
+          <i class="fa fa-sort"></i>
+        </i>
+
+        <select id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker mr-3 haaaatz" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select your co-author" data-size="10">
+          <option default value="{{user.orcid}}" title="{{user.name}}" data-subtext="{{user.organization.name}}" selected>{{user.name}}</option>
+        </select>
+
+        <button onclick="removeCollaboratorField(${fieldCounter})" class="btn btn-danger ml-3">
+          <i class="fa fa-trash"></i>
+        </button>
+      </li>
+    `;
+
+    $('#publicationCollaboratorsList').append($(selectField));
+    $(".selectpicker").selectpicker("render");
+
+    fieldCounter++;
+  }
+
+  function removeCollaboratorField(fieldCounter) {
+    $(`#publicationCollaborator${fieldCounter}`).remove();
+    $(".selectpicker").selectpicker("render");
+  }
+
+  $( function() {
+    $("#publicationCollaboratorsList").sortable();
+    $("#publicationCollaboratorsList").disableSelection();
+  } );
+</script>
