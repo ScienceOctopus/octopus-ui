@@ -121,6 +121,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .ml-2 { margin-left: 8px; }
 .ml-3 { margin-left: 16px; }
 .pl-0 { padding-left: 0; }
+.bg-white { background: white !important; }
 /* Bootstrap panels */
 .panel-body.scroll { max-height: 350px; overflow-y: auto; }
 /* Bootstrap select

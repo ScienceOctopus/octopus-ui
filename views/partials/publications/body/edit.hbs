@@ -52,6 +52,21 @@
           <textarea class="form-control" id="publicationCoiDeclaration"
             name="publicationCoiDeclaration">{{publication.coiDeclaration}}</textarea>
         </p>
+
+        <p>
+          <strong for="copyrightLicence">CC-BY Licence</strong>
+
+          <select required id="copyrightLicence" name="copyrightLicence" class="form-control selectpicker">
+            <option selected value={{publication.copyrightLicence}}> {{publication.copyrightLicence}}</option>
+            <option value="CC-BY" title="CC BY"> CC BY </option>
+            <option value="CC-BY-SA" title="CC BY-SA"> CC BY-SA </option>
+            <option value="CC-BY-ND" title="CC BY-ND"> CC BY-ND </option>
+            <option value="CC-BY-NC" title="CC BY-NC"> CC BY-NC </option>
+            <option value="CC-BY-NC-SA" title="CC BY-NC-SA"> CC BY-NC-SA </option>
+            <option value="CC-BY-NC-ND" title="CC BY-NC-ND"> CC BY-NC-ND </option>
+          </select>
+        </p>
+
         <p>
           <strong>Keywords:</strong>
           <br />

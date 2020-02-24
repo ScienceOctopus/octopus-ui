@@ -21,18 +21,15 @@ module.exports = (req, res) => {
       return res.redirect(`/publications/view/${publicationID}`);
     }
 
-
-    return formHelpers.parseForm(req, (err, fields, files) => {
+    return formHelpers.parseForm(req, async (err, fields, files) => {
       if (err) {
         return res.render('publish/error', { error: err });
       }
 
-      const publicationData = publishHelpers.mapPublicationData(fields);
+      const publicationData = await publishHelpers.mapPublicationData(fields);
       const updatedPublication = { _id: publicationID, ...publicationData };
 
       debug('octopus:ui:trace')(fields, files);
-
-      console.log(publicationData);
 
       // update publication object
       return api.updatePublication(updatedPublication, (updateErr, updateData) => {
