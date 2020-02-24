@@ -1,13 +1,11 @@
 (() => {
   $(document).ready(() => {
-    initCollaboratorsSearch();
+    initCollaboratorsSearch($('.publicationCollaborator select'));
   });
 })();
 
 // Collaborators dynamic search - used in 2nd step of publishing
-function initCollaboratorsSearch() {
-  const $collaboratorsSelect = $("#publicationCollaborators");
-
+function initCollaboratorsSearch($collaboratorsSelect) {
   if (!$collaboratorsSelect.length) {
     return;
   }

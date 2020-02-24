@@ -127,7 +127,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 /* Bootstrap select
 Hide the "No results" message since we're using a query to populate it
 */
-#publicationCollaborators ~ .dropdown-menu .no-results { display: none; }
+#publicationCollaboratorsList .dropdown-menu .no-results { display: none; }
 #publicationCollaboratorsList { list-style-type: none; margin: 0; padding: 0; width: 100%; }
 /* Rating */
 .star-rating { font-size: 0; margin-bottom: 10px; }
