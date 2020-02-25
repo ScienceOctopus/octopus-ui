@@ -75,7 +75,7 @@ const getSpecificRelatedPub = (publicationID, relatedTo) => {
 
 // manage related publications data
 async function mapRelatedPublications(publicationID, relatedPubs, userID) {
-  const relatedPublicationsIDs = toArray(relatedPubs);
+  const relatedPublicationsIDs = toArray(relatedPubs) || [];
   const relatedPublications = [];
 
   relatedPublicationsIDs.forEach((relatedPubID) => {
