@@ -72,7 +72,7 @@
               </option>
           </select>
 
-          <button onclick="removeCollaboratorField(this)" class="btn btn-danger ml-1">
+          <button type="button" onclick="removeCollaboratorField(this)" class="btn btn-default ml-1">
             <i class="fa fa-trash"></i>
           </button>
         </li>
@@ -202,11 +202,20 @@
 {{> footer}}
 
 <script>
+  function filterSelectedOptions(_index, element) {
+    return $('#publicationCollaboratorsList .selectpicker')
+      .map((i, e) => { console.log(e, $(e).val()); return $(e).val() })
+      .toArray()
+      .includes($(element).val());
+  }
+
   function addCollaboratorField() {
     const $selectPicker = $('.publicationCollaborator').eq(0);
     const $selectPickerClone = $selectPicker.clone();
     const $selectPickerCloneList = $selectPickerClone.find('select');
     const $selectPickerDropdown = $selectPickerClone.find('.dropdown');
+    const $currentOptions = $selectPickerCloneList.find('option');
+
     // Add the new entry
     $selectPickerClone.appendTo("#publicationCollaboratorsList");
     // Remove the old generated dropdown
@@ -214,6 +223,8 @@
     $selectPickerDropdown.remove();
     // Clear the default value
     $selectPickerCloneList.selectpicker('val', '');
+    // Remove already selected options
+    $currentOptions.filter(filterSelectedOptions).remove();
     // Refresh the search functionality
     initCollaboratorsSearch($selectPickerCloneList);
   }
