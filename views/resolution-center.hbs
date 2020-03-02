@@ -1,0 +1,89 @@
+{{> header}}
+
+<div class="container-fluid" id="mainBody">
+  <h1>Resolution Center</h1>
+  <br />
+
+  <div class="resolutionCenter-wrap">
+    <div class="resolutionCenter-header">
+      <h4 class="mt-0 mb-0 resolutionCenter-title">
+        <strong> Case ID: </strong>
+        {{resolution._id}}
+      </h4>
+
+      <div class="flex">
+        {{!-- Display specific action buttons only to complaint --}}
+        {{#if (equals user.orcid resolution.createdByUser)}}
+          <form method="POST" action="/red-flag-publication/resolve/{{this.resolution._id}}">
+            <button type="submit" class="btn btn-sm btn-default"> Remove Red Flag</button>
+          </form>
+          <button type="button" class="btn btn-sm btn-default ml-2" style="cursor: not-allowed"> Escalate the complaint </button>
+        {{/if}}
+
+        {{!-- Display specific action buttons only to publication author --}}
+        {{#if (equals user.orcid resolution.publicationAuthor)}}
+          <a href="#" data-toggle="modal" data-target="#versioningInfoModal" class="btn btn-sm btn-default ml-2">
+            Reversion original publication
+          </a>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="resolutionCenter-body">
+      <p>
+        <strong> Status: </strong>
+        {{resolution.status}}
+      </p>
+
+      <p>
+        <strong> Publication ID: </strong>
+        <a href="/publications/view/{{resolution.publicationID}}" target="_blank">{{resolution.publicationID}}</a>
+      </p>
+
+      <p>
+        <strong> Flag Author ID: </strong>
+        <a href="/users/view/{{resolution.createdByUser}}" target="_blank">{{resolution.createdByUser}}</a>
+      </p>
+
+      <p>
+        <strong> Red Flag Reason: </strong>
+        {{resolution.reason}}
+      </p>
+
+      <p>
+        <strong> Red Flag Description: </strong>
+        {{resolution.description}}
+      </p>
+    </div>
+
+    <div class="resolutionCenter-comments-container">
+      <div>
+        <p class="mb-0"><strong> Comments: </strong></p>
+
+        <div class="resolutionCenter-comments-wrap">
+          {{#each resolution.comments}}
+            <div class="resolutionCenter-comment">
+              <a href="/users/view/{{userID}}" target="_blank"><strong>{{userName}}</strong></a>
+              <p class="mt-0 mb-0">{{formatDate dateCreated}}</p>
+            </div>
+
+            <p> {{text}}</p>
+            <hr />
+          {{/each}}
+        </div>
+      </div>
+
+      <form method="POST" action="/red-flag-publication/addComment/{{resolution._id}}"
+        class="resolutionCenter-addComment-form">
+        <textarea required name="text" class="resolutionCenter-addComment-textarea "></textarea>
+        <button type="submit" class="btn btn-default"> Add comment </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{{> navTop}}
+
+{{> footer}}
+
+{{> versioningInfoModal title = resolution.publicationTitle _id = resolution.publicationID}}

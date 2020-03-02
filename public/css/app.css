@@ -39,6 +39,7 @@ nav#navTop .searchFormSubmitBtn {z-index: 11}
 .searchTopFormSubmitBtn {height: 42px;}
 .searchTopFormSubmitBtn:hover, .searchFormSubmitBtn:focus {background: #f8f8f8;}
 .searchTopFormType {border-radius: 0;}
+.searchRedFlag { margin-top: 20px; line-height: 22px !important; }
 /* Sidebar styling */
 .sidebar { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; }
 /* Generic styles */
@@ -144,3 +145,15 @@ Hide the "No results" message since we're using a query to populate it
 .nav-tabs > li > a { padding: 8px 10px; font-size: 13px; }
 /* Publication related publications */
 .related-publication__wrap { display: flex; justify-content: space-between; width: 100%; }
+/* Red Flag Publication Modal */
+.redFlagPublicationModal .buttonsContainer { display: flex; justify-content: space-between; margin-top: 15px; }
+/* Resolution Center */
+.resolutionCenter-wrap { border:1px solid #9955de; border-radius: 5px; }
+.resolutionCenter-header { border-bottom: 1px solid #ADA3ED; display: flex; justify-content: space-between; padding: 15px; }
+.resolutionCenter-title { line-height: 30px; }
+.resolutionCenter-body { padding: 15px; padding-bottom: 10px; border-bottom:1px solid #ADA3ED; }
+.resolutionCenter-comments-container { padding: 15px; }
+.resolutionCenter-comments-wrap { padding: 15px 15px 0 15px }
+.resolutionCenter-comment { display: flex; justify-content: space-between; }
+.resolutionCenter-addComment-form { margin: 0 15px 15px 15px; }
+.resolutionCenter-addComment-textarea { width: 100%; margin-bottom: 15px; border-radius: 4px; }

@@ -23,6 +23,9 @@ module.exports = (req, res, next) => {
     case '/feedback':
       res.locals.customTitleTag = 'Feedback';
       break;
+    case '/resolution-center':
+      res.locals.customTitleTag = 'Resolution Center';
+      break;
     default:
       res.locals.customTitleTag = 'Octopus. Built for Scientists.';
       break;
