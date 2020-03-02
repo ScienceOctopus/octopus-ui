@@ -29,12 +29,12 @@ module.exports = async (req, res) => {
     const newComment = {
       userID,
       text,
-      dateCreated: new Date()
+      dateCreated: new Date(),
     };
 
     const resolution = await helpers.getResolutionByID(resolutionID);
     const { comments } = resolution;
-    
+
     comments.push(newComment);
 
     // Update Resolution Object

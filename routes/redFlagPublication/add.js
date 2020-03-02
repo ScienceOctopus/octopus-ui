@@ -33,18 +33,18 @@ module.exports = async (req, res) => {
       status: 'OPEN',
       comments: [],
       createdByUser: userId,
-      dateCreated: new Date()
+      dateCreated: new Date(),
     };
 
-    await api.redFlagPublication(
+    return api.redFlagPublication(
       newRedFlaggedPublication,
       (redFlagPubErr, redFlagPubResult) => {
-        if ( redFlagPubErr || !redFlagPubResult || !redFlagPubResult.insertedId ) {
-          return res.render('publish/error', { error: redFlagPubErr });
+        if (redFlagPubErr || !redFlagPubResult || !redFlagPubResult.insertedId) {
+          return res.render('publications/error');
         }
 
         return res.redirect(`/publications/view/${publicationID}`);
-      }
+      },
     );
   });
 };

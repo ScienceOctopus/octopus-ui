@@ -12,49 +12,35 @@ module.exports = (req, res) => {
 
   if (!req.session.user) {
     res.locals.error = new Error('User not logged in.');
-    return res.render('publish/error', res.locals);
+    return res.render('publications/error', res.locals);
   }
 
   return api.getResolutionByID(
     resolutionID,
     async (resolutionErr, resolutionResult) => {
       if (resolutionErr || !resolutionResult) {
-        return res.render('publish/error', { error: resolutionErr });
+        return res.render('publications/error');
       }
 
-      let { comments, publicationID } = resolutionResult;
+      const resolution = { ...resolutionResult };
+      const { publicationID } = resolution;
 
       // Attach publication Data
-      const publicationData = await new Promise(resolve => api.getPublicationByID(publicationID, (pubErr, pubData) => {
-          if (pubData) {
-            return resolve(pubData);
-          }
-
-          return resolve();
-        })
-      );
-
-      resolutionResult.publicationTitle = publicationData.title;
-      resolutionResult.publicationAuthor = publicationData.createdByUser;
+      const publicationData = await new Promise((resolve) => api.getPublicationByID(publicationID, (pubErr, pubData) => resolve(pubData)));
+      resolution.publicationTitle = publicationData.title;
+      resolution.publicationAuthor = publicationData.createdByUser;
 
       // Attach comment author name
-      for (let i = 0; i < comments.length; i++) {
-        const { userID } = comments[i];
-        const userData = await new Promise(resolve => {
-          const foundUserData = userHelpers.findUserByOrcid(
-            userID,
-            accessToken
-          );
-          return resolve(foundUserData);
-        });
+      resolution.comments = await Promise.all(resolution.comments.map((comment) => new Promise(async (resolve) => {
+        const { userID } = comment;
+        const userData = await userHelpers.findUserByOrcid(userID, accessToken);
+        return resolve({ ...comment, userName: userData.name });
+      })));
 
-        comments[i].userName = userData.name;
-      }
-
-      res.locals.resolution = resolutionResult;
+      res.locals.resolution = resolution;
       debug('octopus:ui:trace')(res.locals);
 
       return res.render('resolution-center', res.locals);
-    }
+    },
   );
 };

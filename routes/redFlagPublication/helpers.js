@@ -1,15 +1,15 @@
 const api = require('../../lib/api');
 
 // GET Resolution by resolutionID
-const getResolutionByID = resolutionID => {
-  return new Promise(resolve => {
+const getResolutionByID = (resolutionID) => {
+  return new Promise((resolve) => {
     return api.getResolutionByID(
       resolutionID,
-      (resolutionErr, resolutionData) => resolve(resolutionData)
+      (resolutionErr, resolutionData) => resolve(resolutionData),
     );
   });
 };
 
 module.exports = {
-  getResolutionByID
+  getResolutionByID,
 };

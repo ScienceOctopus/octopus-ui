@@ -21,28 +21,12 @@ module.exports = (req, res) => {
 
     let results = data ? data.results || [] : [];
 
-    // Attach Red Flags to Publications
-    for (let i in results) {
-      const { _id } = results[i];
 
-      const filters = {
-        publicationID : _id,
-      }
-
-      const resolutions = await new Promise(resolve =>
-        api.findResolutions(filters, (resolutionErr, resolutionsData) => {
-          if (resolutionErr) {
-            return resolve(null);
-          }
-
-          return resolve(resolutionsData);
-        })
-      )
-
-      if (resolutions && resolutions.length > 0) {
-        results[i].resolutions = resolutions;
-      }
-    }
+    // Augment the publications with red flags
+    results = await Promise.all(results.map((publication) => new Promise((resolve) => {
+      const { _id: publicationID } = publication;
+      api.findResolutions({ publicationID }, (_resolutionErr, resolutionsData) => resolve({ ...publication, resolutions: resolutionsData }));
+    })));
 
     // Augment the publications with the author data
     results = await Promise.all(results.map((publication) => new Promise((resolve) => {

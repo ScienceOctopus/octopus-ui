@@ -226,9 +226,9 @@ module.exports = (req, res) => {
       const mapRelatedPublications = await new Promise(async (resolve) => {
         const relatedPubs = [];
 
-        const mappedRelatedPubs = await Promise.all(
+        await Promise.all(
           relatedPublications.map(async (relatedPub) => {
-            const { publicationID, relatedTo, ratings } = relatedPub;
+            const { publicationID: relatedPubID, relatedTo, ratings } = relatedPub;
             let rating;
 
             // No ratings for draft publications
@@ -238,9 +238,9 @@ module.exports = (req, res) => {
               rating = computeRelatedPublicationRatings(ratings);
             }
 
-            const relatedPubByRelatedTo = await new Promise((resolve) => api.getPublicationByID(relatedTo, (err, foundPub) => {
+            const relatedPubByRelatedTo = await new Promise((resolveRelated) => api.getPublicationByID(relatedTo, (err, foundPub) => {
               if (foundPub) {
-                return resolve({
+                return resolveRelated({
                   ...relatedPub,
                   rating,
                   filterID: foundPub._id,
@@ -249,12 +249,12 @@ module.exports = (req, res) => {
                 });
               }
 
-              return resolve();
+              return resolveRelated();
             }));
 
-            const relatedPubByPublicationId = await new Promise((resolve) => api.getPublicationByID(publicationID, (err, foundPub) => {
+            const relatedPubByPublicationId = await new Promise((resolveRelated) => api.getPublicationByID(relatedPubID, (err, foundPub) => {
               if (foundPub) {
-                return resolve({
+                return resolveRelated({
                   ...relatedPub,
                   rating,
                   filterID: foundPub._id,
@@ -263,7 +263,7 @@ module.exports = (req, res) => {
                 });
               }
 
-              return resolve();
+              return resolveRelated();
             }));
 
             relatedPubs.push(relatedPubByRelatedTo);
