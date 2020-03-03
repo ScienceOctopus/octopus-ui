@@ -42,6 +42,7 @@
     const ACTIVE_CLASS = "active";  // State classes - current publication (active)
     const HIGH_CLASS = "highlight"; // State classes - linked publication (highlighted)
     const LINK_ATTR = "linked";     // PubItem attribute - linked publications ids
+    const ITEM_INDEX_OFFSET = -2    // The offset of the .index() value
 
     const { $pubChainContainer, $pubChainColumns } = OctopusAppElements;
 
@@ -57,9 +58,7 @@
 
     // Update the svg viewbox based on the dimensions of the svg
     $pubChainContainer.find("svg").each((i, svg) => {
-      const width = $(svg).width();
-      const height = $(svg).height();
-      svg.setAttribute("viewBox", `0, 0, ${width}, ${height}`);
+      svg.setAttribute("viewBox", `0, 0, ${$(svg).width()}, ${$(svg).height()}`);
     });
 
     // Mark the current publication item as active
@@ -68,8 +67,55 @@
     markForwards(activePublicationItem);  // Highlight items going forwards  | ACTIVE >
 
 
-    // Go through each column
-    $pubChainColumns.each((colIndex, columnElement) => {
+    // Setup & Draw
+    $pubChainColumns.each(updateSvg);
+    // Re-draw the Y on scroll
+    $pubChainColumns.scroll((e) => {
+      const currentColumnElement = $(e.target);
+      const nextSvgElement = currentColumnElement.next();
+      const prevSvgElement = currentColumnElement.prev();
+
+      // Handle Y1 in the next SVG
+      nextSvgElement.find("path").each((_i, pathSvgElement) => {
+        const $pathSvgElement = $(pathSvgElement);
+        let coords = $pathSvgElement.attr("d").split(" ");
+
+        let y1 = coords[2];
+        if ($pathSvgElement.data("y1")) {
+          y1 = $pathSvgElement.data("y1");
+        }
+
+        // Update the Y values
+        let newY = +y1 - currentColumnElement.scrollTop();
+        coords[2] = newY;
+        coords[5] = newY;
+
+        $pathSvgElement.data("y1", y1);
+        $pathSvgElement.attr("d", coords.join(" "));
+      });
+
+      // Handle Y2 in the previous SVG
+      prevSvgElement.find("path").each((_i, pathSvgElement) => {
+        const $pathSvgElement = $(pathSvgElement);
+        let coords = $pathSvgElement.attr("d").split(" ");
+
+        let y2 = coords[7].replace(",", "");
+        if ($pathSvgElement.data("y2")) {
+          y2 = $pathSvgElement.data("y2");
+        }
+
+        // Update the Y values
+        let newY = +y2 - currentColumnElement.scrollTop();
+        coords[7] = newY + ",";
+        coords[9] = newY;
+
+        $pathSvgElement.data("y2", y2);
+        $pathSvgElement.attr("d", coords.join(" "));
+      });
+    });
+
+
+    function updateSvg(_colIndex, columnElement) {
       // Setup
       const currentColumnElement = $(columnElement);
       const nextSvgElement = currentColumnElement.next();
@@ -107,12 +153,14 @@
 
       // Update the SVG
       nextSvgElement.html(html);
-    });
+    }
+
 
     function getYCoordinate(currentMarkedItem) {
       if (!currentMarkedItem.length) return OFFSET_TOP + pubItemHeight / 2;
-      const currentMarkedElementPos = currentMarkedItem.index() - 1;
+      const currentMarkedElementPos = currentMarkedItem.index() + ITEM_INDEX_OFFSET;
       const currentMarkedElementSpacing = OFFSET_TOP + ITEMS_SPACING * currentMarkedElementPos;
+      console.log(currentMarkedElementSpacing);
       return currentMarkedElementSpacing + (pubItemHeight * currentMarkedElementPos) + pubItemHeight / 2;
     };
 
