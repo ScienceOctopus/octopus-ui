@@ -160,7 +160,6 @@
       if (!currentMarkedItem.length) return OFFSET_TOP + pubItemHeight / 2;
       const currentMarkedElementPos = currentMarkedItem.index() + ITEM_INDEX_OFFSET;
       const currentMarkedElementSpacing = OFFSET_TOP + ITEMS_SPACING * currentMarkedElementPos;
-      console.log(currentMarkedElementSpacing);
       return currentMarkedElementSpacing + (pubItemHeight * currentMarkedElementPos) + pubItemHeight / 2;
     };
 
