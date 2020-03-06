@@ -73,10 +73,13 @@
         </div>
       </div>
 
-      <form method="POST" action="/red-flag-publication/addComment/{{resolution._id}}"
-        class="resolutionCenter-addComment-form">
-        <textarea required name="text" class="resolutionCenter-addComment-textarea "></textarea>
-        <button type="submit" class="btn btn-default"> Add comment </button>
+      <form method="POST" action="/red-flag-publication/addComment/{{resolution._id}}" enctype="multipart/form-data" class="resolutionCenter-addComment-form">
+        <textarea required name="text" class="resolutionCenter-addComment-textarea"></textarea>
+
+        <div class="flex">
+          <button type="submit" class="btn btn-default mr-2"> Add comment </button>
+          <input type="file" name="document" style="line-height: 34px;"/>
+        </div>
       </form>
     </div>
   </div>

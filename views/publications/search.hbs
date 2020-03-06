@@ -83,9 +83,30 @@
             </div>
             <span class="label label-default">{{this.type}}</span>
             {{#if resolutions}}
-              <a class="text-danger">
+              {{!-- <a class="text-danger">
                 <span class="label label-danger">Red Flagged</span>
-              </a>
+              </a> --}}
+              <button
+                class="btn label label-danger"
+                data-toggle="popover"
+                data-trigger="focus"
+                data-html="true"
+                title="Categories of the previous red flags"
+                data-placement="top"
+                data-content="
+                  <p><b>Red Flagged</b>:<p>
+                  <b>Category:</b>
+                  <ul>
+                    {{#each resolutions}}
+                      <li>
+                        <small>{{reason}}</small>
+                      </li>
+                    {{/each}}
+                  </ul>
+                  </p>"
+                >
+                  Red Flagged
+              </button>
             {{/if}}
             <br /><br />
 
