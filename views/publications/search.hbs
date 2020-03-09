@@ -74,8 +74,38 @@
       {{#each publications.results}}
         <div class="row result-item">
           <div class="col-xs-12">
-            <h2><a href="/publications/view/{{this._id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
+            <div class="flex">
+              {{#if resolutions}}
+          		  <i class="fa fa-flag fa-lg text-danger searchRedFlag mr-2"></i>
+              {{/if}}
+
+              <h2><a href="/publications/view/{{this._id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
+            </div>
             <span class="label label-default">{{this.type}}</span>
+            {{#if resolutions}}
+              {{!-- <a class="text-danger">
+                <span class="label label-danger">Red Flagged</span>
+              </a> --}}
+              <button
+                class="btn label label-danger text-white"
+                data-toggle="popover"
+                data-trigger="focus"
+                data-html="true"
+                title="Categories of the previous red flags"
+                data-placement="top"
+                data-content="
+                  <ul>
+                    {{#each resolutions}}
+                      <li>
+                        <small>{{reason}}</small>
+                      </li>
+                    {{/each}}
+                  </ul>
+                  "
+                >
+                  Red Flagged
+              </button>
+            {{/if}}
             <br /><br />
 
             <p>{{{markHits this.summary ../query.phrase}}}</p>

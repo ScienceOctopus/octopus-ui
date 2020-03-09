@@ -36,15 +36,15 @@ const getSpecificRelatedPub = (publicationID, relatedTo) => {
     let relatedPublication;
     const query = { publicationID, relatedTo };
 
-    relatedPublication = await new Promise((resolve) => {
+    relatedPublication = await new Promise((resolveRelated) => {
       return api.findRelatedPublications(
         query,
         (relatedPublicationsErr, relatedPubData) => {
           if (relatedPublicationsErr) {
-            return resolve(null);
+            return resolveRelated(null);
           }
 
-          return resolve(relatedPubData);
+          return resolveRelated(relatedPubData);
         },
       );
     });
@@ -55,15 +55,15 @@ const getSpecificRelatedPub = (publicationID, relatedTo) => {
         relatedTo: publicationID,
       };
 
-      relatedPublication = await new Promise((resolve) => {
+      relatedPublication = await new Promise((resolveRelated) => {
         return api.findRelatedPublications(
           newQuery,
           (relatedPublicationsErr, relatedPubData) => {
             if (relatedPublicationsErr) {
-              return resolve(null);
+              return resolveRelated(null);
             }
 
-            return resolve(relatedPubData);
+            return resolveRelated(relatedPubData);
           },
         );
       });

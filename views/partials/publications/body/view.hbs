@@ -5,13 +5,24 @@
           {{> publications/rateRelatedPublications publicationID=publication._id relatedPublication=relatedPublication relatedPublicationRatings=relatedPublicationRatings }}
       {{/if}}
 
-
       {{> publications/versionTabs version=version publication=publication}}
 
       <div class="row">
         <div class="col-sm-9">
-          <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
+          <div class="flex">
+            {{#if publication.redFlags}}
+              <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
+            {{/if}}
+            <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
+          </div>
+
           <p><b>Date added:</b> {{formatDate publication.dateCreated}}</p>
+
+          {{#if publication.redFlags}}
+            <a href="#" class="label label-danger" data-toggle="modal" data-target="#redFlagHistoryModal">
+              View Red Flag History
+            </a>
+            {{/if}}
         </div>
         <div class="col-sm-3">
           <h3>
@@ -114,6 +125,11 @@
         {{/if}}
 
         {{#if (equals publication.status "LIVE")}}
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#redFlagPublicationModal">Red flag this publication?</button>
+          <br /><br />
+        {{/if}}
+
+        {{#if (equals publication.status "LIVE")}}
         <form method="POST" action="/publish/step/1?linked={{publication._id}}">
           <input type="submit" class="btn btn-md btn-default" value="Write a linked publication">
         </form>
@@ -127,6 +143,9 @@
 
   </div>
 </div>
+
+{{> redFlagPublicationModal publicationTitle=publication.title}}
+{{> redFlagHistoryModal publicationTitle=publication.title redFlags = publication.redFlags}}
 
 {{!-- <script>
   var publicationText = '{{{publicationText}}}';

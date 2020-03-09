@@ -21,6 +21,13 @@ module.exports = (req, res) => {
 
     let results = data ? data.results || [] : [];
 
+
+    // Augment the publications with red flags
+    results = await Promise.all(results.map((publication) => new Promise((resolve) => {
+      const { _id: publicationID } = publication;
+      api.findResolutions({ publicationID }, (_resolutionErr, resolutionsData) => resolve({ ...publication, resolutions: resolutionsData }));
+    })));
+
     // Augment the publications with the author data
     results = await Promise.all(results.map((publication) => new Promise((resolve) => {
       if (!publication.collaborators) {

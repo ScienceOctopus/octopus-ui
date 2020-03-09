@@ -69,6 +69,13 @@ function startApp() {
   app.post('/related-publications/:publicationID', require('./routes/relatedPublications/add'));
   app.post('/related-publications/rate/:publicationID/:relatedPublicationID/:rating', require('./routes/relatedPublications/rate'));
 
+  app.post('/red-flag-publication/:publicationID', require('./routes/redFlagPublication/add'));
+  app.post('/red-flag-publication/addComment/:resolutionID', require('./routes/redFlagPublication/addComment'));
+  app.post('/red-flag-publication/resolve/:resolutionID', require('./routes/redFlagPublication/resolve'));
+
+  app.get('/resolution-center/:resolutionID', require('./routes/resolutionCenter/view'));
+  app.get('/resolution-center/download-file/:fileId', require('./routes/resolutionCenter/downloadFile'));
+
   app.get('/users/view/:orcid', require('./routes/users/view'));
   app.get('/users/search', require('./routes/users/search'));
 
