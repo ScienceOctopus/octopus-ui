@@ -128,6 +128,8 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .pl-0 { padding-left: 0; }
 /* Color utility classes */
 .bg-white { background: white !important; }
+.text-white { color: white !important; }
+.text-white:hover:before { color: white !important; }
 /* Bootstrap panels */
 .panel-body.scroll { max-height: 350px; overflow-y: auto; }
 /* Bootstrap select
@@ -135,6 +137,7 @@ Hide the "No results" message since we're using a query to populate it
 */
 #publicationCollaboratorsList .dropdown-menu .no-results { display: none; }
 #publicationCollaboratorsList { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+.publicationRedFlag { line-height: 66px !important; }
 /* Rating */
 .star-rating { font-size: 0; margin-bottom: 10px; }
 .star-rating__wrap { display: inline-block; font-size: 1.5rem; }
@@ -162,4 +165,5 @@ Hide the "No results" message since we're using a query to populate it
 .resolutionCenter-comments-wrap { padding: 15px 15px 0 15px }
 .resolutionCenter-comment { display: flex; justify-content: space-between; }
 .resolutionCenter-addComment-form { margin: 0 15px 15px 15px; }
+.resolutionCenter-addComment-btn { border:1px solid #337ab7; color: #337ab7; background-color: white; font-size: 12px; padding: 2px 5px; }
 .resolutionCenter-addComment-textarea { width: 100%; margin-bottom: 15px; border-radius: 4px; }

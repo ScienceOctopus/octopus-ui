@@ -5,15 +5,24 @@
           {{> publications/rateRelatedPublications publicationID=publication._id relatedPublication=relatedPublication relatedPublicationRatings=relatedPublicationRatings }}
       {{/if}}
 
-      {{log redFlags}}
-
-
       {{> publications/versionTabs version=version publication=publication}}
 
       <div class="row">
         <div class="col-sm-9">
-          <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
+          <div class="flex">
+            {{#if publication.redFlags}}
+              <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
+            {{/if}}
+            <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
+          </div>
+
           <p><b>Date added:</b> {{formatDate publication.dateCreated}}</p>
+
+          {{#if publication.redFlags}}
+            <a href="#" class="label label-danger" data-toggle="modal" data-target="#redFlagHistoryModal">
+              View Red Flag History
+            </a>
+            {{/if}}
         </div>
         <div class="col-sm-3">
           <h3>
@@ -136,6 +145,7 @@
 </div>
 
 {{> redFlagPublicationModal publicationTitle=publication.title}}
+{{> redFlagHistoryModal publicationTitle=publication.title redFlags = publication.redFlags}}
 
 {{!-- <script>
   var publicationText = '{{{publicationText}}}';

@@ -74,6 +74,7 @@ function startApp() {
   app.post('/red-flag-publication/resolve/:resolutionID', require('./routes/redFlagPublication/resolve'));
 
   app.get('/resolution-center/:resolutionID', require('./routes/resolutionCenter/view'));
+  app.get('/resolution-center/download-file/:fileId', require('./routes/resolutionCenter/downloadFile'));
 
   app.get('/users/view/:orcid', require('./routes/users/view'));
   app.get('/users/search', require('./routes/users/search'));

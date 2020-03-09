@@ -6,6 +6,16 @@ const formHelpers = require('../../lib/form');
 const helpers = require('./helpers');
 const publishHelpers = require('../publish/steps/helpers');
 
+const uploadFile = (fileData) => new Promise((resolve) => {
+  return publishHelpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
+    if (uploadErr) {
+      return resolve(null);
+    }
+
+    return resolve(uploadResult);
+  });
+});
+
 module.exports = async (req, res) => {
   const resolutionID = _.get(req, 'params.resolutionID');
   const userID = _.get(req, 'session.user.orcid');
@@ -38,67 +48,13 @@ module.exports = async (req, res) => {
     const resolution = await helpers.getResolutionByID(resolutionID);
     const { comments } = resolution;
 
+    if (!_.isEmpty(fileData)) {
+      const uploadResult = await uploadFile(fileData);
 
-    // return api.getFileContents("5e5f7c84de36713217f1eaf0", (err, data) => {
-    //   if (err) {
-    //     console.log('err', err);
-    //   }
-    //   console.log('data', data);
-    //   function base64ToArrayBuffer(base64) {
-    //     var binaryString = window.atob(base64);
-    //     var binaryLen = binaryString.length;
-    //     var bytes = new Uint8Array(binaryLen);
-    //     for (var i = 0; i < binaryLen; i++) {
-    //        var ascii = binaryString.charCodeAt(i);
-    //        bytes[i] = ascii;
-    //     }
-    //     return bytes;
-    //  }
-
-
-
-    // var byteArray = new Uint8Array(data);
-    // var a = window.document.createElement('a');
-
-    // a.href = window.URL.createObjectURL(new Blob([byteArray], { type: 'application/octet-stream' }));
-    // a.download = data.filename;
-
-    // // Append anchor to body.
-    // document.body.appendChild(a)
-    // a.click();
-
-    // // Remove anchor from body
-    // document.body.removeChild(a)
-
-
-
-  //    function saveByteArray(reportName, byte) {
-  //     var blob = new Blob([byte], {type: "application/pdf"});
-  //     var link = document.createElement('a');
-  //     link.href = window.URL.createObjectURL(blob);
-  //     var fileName = reportName;
-  //     link.download = fileName;
-  //     link.click();
-  // };
-
-  // var sampleArr = base64ToArrayBuffer(data);
-  // saveByteArray("Sample Report", arraybuffer);
-        // return res.redirect(`/resolution-center/${resolutionID}`);
-
-    // })
-
-
-    if (fileData) {
-      console.log('fileData', fileData);
-      return publishHelpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
-        if (uploadErr) {
-          return res.send('ERROR');
-        }
-
+      if (!_.isEmpty(uploadResult)) {
+        newComment.fileName = fileData.filename;
         newComment.fileId = uploadResult._id;
-
-        return res.redirect(`/resolution-center/${resolutionID}`);
-      });
+      }
     }
 
     comments.push(newComment);

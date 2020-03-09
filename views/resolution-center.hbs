@@ -14,11 +14,11 @@
       <div class="flex">
         {{!-- Display specific action buttons only to complaint --}}
         {{#if (equals user.orcid resolution.createdByUser)}}
-          {{!-- {{#if (equals resolution.status "OPEN")}} --}}
+          {{#if (equals resolution.status "OPEN")}}
             <a href="#" data-toggle="modal" data-target="#removeRedFlagModal" class="btn btn-sm btn-default">
               Remove Red Flag
             </a>
-          {{!-- {{/if}} --}}
+          {{/if}}
           <button type="button" class="btn btn-sm btn-default ml-2" style="cursor: not-allowed"> Escalate the complaint </button>
         {{/if}}
 
@@ -70,6 +70,12 @@
             </div>
 
             <p> {{{text}}}</p>
+
+            {{#if fileId}}
+              <a href="/resolution-center/download-file/{{fileId}}" class="btn resolutionCenter-addComment-btn">
+                <span class="fa fa-download">&nbsp;&nbsp;{{fileName}}</span>
+              </a>
+            {{/if}}
             <hr />
           {{/each}}
         </div>

@@ -93,12 +93,14 @@ const attachPreviousRatings = async ({ _id }) => {
 const attachRedFlags = async (publication) => {
   const { _id: publicationID } = publication;
 
-  const redFlags = await new Promise((resolve) =>
-    api.findResolutions({ publicationID }, (_resolutionErr, resolutionsData) => resolve(resolutionsData))
-  )
+  const redFlags = await new Promise((resolve) => api.findResolutions({ publicationID }, (_resolutionErr, resolutionsData) => resolve(resolutionsData)));
 
-  return redFlags;
-}
+  if (redFlags && redFlags.length > 0) {
+    return redFlags;
+  }
+
+  return null;
+};
 
 // Count publications based on type
 const typeCounter = (publicationTypes, publications) => {

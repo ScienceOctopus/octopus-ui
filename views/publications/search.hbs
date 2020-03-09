@@ -87,15 +87,13 @@
                 <span class="label label-danger">Red Flagged</span>
               </a> --}}
               <button
-                class="btn label label-danger"
+                class="btn label label-danger text-white"
                 data-toggle="popover"
                 data-trigger="focus"
                 data-html="true"
                 title="Categories of the previous red flags"
                 data-placement="top"
                 data-content="
-                  <p><b>Red Flagged</b>:<p>
-                  <b>Category:</b>
                   <ul>
                     {{#each resolutions}}
                       <li>
@@ -103,7 +101,7 @@
                       </li>
                     {{/each}}
                   </ul>
-                  </p>"
+                  "
                 >
                   Red Flagged
               </button>
