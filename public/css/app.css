@@ -57,6 +57,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .alert { border-radius: 0; border-width: 1px 0}
 .inline-flex { display: inline-flex; }
 .flex { display: flex; }
+.flex-end { justify-content: flex-end; }
 .align-center { align-self: center; }
 .lowercase { text-transform: lowercase; }
 /* Homepage */
@@ -113,6 +114,9 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .mr-2 { margin-right: 8px; }
 .mr-3 { margin-right: 16px; }
 .mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 16px; }
 .mb-0 { margin-bottom: 0; }
 .mb-1 { margin-bottom: 4px; }
 .mb-2 { margin-bottom: 8px; }
@@ -122,6 +126,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .ml-2 { margin-left: 8px; }
 .ml-3 { margin-left: 16px; }
 .pl-0 { padding-left: 0; }
+/* Color utility classes */
 .bg-white { background: white !important; }
 /* Bootstrap panels */
 .panel-body.scroll { max-height: 350px; overflow-y: auto; }
@@ -147,6 +152,7 @@ Hide the "No results" message since we're using a query to populate it
 .related-publication__wrap { display: flex; justify-content: space-between; width: 100%; }
 /* Red Flag Publication Modal */
 .redFlagPublicationModal .buttonsContainer { display: flex; justify-content: space-between; margin-top: 15px; }
+#removeRedFlagModal .buttonsContainer { display: flex; justify-content: space-between; margin-top: 15px; }
 /* Resolution Center */
 .resolutionCenter-wrap { border:1px solid #9955de; border-radius: 5px; }
 .resolutionCenter-header { border-bottom: 1px solid #ADA3ED; display: flex; justify-content: space-between; padding: 15px; }

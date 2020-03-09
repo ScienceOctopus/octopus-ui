@@ -14,9 +14,11 @@
       <div class="flex">
         {{!-- Display specific action buttons only to complaint --}}
         {{#if (equals user.orcid resolution.createdByUser)}}
-          <form method="POST" action="/red-flag-publication/resolve/{{this.resolution._id}}">
-            <button type="submit" class="btn btn-sm btn-default"> Remove Red Flag</button>
-          </form>
+          {{!-- {{#if (equals resolution.status "OPEN")}} --}}
+            <a href="#" data-toggle="modal" data-target="#removeRedFlagModal" class="btn btn-sm btn-default">
+              Remove Red Flag
+            </a>
+          {{!-- {{/if}} --}}
           <button type="button" class="btn btn-sm btn-default ml-2" style="cursor: not-allowed"> Escalate the complaint </button>
         {{/if}}
 
@@ -52,7 +54,7 @@
 
       <p>
         <strong> Red Flag Description: </strong>
-        {{resolution.description}}
+        {{{resolution.description}}}
       </p>
     </div>
 
@@ -67,16 +69,16 @@
               <p class="mt-0 mb-0">{{formatDate dateCreated}}</p>
             </div>
 
-            <p> {{text}}</p>
+            <p> {{{text}}}</p>
             <hr />
           {{/each}}
         </div>
       </div>
 
       <form method="POST" action="/red-flag-publication/addComment/{{resolution._id}}" enctype="multipart/form-data" class="resolutionCenter-addComment-form">
-        <textarea required name="text" class="resolutionCenter-addComment-textarea"></textarea>
+        <textarea required id="resolutionCenterText" name="text" class="resolutionCenter-addComment-textarea"></textarea>
 
-        <div class="flex">
+        <div class="flex mt-3">
           <button type="submit" class="btn btn-default mr-2"> Add comment </button>
           <input type="file" name="document" style="line-height: 34px;"/>
         </div>
@@ -89,4 +91,15 @@
 
 {{> footer}}
 
+<!-- EDIT MODE ENABLED -->
+<link type="text/css" rel="stylesheet" href="/public/vendor/jodit-3.2.46/jodit.min.css">
+<script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
+
+<script>
+  var editor = new Jodit('#resolutionCenterText', {
+    height: 250,
+  });
+</script>
+
 {{> versioningInfoModal title = resolution.publicationTitle _id = resolution.publicationID}}
+{{> removeRedFlagModal  publicationTitle = resolution.publicationTitle resolution = resolution }}

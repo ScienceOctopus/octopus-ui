@@ -1,0 +1,22 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="removeRedFlagModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Are you sure you want to remove the red flag for publication {{this.publicationTitle}}?</h4>
+      </div>
+
+      <div class="modal-body">
+        <p>Remove the red flag only if you feel that the issue has been resolved.</p>
+        <p>If you agree, the case <b>status</b> will change from <b>OPEN</b> to <b>RESOLVED</b>.</p>
+      </div>
+
+      <div class="modal-footer flex flex-end">
+        <button type="button" class="btn btn-default mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <form method="POST" action="/red-flag-publication/resolve/{{this.resolution._id}}">
+          <button type="submit" class="btn btn-primary"> Agree </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

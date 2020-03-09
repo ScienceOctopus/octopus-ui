@@ -90,6 +90,16 @@ const attachPreviousRatings = async ({ _id }) => {
   return prevRatings;
 };
 
+const attachRedFlags = async (publication) => {
+  const { _id: publicationID } = publication;
+
+  const redFlags = await new Promise((resolve) =>
+    api.findResolutions({ publicationID }, (_resolutionErr, resolutionsData) => resolve(resolutionsData))
+  )
+
+  return redFlags;
+}
+
 // Count publications based on type
 const typeCounter = (publicationTypes, publications) => {
   const countedPublications = [];
@@ -289,6 +299,7 @@ module.exports = (req, res) => {
       publication.authors = await attachAuthors(publication, accessToken);
       publication.ratings = attachRatings(publication, userId);
       publication.text = encodeURIComponent(publication.text);
+      publication.redFlags = await attachRedFlags(publication);
       publication.relatedPublications = mapRelatedPublications;
       publication.relatablePublications = relatedPublicationHelpers.attachRelatablePublications(publications, publication);
 

@@ -5,6 +5,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Red Flag {{publicationTitle}} ?</h4>
       </div>
+
       <div class="modal-body">
         <form method="POST" action="/red-flag-publication/{{publication._id}}">
           <label for="redFlagPublicationCategory">Category</label>
@@ -20,12 +21,12 @@
             <option value="Potential inappropriate or unlawful content" title="Potential inappropriate or unlawful content"> Potential inappropriate or unlawful content </option>
           </select>
 
-          <br />
-          <br />
+          <br /><br />
 
           <label for="redFlagPublicationDescription">Description</label>
           <textarea required id="redFlagPublicationDescription" class="form-control" name="description" placeholder="Write a comment explaining the issue. Max characters 200" maxlength="100"></textarea>
 
+          <div class="alert alert-danger mt-3 mb-3">This flagging will become public and the publication author will be emailed with your message.</div>
 
           <div class="buttonsContainer">
             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" aria-label="Close">Cancel</button>
@@ -33,10 +34,16 @@
           </div>
         </form>
       </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div> -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<!-- EDIT MODE ENABLED -->
+<link type="text/css" rel="stylesheet" href="/public/vendor/jodit-3.2.46/jodit.min.css">
+<script type="text/javascript" src="/public/vendor/jodit-3.2.46/jodit.min.js"></script>
+
+<script>
+  var editor = new Jodit('#redFlagPublicationDescription', {
+    height: 250,
+  });
+</script>

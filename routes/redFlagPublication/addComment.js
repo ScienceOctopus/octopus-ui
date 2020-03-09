@@ -38,7 +38,6 @@ module.exports = async (req, res) => {
     const resolution = await helpers.getResolutionByID(resolutionID);
     const { comments } = resolution;
 
-    comments.push(newComment);
 
     // return api.getFileContents("5e5f7c84de36713217f1eaf0", (err, data) => {
     //   if (err) {
@@ -89,18 +88,20 @@ module.exports = async (req, res) => {
     // })
 
 
-    // if (fileData) {
-    //   console.log('fileData', fileData);
-    //   return publishHelpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
-    //     if (uploadErr) {
-    //       return res.send('ERROR');
-    //     }
+    if (fileData) {
+      console.log('fileData', fileData);
+      return publishHelpers.handleFileUpload(fileData, (uploadErr, uploadResult) => {
+        if (uploadErr) {
+          return res.send('ERROR');
+        }
 
-    //     console.log('uploadResult', uploadResult);
+        newComment.fileId = uploadResult._id;
 
-    //     return res.redirect(`/resolution-center/${resolutionID}`);
-    //   });
-    // }
+        return res.redirect(`/resolution-center/${resolutionID}`);
+      });
+    }
+
+    comments.push(newComment);
 
     // Update Resolution Object
     return api.updateResolution(resolution, (updateErr, updateData) => {
