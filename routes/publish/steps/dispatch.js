@@ -90,7 +90,6 @@ module.exports = (req, res) => {
 
         const relatablePublications = pubData && pubData.results ? pubData.results : [];
         const allRelatablePublications = relatablePublications ? _.map(relatablePublications, mapResultForDropdown) : [];
-        res.locals.linkableApplicationsText = _.uniqBy(allRelatablePublications, (p) => p.type);
         res.locals.allRelatablePublications = allRelatablePublications;
 
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
