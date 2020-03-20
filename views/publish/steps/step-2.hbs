@@ -30,14 +30,22 @@
             {{/each}}
           </span>.
         </p>
-        <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
-          {{#each allLinkablePublications}}
-            <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
-              {{#if (equals ../linkedPublicationId this.id)}}selected{{/if}}>
-              {{this.title}}
-            </option>
-          {{/each}}
-        </select>
+        {{#if linkedPublicationId}}
+          <select disabled id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
+              <option value="{{this.linkedPublicationId}}" title="{{this.linkedPublicationData.title}}" data-subtext="{{this.linkedPublicationData.type}}" selected>
+                {{this.linkedPublicationData.title}}
+              </option>
+          </select>
+        {{else}}
+          <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
+            {{#each allLinkablePublications}}
+              <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
+                {{#if (equals ../linkedPublicationId this.id)}}selected{{/if}}>
+                {{this.title}}
+              </option>
+            {{/each}}
+          </select>
+        {{/if}}
       {{else}}
         <p>No publications available.</p>
       {{/if}}
