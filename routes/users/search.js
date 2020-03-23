@@ -2,7 +2,7 @@ const _ = require('lodash');
 const debug = require('debug');
 
 const orcid = require('../../lib/orcid');
-const userHelpers = require('../users/helpers');
+const userHelpers = require('./helpers');
 
 // Hash maps of the user details
 // This will help us when we're requesting details for the same users
