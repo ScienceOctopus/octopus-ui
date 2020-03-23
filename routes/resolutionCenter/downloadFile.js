@@ -14,21 +14,10 @@ module.exports = (req, res) => {
       return res.sendStatus(500);
     }
 
-    const fileName = data.filename;
-    const fileType = data.filetype;
-
-    return api.getFileContents(fileId, (fileContentErr, fileContentData) => {
-      if (fileContentErr) {
-        console.log('fileContentErr', fileContentErr);
-        return res.sendStatus(500);
-      }
-
-      res.writeHead(200, {
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Type': fileType,
-      });
-
-      return res.end(fileContentData);
+    res.writeHead(200, {
+      'Content-Disposition': `attachment; filename="${data.filename}"`,
     });
+
+    return api.getFileContents(fileId, () => {}).pipe(res);
   });
 };
