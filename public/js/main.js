@@ -42,7 +42,6 @@
     const ACTIVE_CLASS = "active";  // State classes - current publication (active)
     const HIGH_CLASS = "highlight"; // State classes - linked publication (highlighted)
     const LINK_ATTR = "linked";     // PubItem attribute - linked publications ids
-    const ITEM_INDEX_OFFSET = -2    // The offset of the .index() value
 
     const { $pubChainContainer, $pubChainColumns } = OctopusAppElements;
 
@@ -70,10 +69,10 @@
     // Setup & Draw
     $pubChainColumns.each(updateSvg);
     // Re-draw the Y on scroll
-    $pubChainColumns.scroll((e) => {
-      const currentColumnElement = $(e.target);
-      const nextSvgElement = currentColumnElement.next();
-      const prevSvgElement = currentColumnElement.prev();
+    $pubChainColumns.find(".publicationsList").scroll((e) => {
+      const currentPublicationsList = $(e.target);
+      const nextSvgElement = currentPublicationsList.parent().next();
+      const prevSvgElement = currentPublicationsList.parent().prev();
 
       // Handle Y1 in the next SVG
       nextSvgElement.find("path").each((_i, pathSvgElement) => {
@@ -86,7 +85,7 @@
         }
 
         // Update the Y values
-        let newY = +y1 - currentColumnElement.scrollTop();
+        let newY = +y1 - currentPublicationsList.scrollTop();
         coords[2] = newY;
         coords[5] = newY;
 
@@ -158,14 +157,15 @@
 
     function getYCoordinate(currentMarkedItem) {
       if (!currentMarkedItem.length) return OFFSET_TOP + pubItemHeight / 2;
-      const currentMarkedElementPos = currentMarkedItem.index() + ITEM_INDEX_OFFSET;
+      const currentMarkedElementPos = currentMarkedItem.index();
       const currentMarkedElementSpacing = OFFSET_TOP + ITEMS_SPACING * currentMarkedElementPos;
       return currentMarkedElementSpacing + (pubItemHeight * currentMarkedElementPos) + pubItemHeight / 2;
+
     };
 
     function markBackwards(currentMarkedItem) {
       if (!currentMarkedItem.attr(LINK_ATTR)) return;
-      const prevColumn = currentMarkedItem.parent().prev().prev();
+      const prevColumn = currentMarkedItem.closest(".typeColumn").prev().prev();
       const prevMarkedItemsIds = currentMarkedItem.attr(LINK_ATTR).split(",");
       const prevMarkedItemsSelectors = prevMarkedItemsIds.map(s => `.pubItem#${s}`);
       const prevFoundItems = prevColumn.find(prevMarkedItemsSelectors.join(","));
@@ -176,7 +176,7 @@
     }
 
     function markForwards(currentMarkedItem) {
-      const nextColumn = currentMarkedItem.parent().next().next();
+      const nextColumn = currentMarkedItem.closest(".typeColumn").next().next();
       const nextFoundItems = nextColumn.find(`.pubItem[linked*='${currentMarkedItem.attr("id")}']`);
       nextFoundItems.each((i, item) => {
         $(item).addClass(HIGH_CLASS);
