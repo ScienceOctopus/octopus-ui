@@ -68,8 +68,8 @@ module.exports = (req, res) => {
           return resolve({
             title: linkedPubData.title,
             type: linkedPubData.type,
-          })
-        }))
+          });
+        }));
 
         res.locals.linkedPublicationData = linkedPublicationData;
       }
