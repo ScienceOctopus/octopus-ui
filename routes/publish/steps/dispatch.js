@@ -34,7 +34,7 @@ module.exports = (req, res) => {
     return res.render('publish/error', res.locals);
   }
 
-  return formHelpers.parseForm(req, (err, fields, files) => {
+  return formHelpers.parseForm(req, async (err, fields, files) => {
     const fileData = _.first(files);
     const { relatedPublications } = fields;
     const data = { ...fields, userId: req.session.user.orcid };
@@ -59,8 +59,20 @@ module.exports = (req, res) => {
     }
 
     if (stepNumber === 2) {
+      const linkedPublicationId = res.locals.linkedPublicationId;
       const publicationTypeDef = _.find(res.locals.publicationTypes, { key: res.locals.publication.type });
       const filters = {};
+
+      if (linkedPublicationId) {
+        const linkedPublicationData = await new Promise((resolve) => api.getPublicationByID(linkedPublicationId, (linkedPubErr, linkedPubData) => {
+          return resolve({
+            title: linkedPubData.title,
+            type: linkedPubData.type,
+          });
+        }));
+
+        res.locals.linkedPublicationData = linkedPublicationData;
+      }
 
       return api.findPublications(filters, (publicationsErr, pubData) => {
         // Filter publications based on property linksTo
@@ -78,7 +90,6 @@ module.exports = (req, res) => {
 
         const relatablePublications = pubData && pubData.results ? pubData.results : [];
         const allRelatablePublications = relatablePublications ? _.map(relatablePublications, mapResultForDropdown) : [];
-        res.locals.linkableApplicationsText = _.uniqBy(allRelatablePublications, (p) => p.type);
         res.locals.allRelatablePublications = allRelatablePublications;
 
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
