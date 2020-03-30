@@ -15,28 +15,25 @@
     <div class="form-group">
       <label for="linkedPublications">1. Publications to link to</label>
       {{#if allLinkablePublications}}
-        <p>
-          Your <span class="lowercase">{{publication.type}}</span> needs to be linked to an existing
-          <span class="inline-flex">
-            {{#each linkableApplicationsText}}
-              {{#if @index}}
-                  {{#if @last}}
-                  <span>&nbsp;or&nbsp;</span>
-                {{else}}
-                  <span>,&nbsp;</span>
-                {{/if}}
-              {{/if}}
-              <span class="lowercase">{{this.type}}</span>
-            {{/each}}
-          </span>.
-        </p>
         {{#if linkedPublicationId}}
-          <select disabled id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
-              <option value="{{this.linkedPublicationId}}" title="{{this.linkedPublicationData.title}}" data-subtext="{{this.linkedPublicationData.type}}" selected>
-                {{this.linkedPublicationData.title}}
-              </option>
-          </select>
+          <p class="mb-0">Your <span class="lowercase">{{publication.type}}</span> will be linked to <b>{{this.linkedPublicationData.title}}</b></p>
+          <input required id="linkedPublications" class="form-control" name="linkedPublications" type="text" value="{{this.linkedPublicationId}}" style="display: none"/>
         {{else}}
+          <p>
+            Your <span class="lowercase">{{publication.type}}</span> needs to be linked to an existing
+            <span class="inline-flex">
+              {{#each linkableApplicationsText}}
+                {{#if @index}}
+                    {{#if @last}}
+                    <span>&nbsp;or&nbsp;</span>
+                  {{else}}
+                    <span>,&nbsp;</span>
+                  {{/if}}
+                {{/if}}
+                <span class="lowercase">{{this.type}}</span>
+              {{/each}}
+            </span>.
+          </p>
           <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
             {{#each allLinkablePublications}}
               <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
