@@ -1,8 +1,11 @@
 const _ = require('lodash');
 const debug = require('debug');
+
+const api = require('../../../lib/api');
+const orcidApi = require('../../../lib/orcid');
 const helpers = require('./helpers');
 const formHelpers = require('../../../lib/form');
-const api = require('../../../lib/api');
+const userHelpers = require('../../users/helpers');
 
 function mapResultForDropdown(result) {
   return {
@@ -19,6 +22,8 @@ module.exports = (req, res) => {
   };
 
   const stepNumber = Number(req.params.stepNumber);
+  const accessToken = _.get(req, 'session.authOrcid.accessToken');
+
   debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
 
   // if wrong step redirect to error page
@@ -107,6 +112,73 @@ module.exports = (req, res) => {
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
     }
+
+    if (publicationFormState.collaborators && publicationFormState.collaborators.length > 1) {
+      const { collaborators } = publicationFormState;
+
+      // Check which author already exists in our DB
+      const authors = await Promise.all(collaborators.map(async (collaborator) => {
+        const userAlredyExists = await new Promise((resolve) => api.getUserByORCiD(collaborator, (getAuthorErr, getAuthorData) => {
+          if(getAuthorErr || !getAuthorData){
+            return resolve(false);
+          }
+
+          return resolve(true);
+        }));
+
+        if (!userAlredyExists){
+          return collaborator;
+        }
+
+        return null;
+      }))
+
+      //New users that needs to be inserted in DB
+      const newAuthors = authors.filter((author) => !_.isEmpty(author));
+
+      // Create user object to insert in DB
+      const newAuthorsList = await Promise.all(newAuthors.map(async (newAuthor) => {
+        // Get all user data from ORCiD api using ORCiDid
+        const userData = await new Promise((resolve) => {
+          return orcidApi.getPersonByOrcid(newAuthor, accessToken, (err, data) => {
+            if(err || _.isEmpty(data)){
+              return resolve(null);
+            }
+
+            const { person } = data;
+
+            const email  = person.emails.email.length >= 1 ? person.emails.email[0].email : null;
+            const firstName = person.name['family-name'] ? person.name['family-name'].value : '';
+            const lastName = person.name['given-names'] ? person.name['given-names'].value : '';
+            const fullName = `${firstName} ${lastName}`;
+
+            return resolve({
+              email,
+              name: fullName,
+            });
+          })
+        })
+
+        // Create user object to insert in DB
+        userData.orcid = newAuthor;
+        userData.dateCreated = new Date();
+        userData.dateLastActivity = new Date();
+        userData.userGroup = 1;
+
+        return userData;
+      }));
+
+      // Insert New Users List in DB
+      await userHelpers.insertManyUsers(newAuthorsList, res);
+    }
+
     return res.render(`publish/steps/step-${stepNumber}`, res.locals);
   });
 };
+
+// TO DO:
+// - test
+// - clean code
+// - lint
+// - git push
+// - create PR

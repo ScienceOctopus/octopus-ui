@@ -38,7 +38,19 @@ const findUserByOrcid = (orcid, accessToken) => {
     .then(mapUserDetails);
 };
 
+// Inserts multiple users in DB
+function insertManyUsers(user, res) {
+  api.insertManyUsers(user, (insertManyUsersErr, insertManyUsersResult) => {
+    if (insertManyUsersErr) {
+      return res.render('publish/error', { error: insertManyUsersErr });
+    }
+
+    return insertManyUsersResult;
+  });
+}
+
 module.exports = {
   getOrchidUserFullName,
   findUserByOrcid,
+  insertManyUsers,
 };
