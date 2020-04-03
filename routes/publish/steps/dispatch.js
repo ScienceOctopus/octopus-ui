@@ -119,35 +119,35 @@ module.exports = (req, res) => {
       // Check which author already exists in our DB
       const authors = await Promise.all(collaborators.map(async (collaborator) => {
         const userAlredyExists = await new Promise((resolve) => api.getUserByORCiD(collaborator, (getAuthorErr, getAuthorData) => {
-          if(getAuthorErr || !getAuthorData){
+          if (getAuthorErr || !getAuthorData) {
             return resolve(false);
           }
 
           return resolve(true);
         }));
 
-        if (!userAlredyExists){
+        if (!userAlredyExists) {
           return collaborator;
         }
 
         return null;
-      }))
+      }));
 
-      //New users that needs to be inserted in DB
+      // New users that needs to be inserted in DB
       const newAuthors = authors.filter((author) => !_.isEmpty(author));
 
       // Create user object to insert in DB
       const newAuthorsList = await Promise.all(newAuthors.map(async (newAuthor) => {
         // Get all user data from ORCiD api using ORCiDid
         const userData = await new Promise((resolve) => {
-          return orcidApi.getPersonByOrcid(newAuthor, accessToken, (err, data) => {
-            if(err || _.isEmpty(data)){
+          return orcidApi.getPersonByOrcid(newAuthor, accessToken, (getPersonByOrcidErr, getPersonByOrcidData) => {
+            if (getPersonByOrcidErr || _.isEmpty(getPersonByOrcidData)) {
               return resolve(null);
             }
 
-            const { person } = data;
+            const { person } = getPersonByOrcidData;
 
-            const email  = person.emails.email.length >= 1 ? person.emails.email[0].email : null;
+            const email = person.emails.email.length >= 1 ? person.emails.email[0].email : null;
             const firstName = person.name['family-name'] ? person.name['family-name'].value : '';
             const lastName = person.name['given-names'] ? person.name['given-names'].value : '';
             const fullName = `${firstName} ${lastName}`;
@@ -156,8 +156,8 @@ module.exports = (req, res) => {
               email,
               name: fullName,
             });
-          })
-        })
+          });
+        });
 
         // Create user object to insert in DB
         userData.orcid = newAuthor;
@@ -175,10 +175,3 @@ module.exports = (req, res) => {
     return res.render(`publish/steps/step-${stepNumber}`, res.locals);
   });
 };
-
-// TO DO:
-// - test
-// - clean code
-// - lint
-// - git push
-// - create PR
