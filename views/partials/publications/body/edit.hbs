@@ -12,13 +12,41 @@
 
       <div>
         <h3>Authors</h3>
-        <select multiple id="publicationCollaborators" name="publicationCollaborators" class="form-control selectpicker"
-          data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check"
-          data-none-selected-text="Please select your co-author" data-size="10">
+        <ul id="publicationCollaboratorsList">
           {{#each publication.authors}}
-          <option default value="{{this.orcid}}" title="{{this.name}}" selected>{{this.name}}</option>
+            <li class="flex mb-3 publicationCollaborator">
+              <i class="btn btn-link">
+                <i class="fa fa-sort"></i>
+              </i>
+
+              <select
+                name="publicationCollaborators"
+                class="form-control selectpicker mr-1"
+                data-live-search="true"
+                data-icon-base="FontAwesome"
+                data-tick-icon="fa fa-check"
+                data-none-selected-text="Please select your co-author"
+                data-size="10">
+                <option
+                  default
+                  selected
+                  value="{{this.orcid}}"
+                  title="{{this.name}}"
+                  data-subtext="{{this.organization.name}}">
+                  {{this.name}}
+                  </option>
+              </select>
+
+              <button type="button" onclick="removeCollaboratorField(this)" class="btn btn-default ml-1">
+                <i class="fa fa-trash"></i>
+              </button>
+            </li>
           {{/each}}
-        </select>
+        </ul>
+        <button type="button" onClick="addCollaboratorField()" class="btn btn-primary ml-2">
+          <i class="fa fa-plus mr-1"></i>
+          Add an author
+        </button>
       </div>
 
       <hr />
@@ -109,5 +137,50 @@
 <script>
   var editor = new Jodit('#publicationText', {
     height: 350
+  });
+
+  function filterSelectedOptions(_index, element) {
+    return $('#publicationCollaboratorsList .selectpicker')
+      .map((i, e) => { console.log(e, $(e).val()); return $(e).val() })
+      .toArray()
+      .includes($(element).val());
+  }
+
+  function addCollaboratorField() {
+    const $selectPicker = $('.publicationCollaborator').eq(0);
+    const $selectPickerClone = $selectPicker.clone();
+    const $selectPickerCloneList = $selectPickerClone.find('select');
+    const $selectPickerDropdown = $selectPickerClone.find('.dropdown');
+    const $currentOptions = $selectPickerCloneList.find('option');
+
+    // Add the new entry
+    $selectPickerClone.appendTo("#publicationCollaboratorsList");
+    // Remove the old generated dropdown
+    $selectPickerCloneList.insertBefore($selectPickerDropdown);
+    $selectPickerDropdown.remove();
+    // Clear the default value
+    $selectPickerCloneList.selectpicker('val', '');
+    // Remove already selected options
+    $currentOptions.filter(filterSelectedOptions).remove();
+    // Refresh the search functionality
+    initCollaboratorsSearch($selectPickerCloneList);
+  }
+
+  function removeCollaboratorField(self) {
+    const $parent = $(self).closest('.publicationCollaborator');
+    const $selectPicker = $(self).prev().find('select');
+    // Update the list
+    if ($parent.index()) {
+      // Remove the entry
+      $parent.remove();
+    } else {
+      // First entry - remove the value only
+      $selectPicker.selectpicker('val', '');
+    }
+  }
+
+  $(function () {
+    $("#publicationCollaboratorsList").sortable();
+    $("#publicationCollaboratorsList").disableSelection();
   });
 </script>

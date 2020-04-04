@@ -49,8 +49,64 @@ function insertManyUsers(user, res) {
   });
 }
 
+// TODO: after the function was created import it in /routes/publications/save.js
+// Returns data for the collaborators that doesn't exists in our DB
+async function checkForNewUsers(orcidIds, accessToken) {
+  // Check which author already exists in our DB
+  const authors = await Promise.all(orcidIds.map(async (orcidId) => {
+    const userAlredyExists = await new Promise((resolve) => api.getUserByORCiD(orcidId, (getAuthorErr, getAuthorData) => {
+      if (getAuthorErr || !getAuthorData) {
+        return resolve(false);
+      }
+
+      return resolve(true);
+    }));
+
+    if (!userAlredyExists) {
+      return orcidId;
+    }
+
+    return null;
+  }));
+
+  // New users that needs to be inserted in DB
+  const newAuthors = authors.filter((author) => !_.isEmpty(author));
+
+  // Create user object to insert in DB
+  const newAuthorsList = await Promise.all(newAuthors.map(async (newAuthor) => {
+    // Get all user data from ORCiD api using ORCiDid
+    const userData = await new Promise((resolve) => {
+      return orcidApi.getPersonDetails(newAuthor, accessToken, (getPersonDetailsErr, getPersonDetailsData) => {
+        if (getPersonDetailsErr || _.isEmpty(getPersonDetailsData)) {
+          return resolve(null);
+        }
+
+        const { name } = getPersonDetailsData;
+
+        const firstName = name['family-name'] ? name['family-name'].value : '';
+        const lastName = name['given-names'] ? name['given-names'].value : '';
+        const fullName = `${firstName} ${lastName}`;
+
+        return resolve({ name: fullName });
+      });
+    });
+
+    // Create user object to insert in DB
+    userData.email = null;
+    userData.orcid = newAuthor;
+    userData.dateCreated = new Date();
+    userData.dateLastActivity = new Date();
+    userData.userGroup = 1;
+
+    return userData;
+  }));
+
+  return newAuthorsList;
+}
+
 module.exports = {
   getOrchidUserFullName,
   findUserByOrcid,
   insertManyUsers,
+  checkForNewUsers,
 };
