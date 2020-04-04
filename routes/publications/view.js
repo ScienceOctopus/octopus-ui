@@ -33,7 +33,7 @@ const attachAuthors = async (publication, accessToken) => {
 
   let authors = publication.collaborators;
   authors = await Promise.all(
-    authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)),
+    authors.map((author) => userHelpers.findUserByID(author.userID, accessToken)),
   );
 
   authors = authors.filter((author) => author);
@@ -190,7 +190,7 @@ module.exports = (req, res) => {
             let authors = _.filter(pub.collaborators);
             return (async () => {
               authors = await Promise.all(
-                authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)),
+                authors.map((author) => userHelpers.findUserByID(author.userID, accessToken)),
               );
 
               // Filter our undefined entries
