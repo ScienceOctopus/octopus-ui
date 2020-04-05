@@ -174,12 +174,12 @@ footer, footer a { color: #ddd }
 .jumbotron { color: #fff }
 .jumbotron h1 { font-size: 52px }
 .jumbotron h2 { font-size: 24px }
-.jumbotron p { line-height: 2.2em; margin: 30px 0 50px; font-size: 16px; }
+.jumbotron p { line-height: 2.2em; margin: 30px 0 50px; font-size: 16px; font-weight: 400}
 
 .jumbotron {max-width: none; overflow: hidden; text-shadow: 0 1px 1px rgba(0,0,0,0.3); min-height:150px}
 .jumbotron {background: linear-gradient(40deg, #5c69ab, #ac81d4)}
 .jumbotron .container-fluid { max-width: 1200px}
-.jumbotron.jumbotron-homepage {min-height: 950px;}
+.jumbotron.jumbotron-homepage {min-height: 850px;}
 .jumbotron.jumbotron-homepage .container-fluid {max-width: 1400px;}
 
 .jumbotron hr {border-top-color: #baadc5}
@@ -189,6 +189,9 @@ footer, footer a { color: #ddd }
 .jumbotron a.btn-octopus:hover {color: #70b0ff}
 
 .jumbotron-homepage .screenshot { height: 400px; box-shadow: 0 15px 18px rgba(0,0,0,0.20)}
+@media(max-width:991px){
+.jumbotron-homepage .screenshot { height: auto; max-width: auto; width: 100%}
+}
 
 .btn-primary { background-color: #6a68e4; border-color: #403cce; }
 .btn-primary:active, .btn-primary:hover, .btn-primary:focus { background-color: #4f4dbf; border-color: #403cce; }
