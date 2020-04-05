@@ -6,7 +6,7 @@
     <br />
     Enter publication details
   </h1>
-
+<p>Unlike any other publication platform, Octopus requires all publications to be linked to others that already exist. Publications therefore form branching chains of work, each following on from the other, and clustered under 'problems'. This helps makes sense of the huge volume of work going on in the world! But you need to choose the right publication(s) for yours to be linked to</p>
   <br/>
 
   <form method="POST" action="/publish/step/3">
@@ -15,28 +15,25 @@
     <div class="form-group">
       <label for="linkedPublications">1. Publications to link to</label>
       {{#if allLinkablePublications}}
-        <p>
-          Your <span class="lowercase">{{publication.type}}</span> needs to be linked to an existing
-          <span class="inline-flex">
-            {{#each linkableApplicationsText}}
-              {{#if @index}}
-                  {{#if @last}}
-                  <span>&nbsp;or&nbsp;</span>
-                {{else}}
-                  <span>,&nbsp;</span>
-                {{/if}}
-              {{/if}}
-              <span class="lowercase">{{this.type}}</span>
-            {{/each}}
-          </span>.
-        </p>
         {{#if linkedPublicationId}}
-          <select disabled id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
-              <option value="{{this.linkedPublicationId}}" title="{{this.linkedPublicationData.title}}" data-subtext="{{this.linkedPublicationData.type}}" selected>
-                {{this.linkedPublicationData.title}}
-              </option>
-          </select>
+          <p class="mb-0">Your <span class="lowercase">{{publication.type}}</span> will be linked to <b>{{this.linkedPublicationData.title}}</b></p>
+          <input required id="linkedPublications" class="form-control" name="linkedPublications" type="text" value="{{this.linkedPublicationId}}" style="display: none"/>
         {{else}}
+          <p>
+            Your <span class="lowercase">{{publication.type}}</span> needs to be linked to an existing
+            <span class="inline-flex">
+              {{#each linkableApplicationsText}}
+                {{#if @index}}
+                    {{#if @last}}
+                    <span>&nbsp;or&nbsp;</span>
+                  {{else}}
+                    <span>,&nbsp;</span>
+                  {{/if}}
+                {{/if}}
+                <span class="lowercase">{{this.type}}</span>
+              {{/each}}
+            </span>.
+          </p>
           <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
             {{#each allLinkablePublications}}
               <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}"
@@ -54,7 +51,7 @@
     <div class="form-group">
       <label>2. Authors</label>
 
-      <p>All authors need to have an ORCiD number with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
+      <p>All authors need to have an ORCiD with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
 
       <ul id="publicationCollaboratorsList">
         <li class="flex mb-3 publicationCollaborator">
