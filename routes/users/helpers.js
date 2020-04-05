@@ -69,7 +69,15 @@ function insertManyUsers(user, res) {
 }
 
 // Returns data for the collaborators that doesn't exists in our DB
-async function checkForNewUsers(orcidIds, accessToken) {
+async function checkForNewUsers(orcidIDs, accessToken) {
+  let orcidIds;
+
+  if(typeof orcidIDs === 'string') {
+    orcidIds = [orcidIDs];
+  } else {
+    orcidIds = orcidIDs;
+  }
+
   // Check which author already exists in our DB
   const authors = await Promise.all(orcidIds.map(async (orcidId) => {
     const userAlredyExists = await new Promise((resolve) => api.getUserByORCiD(orcidId, (getAuthorErr, getAuthorData) => {
