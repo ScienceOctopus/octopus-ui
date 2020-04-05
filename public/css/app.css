@@ -189,3 +189,7 @@ footer, footer a { color: #ddd }
 .jumbotron a.btn-octopus:hover {color: #70b0ff}
 
 .jumbotron-homepage .screenshot { height: 400px; box-shadow: 0 15px 18px rgba(0,0,0,0.20)}
+
+.btn-primary { background-color: #6a68e4; border-color: #403cce; }
+.btn-primary:active, .btn-primary:hover, .btn-primary:focus { background-color: #4f4dbf; border-color: #403cce; }
+.btn-primary:active:hover, .btn-primary:active:focus { background-color: #3634a0; border-color: #070563; }
