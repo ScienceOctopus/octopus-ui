@@ -173,7 +173,7 @@ Hide the "No results" message since we're using a query to populate it
 
 
 
-body.homepage {background: #a8bdf0}
+body.homepage {background: #8da5e0}
 .btn-octopus {width: 160px}
 .btn-octopus .fa {font-size: 3em; margin-bottom: 15px;}
 
@@ -181,4 +181,4 @@ footer { background: #1b1c1d;}
 footer, footer a { color: #ddd }
 
 
-.homepageJumbotron a {color: #4e4f86}
+.homepageJumbotron a {color: #2a4594}
