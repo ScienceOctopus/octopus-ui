@@ -17,9 +17,6 @@ module.exports = (req, res, next) => {
     case '/about':
       res.locals.customTitleTag = 'About';
       break;
-    case '/faq':
-      res.locals.customTitleTag = 'Faq';
-      break;
     case '/feedback':
       res.locals.customTitleTag = 'Feedback';
       break;
