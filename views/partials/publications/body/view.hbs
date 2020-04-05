@@ -89,19 +89,28 @@
         </p>
       </div>
 
-      <hr />
+      {{#if publication.viewRelatedPubs}}
+        <hr />
 
-      <div>
-        <h3>Related publications</h3>
-        {{> publications/relatedPublicationsList publication=publication publicationTypes=publicationTypes}}
-      </div>
+        <div id="relatedList">
+          <h3>Related publications</h3>
+          {{> publications/relatedPublicationsList publication=publication publicationTypes=publicationTypes}}
+        </div>
 
-      <hr />
+        <hr />
 
-      <div>
-        <h3>Add a related publication</h3>
-        {{> publications/addRelatedPublications publication=publication}}
-      </div>
+        <div>
+          <h3>Add a related publication</h3>
+          {{> publications/addRelatedPublications publication=publication}}
+        </div>
+
+        {{else}}
+          <div>
+            <h3>Related publications</h3>
+              <span>
+                Click <a href="/publications/view/{{publication._id}}?viewRelated=true#relatedList">here</a> to expand this section </span>
+          </div>
+      {{/if}}
     </div>
 
     <div class="col-sm-3 sidebar">
