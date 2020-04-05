@@ -60,12 +60,6 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .flex-end { justify-content: flex-end; }
 .align-center { align-self: center; }
 .lowercase { text-transform: lowercase; }
-/* Homepage */
-.homepageJumbotron { color: #fff }
-.homepageJumbotron p { line-height: 2.2em; margin: 30px 0 50px; font-size: 16px; }
-.homepageJumbotron h1 { font-size: 52px }
-.homepageJumbotron h2 { font-size: 24px }
-.homepageJumbotron .homepageGraph { width: 100%; max-width: 500px; margin: 0 0 10px -50px; float: right }
 /* List of results */
 .result-item { padding: 5px 0; margin: 10px 0; border-top: 1px solid #ccc }
 .result-item:first-of-type { border-top: none }
@@ -171,14 +165,25 @@ Hide the "No results" message since we're using a query to populate it
 .resolutionCenter-addComment-btn { border:1px solid #337ab7; color: #337ab7; background-color: white; font-size: 12px; padding: 2px 5px; }
 .resolutionCenter-addComment-textarea { width: 100%; margin-bottom: 15px; border-radius: 4px; }
 
-
-
-body.homepage {background: #8da5e0}
-.btn-octopus {width: 160px}
-.btn-octopus .fa {font-size: 3em; margin-bottom: 15px;}
-
 footer { background: #1b1c1d;}
 footer, footer a { color: #ddd }
 
+/* Jumbotron */
+.jumbotron { color: #fff }
+.jumbotron h1 { font-size: 52px }
+.jumbotron h2 { font-size: 24px }
+.jumbotron p { line-height: 2.2em; margin: 30px 0 50px; font-size: 16px; }
 
-.homepageJumbotron a {color: #2a4594}
+.jumbotron {max-width: none; overflow: hidden; text-shadow: 0 1px 1px rgba(0,0,0,0.3); min-height:150px}
+.jumbotron {background: linear-gradient(40deg, #5c69ab, #ac81d4)}
+.jumbotron .container-fluid { max-width: 1200px}
+.jumbotron.jumbotron-homepage {min-height: 950px;}
+.jumbotron.jumbotron-homepage .container-fluid {max-width: 1400px;}
+
+.jumbotron hr {border-top-color: #baadc5}
+.jumbotron a.btn-octopus {font-weight: bold; font-size: 1.3em; transition: color 150ms linear}
+.jumbotron a.btn-octopus .fa {font-size: 2em; margin-bottom: 15px;}
+.jumbotron a.btn-octopus {color: #c5defd}
+.jumbotron a.btn-octopus:hover {color: #70b0ff}
+
+.jumbotron-homepage .screenshot { height: 400px; box-shadow: 0 15px 18px rgba(0,0,0,0.20)}
