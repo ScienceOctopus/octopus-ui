@@ -7,6 +7,8 @@ nav#navTop { position: fixed; left:0; top:0; width:100%; height:50px;}
 #printHeader .logo { font-size: 1.3em }
 #printHeader .logo { margin-right: 10px; }
 #printHeader .branding { font-weight: 600 }
+h2 {font-size: 24px}
+h3 {font-size: 18px}
 /* Footer styling */
 footer { background: #ded9f3; padding: 30px; /*box-shadow: 0 -1px 10px #eee*/ }
 footer, footer a { color: #424242; font-weight: 500; }
@@ -100,7 +102,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 #displayAffiliations { background: transparent; color: #337ab7; border: none; margin-left: -6px; }
 #displayAffiliations:hover { color: #23527c; }
 .publication-container { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; margin-bottom: 10px; }
-.publication-iframe { width: 100%; min-height: 350px; border: 1px solid #e3e3e3; border-radius: 5px; padding: 10px;}
+.publication-iframe { width: 100%; min-height: 150px; border: 0}
 .publication-type { text-transform: capitalize; color: #ADA3ED; font-weight: bold; margin-top: 0px; }
 .publication-title { margin-bottom: 0px; }
 .authors-list { font-size: 13px; }

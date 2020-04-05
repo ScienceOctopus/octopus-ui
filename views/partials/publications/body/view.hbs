@@ -9,14 +9,22 @@
 
       <div class="row">
         <div class="col-sm-9">
-          <div class="flex">
+          <div class="pub-title">
             {{#if publication.redFlags}}
-              <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
+            <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
             {{/if}}
             <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
           </div>
 
-          <p><b>Date added:</b> {{formatDate publication.dateCreated}}</p>
+          <div>
+            <strong>Authors:</strong>
+            {{> authorsList authors=publication.authors }}
+          </div>
+
+          <div>
+            <strong>Date added:</strong>
+            {{formatDate publication.dateCreated}}
+          </div>
 
           {{#if publication.redFlags}}
             <a href="#" class="label label-danger" data-toggle="modal" data-target="#redFlagHistoryModal">
@@ -25,22 +33,11 @@
             {{/if}}
         </div>
         <div class="col-sm-3">
-          <h3>
-            <a href="/publications/download-pdf/{{publication._id}}" class="pull-right">
-              <button type="submit" class="btn btn-default">
-                <span class="fa fa-file-pdf-o"></span>
-                <span>Download PDF</span>
-              </button>
-            </a>
-          </h3>
+          <a href="/publications/download-pdf/{{publication._id}}" class="pull-right btn btn-default mt-3">
+            <span class="fa fa-file-pdf-o"></span>
+            <span>Download PDF</span>
+          </a>
         </div>
-      </div>
-
-      <hr />
-
-      <div>
-        <h3>Authors</h3>
-        {{> authorsList authors=publication.authors }}
       </div>
 
       <hr />
@@ -56,7 +53,10 @@
       <iframe
         class="publication-iframe"
         src="data:text/html,<html>
-          <head><meta charset=UTF-8 /></head>
+          <head>
+            <meta charset=UTF-8 />
+            <style>body {font-family: 'Helvetica Neue', Helvetica, Arial; margin: 0; font-size: 14px}</style>
+          </head>
           <body>{{publication.text}}</body></html>" >
       </iframe>
       <hr />
