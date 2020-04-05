@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="/public/favicon.ico">
 </head>
 
-<body>
+<body class="{{#if (equals url '/')}}homepage{{/if}}">
   <div id="globalAlerts">
     {{#each messages.error}}
     <div class="alert alert-error">{{ this }}</div>

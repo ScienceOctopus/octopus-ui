@@ -51,7 +51,6 @@ function startApp() {
 
   app.get('/', (req, res) => res.render('home', res.locals));
   app.get('/about', (req, res) => res.render('about', res.locals));
-  app.get('/faq', (req, res) => res.render('faq', res.locals));
 
   app.get('/publish', require('./routes/publish/main'));
   app.post('/publish/step/:stepNumber', require('./routes/publish/steps/dispatch'));
