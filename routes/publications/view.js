@@ -4,6 +4,7 @@ const _ = require('lodash');
 const api = require('../../lib/api');
 const userHelpers = require('../users/helpers');
 const relatedPublicationHelpers = require('../relatedPublications/helpers');
+const sanitizeUserHtml = require('../../lib/sanitizeUserHtml');
 
 const computePublicationRatings = (publication) => {
   const total = _.keys(publication.ratings).length;
@@ -300,7 +301,8 @@ module.exports = (req, res) => {
 
       publication.authors = await attachAuthors(publication, accessToken);
       publication.ratings = attachRatings(publication, userId);
-      publication.text = encodeURIComponent(publication.text);
+      // publication.text = encodeURIComponent(publication.text);
+      publication.text = sanitizeUserHtml(publication.text);
       publication.redFlags = await attachRedFlags(publication);
       publication.relatedPublications = mapRelatedPublications;
       publication.relatablePublications = relatedPublicationHelpers.attachRelatablePublications(publications, publication);
