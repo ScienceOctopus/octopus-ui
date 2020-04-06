@@ -72,7 +72,7 @@ function insertManyUsers(user, res) {
 async function checkForNewUsers(orcidIDs, accessToken) {
   let orcidIds;
 
-  if(typeof orcidIDs === 'string') {
+  if (typeof orcidIDs === 'string') {
     orcidIds = [orcidIDs];
   } else {
     orcidIds = orcidIDs;
