@@ -127,9 +127,11 @@ module.exports = (req, res) => {
   const version = _.get(req, 'query.v');
   const publicationID = _.get(req, 'params.publicationID');
   const relatedPublicationID = _.get(req, 'query.related');
+  const viewRelatedPubs = _.get(req, 'query.viewRelated');
 
   const { publicationTypes } = res.locals;
   let relatedPublication;
+  let mapRelatedPublications;
 
   debug('octopus:ui:debug')(`Showing Publication ${publicationID}`);
 
@@ -202,7 +204,7 @@ module.exports = (req, res) => {
         ),
       );
 
-      if (relatedPublicationID) {
+      if (relatedPublicationID && viewRelatedPubs) {
         relatedPublication = await new Promise((resolve) => {
           return api.getPublicationByID(relatedPublicationID, (foundPublicationErr, foundPublicationData) => {
             if (foundPublicationErr || _.isEmpty(foundPublicationData)) {
@@ -225,85 +227,88 @@ module.exports = (req, res) => {
         }
       }
 
-      // get all the related publications for current publication
-      const relatedPublications = await new Promise((resolve) => {
-        (async () => {
-          const allRelatedPubsByPubID = await relatedPublicationHelpers.getRelatedPubsByPubID(publicationID);
-          const allRelatedPubsByRelatedTo = await relatedPublicationHelpers.getRelatedPubsByRelatedTo(publicationID);
-          const allRelatedPublications = allRelatedPubsByPubID.concat(allRelatedPubsByRelatedTo);
-          return resolve(allRelatedPublications);
-        })();
-      });
+      if (viewRelatedPubs) {
+        // get all the related publications for current publication
+        const relatedPublications = await new Promise((resolve) => {
+          (async () => {
+            const allRelatedPubsByPubID = await relatedPublicationHelpers.getRelatedPubsByPubID(publicationID);
+            const allRelatedPubsByRelatedTo = await relatedPublicationHelpers.getRelatedPubsByRelatedTo(publicationID);
+            const allRelatedPublications = allRelatedPubsByPubID.concat(allRelatedPubsByRelatedTo);
+            return resolve(allRelatedPublications);
+          })();
+        });
 
-      // get info for all related publications from the current publication
-      const mapRelatedPublications = await new Promise(async (resolve) => {
-        const relatedPubs = [];
+        // get info for all related publications from the current publication
+        mapRelatedPublications = await new Promise(async (resolve) => {
+          const relatedPubs = [];
 
-        await Promise.all(
-          relatedPublications.map(async (relatedPub) => {
-            const { publicationID: relatedPubID, relatedTo, ratings } = relatedPub;
-            let rating;
+          await Promise.all(
+            relatedPublications.map(async (relatedPub) => {
+              const { publicationID: relatedPubID, relatedTo, ratings } = relatedPub;
+              let rating;
 
-            // No ratings for draft publications
-            if (publication.status === 'DRAFT') {
-              rating = null;
-            } else {
-              rating = computeRelatedPublicationRatings(ratings);
-            }
-
-            const relatedPubByRelatedTo = await new Promise((resolveRelated) => api.getPublicationByID(relatedTo, (err, foundPub) => {
-              if (foundPub) {
-                return resolveRelated({
-                  ...relatedPub,
-                  rating,
-                  filterID: foundPub._id,
-                  publicationType: foundPub.type,
-                  publicationTitle: foundPub.title,
-                });
+              // No ratings for draft publications
+              if (publication.status === 'DRAFT') {
+                rating = null;
+              } else {
+                rating = computeRelatedPublicationRatings(ratings);
               }
 
-              return resolveRelated();
-            }));
+              const relatedPubByRelatedTo = await new Promise((resolveRelated) => api.getPublicationByID(relatedTo, (err, foundPub) => {
+                if (foundPub) {
+                  return resolveRelated({
+                    ...relatedPub,
+                    rating,
+                    filterID: foundPub._id,
+                    publicationType: foundPub.type,
+                    publicationTitle: foundPub.title,
+                  });
+                }
 
-            const relatedPubByPublicationId = await new Promise((resolveRelated) => api.getPublicationByID(relatedPubID, (err, foundPub) => {
-              if (foundPub) {
-                return resolveRelated({
-                  ...relatedPub,
-                  rating,
-                  filterID: foundPub._id,
-                  publicationType: foundPub.type,
-                  publicationTitle: foundPub.title,
-                });
-              }
+                return resolveRelated();
+              }));
 
-              return resolveRelated();
-            }));
+              const relatedPubByPublicationId = await new Promise((resolveRelated) => api.getPublicationByID(relatedPubID, (err, foundPub) => {
+                if (foundPub) {
+                  return resolveRelated({
+                    ...relatedPub,
+                    rating,
+                    filterID: foundPub._id,
+                    publicationType: foundPub.type,
+                    publicationTitle: foundPub.title,
+                  });
+                }
 
-            relatedPubs.push(relatedPubByRelatedTo);
-            relatedPubs.push(relatedPubByPublicationId);
-          }),
-        );
+                return resolveRelated();
+              }));
 
-        // Remove current publication from relatable publications
-        const filteredPubs = relatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id);
+              relatedPubs.push(relatedPubByRelatedTo);
+              relatedPubs.push(relatedPubByPublicationId);
+            }),
+          );
 
-        if (publication.status === 'DRAFT') {
-          return resolve(filteredPubs);
-        }
+          // Remove current publication from relatable publications
+          const filteredPubs = relatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id);
 
-        if (publication.status === 'LIVE') {
-          const filteredRelatedPubs = filteredPubs.filter(({ rating }) => rating >= 0);
-          return resolve(filteredRelatedPubs);
-        }
+          if (publication.status === 'DRAFT') {
+            return resolve(filteredPubs);
+          }
 
-        return resolve();
-      });
+          if (publication.status === 'LIVE') {
+            const filteredRelatedPubs = filteredPubs.filter(({ rating }) => rating >= 0);
+            return resolve(filteredRelatedPubs);
+          }
+
+          return resolve();
+        });
+      }
 
       publication.authors = await attachAuthors(publication, accessToken);
       publication.ratings = attachRatings(publication, userId);
       // publication.text = encodeURIComponent(publication.text);
       publication.text = sanitizeUserHtml(publication.text);
       publication.redFlags = await attachRedFlags(publication);
+      publication.viewRelatedPubs = viewRelatedPubs;
       publication.relatedPublications = mapRelatedPublications;
       publication.relatablePublications = relatedPublicationHelpers.attachRelatablePublications(publications, publication);
 
