@@ -9,12 +9,29 @@ const getOrchidUserFullName = (user) => {
   return `${firstName} ${lastName}`;
 };
 
+// Map to a normalized format
+const mapUserDetails = ({ id, data, fromOrcid }) => new Promise((resolve) => {
+  if (!data) {
+    resolve();
+  }
+  return resolve({
+    orcid: id,
+    name: fromOrcid ? getOrchidUserFullName(data) : data.name,
+  });
+});
+
+// Search for the user in db
+const findUserByID = (id) => new Promise((resolve) => {
+  return api.getUserByORCiD(id, (err, data) => (err ? resolve({ id }) : resolve({ id, data })));
+}).then(mapUserDetails);
+
 // Searches for a user in our db, with a fallback to orcid.
 const findUserByOrcid = (orcid, accessToken) => {
   // Search for the user in db
   const findUserInDb = (id) => new Promise((resolve) => {
     return api.getUserByORCiD(id, (err, data) => (err ? resolve({ id }) : resolve({ id, data })));
   });
+
   // Search for the user on orchid
   const findUserInOrcid = ({ id, data: userData }) => new Promise((resolve) => {
     if (userData) {
@@ -22,21 +39,23 @@ const findUserByOrcid = (orcid, accessToken) => {
     }
     return orcidApi.getPersonDetails(id, accessToken, (err, data) => (err ? resolve() : resolve({ id, data, fromOrcid: true })));
   });
-  // Map to a normalized format
-  const mapUserDetails = ({ id, data, fromOrcid }) => new Promise((resolve) => {
-    if (!data) {
-      resolve();
-    }
-    return resolve({
-      orcid: id,
-      name: fromOrcid ? getOrchidUserFullName(data) : data.name,
-    });
-  });
+
   // Waterfall
   return findUserInDb(orcid)
     .then(findUserInOrcid)
     .then(mapUserDetails);
 };
+
+// Inserts only one user in DB
+function insertUser(user, res) {
+  api.insertUser(user, (insertManyUsersErr, insertManyUsersResult) => {
+    if (insertManyUsersErr) {
+      return res.render('publish/error', { error: insertManyUsersErr });
+    }
+
+    return insertManyUsersResult;
+  });
+}
 
 // Inserts multiple users in DB
 function insertManyUsers(user, res) {
@@ -49,7 +68,6 @@ function insertManyUsers(user, res) {
   });
 }
 
-// TODO: after the function was created import it in /routes/publications/save.js
 // Returns data for the collaborators that doesn't exists in our DB
 async function checkForNewUsers(orcidIds, accessToken) {
   // Check which author already exists in our DB
@@ -75,23 +93,21 @@ async function checkForNewUsers(orcidIds, accessToken) {
   // Create user object to insert in DB
   const newAuthorsList = await Promise.all(newAuthors.map(async (newAuthor) => {
     // Get all user data from ORCiD api using ORCiDid
+    // Start building the user's object
     const userData = await new Promise((resolve) => {
       return orcidApi.getPersonDetails(newAuthor, accessToken, (getPersonDetailsErr, getPersonDetailsData) => {
         if (getPersonDetailsErr || _.isEmpty(getPersonDetailsData)) {
           return resolve(null);
         }
 
-        const { name } = getPersonDetailsData;
+        // Get user's full name from ORCiD
+        const name = getOrchidUserFullName(getPersonDetailsData);
 
-        const firstName = name['family-name'] ? name['family-name'].value : '';
-        const lastName = name['given-names'] ? name['given-names'].value : '';
-        const fullName = `${firstName} ${lastName}`;
-
-        return resolve({ name: fullName });
+        return resolve({ name });
       });
     });
 
-    // Create user object to insert in DB
+    // Fill user's object to insert in DB
     userData.email = null;
     userData.orcid = newAuthor;
     userData.dateCreated = new Date();
@@ -106,7 +122,9 @@ async function checkForNewUsers(orcidIds, accessToken) {
 
 module.exports = {
   getOrchidUserFullName,
+  findUserByID,
   findUserByOrcid,
+  insertUser,
   insertManyUsers,
   checkForNewUsers,
 };

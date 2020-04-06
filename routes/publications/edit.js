@@ -28,7 +28,7 @@ module.exports = (req, res) => {
     if (publication.collaborators) {
       let authors = publication.collaborators;
       // Augment authors list
-      authors = await Promise.all(authors.map((author) => userHelpers.findUserByOrcid(author.userID, accessToken)));
+      authors = await Promise.all(authors.map((author) => userHelpers.findUserByID(author.userID, accessToken)));
       // Filter our undefined entries
       authors = authors.filter((author) => author);
 
