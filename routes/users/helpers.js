@@ -10,13 +10,14 @@ const getOrchidUserFullName = (user) => {
 };
 
 // Map to a normalized format
-const mapUserDetails = ({ id, data, fromOrcid }) => new Promise((resolve) => {
-  if (!data) {
+const mapUserDetails = (user) => new Promise((resolve) => {
+  if (!user || !user.data) {
     resolve();
   }
+
   return resolve({
-    orcid: id,
-    name: fromOrcid ? getOrchidUserFullName(data) : data.name,
+    orcid: user.id,
+    name: user.fromOrcid ? getOrchidUserFullName(user.data) : user.data.name,
   });
 });
 
