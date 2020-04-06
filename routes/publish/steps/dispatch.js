@@ -1,8 +1,10 @@
 const _ = require('lodash');
 const debug = require('debug');
+
+const api = require('../../../lib/api');
 const helpers = require('./helpers');
 const formHelpers = require('../../../lib/form');
-const api = require('../../../lib/api');
+const userHelpers = require('../../users/helpers');
 
 function mapResultForDropdown(result) {
   return {
@@ -19,6 +21,8 @@ module.exports = (req, res) => {
   };
 
   const stepNumber = Number(req.params.stepNumber);
+  const accessToken = _.get(req, 'session.authOrcid.accessToken');
+
   debug('octopus:ui:debug')(`Showing Publish step ${stepNumber}`);
 
   // if wrong step redirect to error page
@@ -107,6 +111,17 @@ module.exports = (req, res) => {
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
     }
+
+    if (publicationFormState.collaborators && publicationFormState.collaborators.length > 1) {
+      const { collaborators } = publicationFormState;
+
+      // Returns data for the collaborators that doesn't exists in our DB
+      const newAuthorsList = await new Promise((resolve) => resolve(userHelpers.checkForNewUsers(collaborators, accessToken)));
+
+      // Insert New Users List in DB
+      await userHelpers.insertManyUsers(newAuthorsList, res);
+    }
+
     return res.render(`publish/steps/step-${stepNumber}`, res.locals);
   });
 };
