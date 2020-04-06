@@ -104,7 +104,7 @@
         }
 
         // Update the Y values
-        let newY = +y2 - currentColumnElement.scrollTop();
+        let newY = +y2 - currentPublicationsList.scrollTop();
         coords[7] = newY + ",";
         coords[9] = newY;
 
