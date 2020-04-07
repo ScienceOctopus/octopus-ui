@@ -7,37 +7,56 @@
 
       {{> publications/versionTabs version=version publication=publication}}
 
-      <div class="row">
-        <div class="col-sm-9">
-          <div class="pub-title">
-            {{#if publication.redFlags}}
-            <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
-            {{/if}}
-            <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
-          </div>
 
-          <div>
-            <strong>Authors:</strong>
-            {{> authorsList authors=publication.authors }}
-          </div>
+      <div class="pub-title">
+        {{#if publication.redFlags}}
+        <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
+        {{/if}}
+        <h1><span class="text-accent">{{publication.type}}:</span> {{publication.title}}</h1>
+      </div>
 
-          <div>
-            <strong>Date added:</strong>
-            {{formatDate publication.dateCreated}}
-          </div>
+      <div>
+        <strong>Authors:</strong>
+        {{> authorsList authors=publication.authors }}
+      </div>
 
-          {{#if publication.redFlags}}
-            <a href="#" class="label label-danger" data-toggle="modal" data-target="#redFlagHistoryModal">
-              View Red Flag History
-            </a>
-            {{/if}}
-        </div>
-        <div class="col-sm-3">
-          <a href="/publications/download-pdf/{{publication._id}}" class="pull-right btn btn-default mt-3">
-            <span class="fa fa-file-pdf-o"></span>
-            <span>Download PDF</span>
-          </a>
-        </div>
+      <div>
+        <strong>Date added:</strong>
+        {{formatDate publication.dateCreated}}
+      </div>
+
+      {{#if publication.redFlags}}
+        <a href="#" class="label label-danger" data-toggle="modal" data-target="#redFlagHistoryModal">
+          View Red Flag History
+        </a>
+      {{/if}}
+
+      <hr />
+
+      <div class="content-actions-bar">
+        <a href="/publications/download-pdf/{{publication._id}}" class="btn btn-primary">
+          <span class="fa fa-file-pdf-o"></span>
+          <span>Download PDF</span>
+        </a>
+
+        <span class="separator"></span>
+
+        {{#if (equals publication.status "LIVE")}}
+          <form method="POST" action="/publish/step/1?linked={{publication._id}}" class="form-inline display-inline-block">
+            <input type="submit" class="btn btn-md btn-default" value="Write a linked publication">
+          </form>
+
+          <span class="separator"></span>
+
+          <form method="POST" action="/publish/step/2?linked={{publication._id}}" class="form-inline display-inline-block">
+            <input type="hidden" name="publicationType" value="REVIEW" />
+            <input type="submit" class="btn btn-md btn-default" value="Write a review" />
+          </form>
+
+          <span class="separator"></span>
+
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#redFlagPublicationModal">Red flag</button>
+        {{/if}}
       </div>
 
       <hr />
@@ -54,35 +73,8 @@
         {{{publication.text}}}
       </div>
 
+      <br /><br />
       <hr />
-
-      <div>
-        <h3>Additional information</h3>
-        <p>
-          <strong>Funding Statement:</strong>
-          <br />
-          {{publication.fundingStatement}}
-        </p>
-        <p>
-          <strong>Conflict of Interest Declaration:</strong>
-          <br />
-          {{publication.coiDeclaration}}
-        </p>
-        <p>
-          <strong>CC-BY Licence:</strong>
-          <br />
-          {{publication.copyrightLicence}}
-        <p>
-          <strong>Keywords:</strong>
-          <br />
-          {{publication.keywords}}
-        </p>
-        <p>
-          <strong>Files:</strong>
-          <br />
-          {{publication.files}}
-        </p>
-      </div>
 
       {{#if publication.viewRelatedPubs}}
         <hr />
@@ -108,41 +100,63 @@
       {{/if}}
     </div>
 
-    <div class="col-sm-3 sidebar">
-      {{> rating}}
-
-      {{#if (equals publication.status "DRAFT")}}
-      <p>You can either submit for publication or re-edit.</p>
-      <p>Submitting will email your co-authors for authorisation
-      <!--
-      <p>As the sole author, submitting will mean this publication is immediately live</p>
-      <p>You are the last co-author to check the publication, so clicking submit will mean this publication is immediately live</p>
-      -->
-      {{/if}}
+    <div class="col-sm-3">
+      <div class="sidebar">
+        {{#if (equals publication.status "LIVE")}}
+          {{> rating}}
+        {{/if}}
 
         {{#if (equals publication.status "DRAFT")}}
-        <hr />
-        <form action="/publications/publish/{{publication._id}}" method="POST">
-          <a href="/publications/edit/{{publication._id}}" class="btn btn-md btn-default">Edit</a>
-          <input type="submit" class="btn btn-md btn-primary" value="Publish now" />
-        </form>
-        {{/if}}
+          <h4>Status: Draft</h4>
+          <p>You can either submit for publication or re-edit.</p>
+          <p>Submitting will email your co-authors for authorisation.</p>
+          <!--
+          <p>As the sole author, submitting will mean this publication is immediately live</p>
+          <p>You are the last co-author to check the publication, so clicking submit will mean this publication is immediately live</p>
+          -->
 
-        {{#if (equals publication.status "LIVE")}}
-          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#redFlagPublicationModal">Red flag this publication?</button>
-          <br /><br />
-        {{/if}}
+          <div class="text-right">
+            <a href="/publications/edit/{{publication._id}}" class="btn btn-md btn-xdefault">Edit</a>
 
-        {{#if (equals publication.status "LIVE")}}
-        <form method="POST" action="/publish/step/1?linked={{publication._id}}">
-          <input type="submit" class="btn btn-md btn-default" value="Write a linked publication">
-        </form>
-        <br />
-        <form method="POST" action="/publish/step/2?linked={{publication._id}}" class="form-inline">
-          <input type="hidden" name="publicationType" value="REVIEW" />
-          <input type="submit" class="btn btn-md btn-primary" value="Write a review" />
-        </form>
+            <form action="/publications/publish/{{publication._id}}" method="POST" class="form-inline display-inline-block">
+              <input type="submit" class="btn btn-md btn-primary" value="Publish now" />
+            </form>
+          </div>
+
         {{/if}}
+      </div>
+
+      <br />
+
+      <div class="sidebar">
+        <div>
+          <h3>Additional information</h3>
+          <p>
+            <strong>Funding Statement:</strong>
+            <br />
+            {{publication.fundingStatement}}
+          </p>
+          <p>
+            <strong>Conflict of Interest Declaration:</strong>
+            <br />
+            {{publication.coiDeclaration}}
+          </p>
+          <p>
+            <strong>CC-BY Licence:</strong>
+            <br />
+            {{publication.copyrightLicence}}
+          <p>
+            <strong>Keywords:</strong>
+            <br />
+            {{publication.keywords}}
+          </p>
+          <p>
+            <strong>Files:</strong>
+            <br />
+            {{publication.files}}
+          </p>
+        </div>
+      </div>
     </div>
 
   </div>
