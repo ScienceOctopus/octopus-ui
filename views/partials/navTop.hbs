@@ -1,26 +1,28 @@
 <nav id="navTop" role="navigation" class="hidden-print">
-  <ul class="list list-inline">
-    <li>
-      <a href="/" {{#if (equals url '/')}} class="active"{{/if}}>
-        <img class="logo" src="/public/octopus.svg" />
-        <span class="branding">Octopus</span>
-      </a>
-    </li>
-    <!-- <li>
-      <a href="/publications/search" {{#if (startsWith url '/publications')}} class="active"{{/if}}>
-        <span class="fa fa-fw fa-search"></span>
-        Explore publications
-      </a>
-    </li> -->
-    <li>
-      <a href="/publish" {{#if (startsWith url '/publish')}} class="active"{{/if}}>
-        <span class="fa fa-fw fa-pencil"></span>
-        Publish your work
-      </a>
-    </li>
-    <li>
-      <form method="GET" action="/publications/search" class="form-inline" id="searchFormTop">
-        <!-- <div class="form-group"> -->
+
+  <div class="navbar-header">
+    <a href="/" {{#if (equals url '/')}} class="active"{{/if}}>
+      <img class="logo" src="/public/octopus.svg" />
+      <span class="branding">Octopus</span>
+    </a>
+    <div class="pull-right">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navTopNavbar">
+        <span class="fa fa-fw fa-3x fa-bars"></span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="collapse navbar-collapse" id="navTopNavbar">
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="/publish" {{#if (startsWith url '/publish')}} class="active"{{/if}}>
+          <span class="fa fa-fw fa-pencil"></span>
+          Publish your work
+        </a>
+      </li>
+      <li>
+        <form method="GET" action="/publications/search" class="form-inline" id="searchFormTop">
           <div class="input-group">
             <label for="searchTopFormTopInput" class="sr-only">Search term</label>
             <input id="searchTopFormTopInput" class="searchTopFormInput" name="phrase" type="text" value="{{query.phrase}}" placeholder="Search..." />
@@ -39,18 +41,19 @@
               </button>
             </div>
           </div>
-        <!-- </div> -->
+        </form>
+      </li>
+    </ul>
 
-      </form>
-    </li>
-    <li class="pull-right">
+    <ul class="nav navbar-nav navbar-right">
       {{#if user}}
         <a href="/users/view/{{user.orcid}}">{{user.name}}</a>
       {{else}}
         <a href="/auth/orcid/login?returnPath={{url}}">Log in via ORCiD</a>
       {{/if}}
-    </li>
-  </ul>
+    </ul>
+  </div>
+
 </nav>
 
 <div id="printHeader" class="visible-print">
