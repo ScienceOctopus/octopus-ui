@@ -126,15 +126,32 @@ const getLinkedPublicationsByType = (publication, publications, type) => {
   if (!_.isEmpty(publication.linkedPublications)) {
     const { linkedPublications } = publication;
 
-    const linkedProblems = publications.filter((pub) => {
+    const linkedPubs = publications.filter((pub) => {
       return linkedPublications.includes(pub._id) && (pub.type === type);
     });
 
-    linkedProblems.forEach((linkedProblem) => {
-      linkedProblem.attachedRatings = attachRatings(linkedProblem, null);
+    linkedPubs.forEach((linkedPub) => {
+      linkedPub.attachedRatings = attachRatings(linkedPub, null);
     });
 
-    return linkedProblems;
+    return linkedPubs;
+  }
+
+  return [];
+};
+
+// Get ALL linked publications for current
+const getLinkedPublications = (publication, publications) => {
+  if (!_.isEmpty(publication.linkedPublications)) {
+    const { linkedPublications } = publication;
+
+    const linkedPubs = publications.filter((pub) => {
+      return linkedPublications.includes(pub._id);
+    });
+
+    linkedPubs.push(publication);
+
+    return linkedPubs;
   }
 
   return [];
@@ -357,6 +374,7 @@ module.exports = (req, res) => {
       const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
       const relatedPublicationRatings = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
       const countedPublications = typeCounter(publicationTypes, publications);
+      const linkedPublications = getLinkedPublications(publication, publications);
 
       res.locals.version = version;
       res.locals.publication = publication;
@@ -366,6 +384,7 @@ module.exports = (req, res) => {
       res.locals.relatedPublication = relatedPublication;
       res.locals.relatedPublicationRatings = relatedPublicationRatings;
       res.locals.countedPublications = countedPublications;
+      res.locals.linkedPublications = linkedPublications;
 
       debug('octopus:ui:trace')(res.locals);
 
