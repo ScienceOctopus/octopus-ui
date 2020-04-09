@@ -32,14 +32,21 @@
                   {{#if (equals type  ../key)}}
                     <a id={{_id}} title="{{title}}" href="/publications/view/{{_id}}" class="pubItem" linked="{{toString linkedPublications}}">
                       <h5 class="title">{{title}}</h5>
+                        {{#unless (equals countedLinked 0)}}
+                          <div class="countedLinked">
+                            {{countedLinked}}
+                            <span class="fa fa-link"></span>
+                          </div>
+                        {{/unless}}
 
                       <div class="authors">
                         {{#each authors}}
-                        <span>{{name}}</span>
+                          <span>{{name}}</span>
                         {{/each}}
                       </div>
 
                       <div>{{formatDate dateCreated}}</div>
+
                     </a>
                   {{/if}}
                 {{/each}}

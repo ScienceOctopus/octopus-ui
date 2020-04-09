@@ -33,6 +33,20 @@
 
       <hr />
 
+      <div>
+        <h3>Linked Problems</h3>
+        {{> publications/linkedPublicationsList linkedPublications=publication.linkedProblems publicationType=publicationType publicationTypes=this.publicationTypes type="problems"}}
+      </div>
+
+      <hr/>
+
+      <div>
+        <h3>Reviews</h3>
+        {{> publications/linkedPublicationsList linkedPublications=publication.linkedReviews publicationType=publicationType publicationTypes=this.publicationTypes type="reviews"}}
+      </div>
+
+      <hr />
+
       <div class="content-actions-bar">
         <a href="/publications/download-pdf/{{publication._id}}" class="btn btn-primary">
           <span class="fa fa-file-pdf-o"></span>

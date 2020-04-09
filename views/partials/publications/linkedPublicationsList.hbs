@@ -1,0 +1,26 @@
+<div id="linkedPublicationsList">
+  {{#if linkedPublications.length}}
+    {{#each linkedPublications}}
+      <div class="element mb-2">
+        <a href="/publications/view/{{this._id}}">
+          <h4>
+            {{this.title}}
+          </h4>
+        </a>
+
+        <div class="date-authors">
+          <strong>Date added:</strong>
+          {{formatDate this.dateCreated}}
+
+          <strong>Authors: </strong>
+          {{> authorsList authors=this.authors }}
+        </div>
+
+        {{> linkedPublicationsRatings publication=this publicationType=../publicationType}}
+      </div>
+    {{/each}}
+
+    {{else}}
+    <p>No linked {{type}} available.</p>
+  {{/if}}
+</div>

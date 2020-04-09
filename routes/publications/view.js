@@ -121,6 +121,25 @@ const typeCounter = (publicationTypes, publications) => {
   return countedPublications;
 };
 
+// Get linked publications for current publication by type
+const getLinkedPublicationsByType = (publication, publications, type) => {
+  if (!_.isEmpty(publication.linkedPublications)) {
+    const { linkedPublications } = publication;
+
+    const linkedProblems = publications.filter((pub) => {
+      return linkedPublications.includes(pub._id) && (pub.type === type);
+    });
+
+    linkedProblems.forEach((linkedProblem) => {
+      linkedProblem.attachedRatings = attachRatings(linkedProblem, null);
+    });
+
+    return linkedProblems;
+  }
+
+  return [];
+};
+
 module.exports = (req, res) => {
   const userId = _.get(req, 'session.user.orcid');
   const accessToken = _.get(req, 'session.authOrcid.accessToken');
@@ -196,9 +215,23 @@ module.exports = (req, res) => {
                 authors.map((author) => userHelpers.findUserByID(author.userID, accessToken)),
               );
 
+              // Get linked problems for each publication
+              const linkedProblems = getLinkedPublicationsByType(pub, publications, 'PROBLEM');
+              const linkedReviews = getLinkedPublicationsByType(pub, publications, 'REVIEW');
+              const countedLinkedProblems = linkedProblems.length;
+              const countedLinkedReviews = linkedReviews.length;
+              const countedLinked = countedLinkedProblems + countedLinkedReviews;
+
               // Filter our undefined entries
               authors = authors.filter((author) => author);
-              return resolve({ ...pub, authors });
+
+              return resolve({
+                ...pub,
+                authors,
+                linkedProblems,
+                countedLinked,
+                countedLinkedReviews,
+              });
             })();
           }),
         ),
@@ -287,8 +320,11 @@ module.exports = (req, res) => {
             }),
           );
 
+          // Remove null / undefined elements from relatedPubs Array
+          const availableRelatedPubs = relatedPubs.filter((relatedPub) => relatedPub);
+
           // Remove current publication from relatable publications
-          const filteredPubs = relatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id);
+          const filteredPubs = availableRelatedPubs.filter((relatedPub) => relatedPub.filterID !== publication._id);
 
           if (publication.status === 'DRAFT') {
             return resolve(filteredPubs);
@@ -303,6 +339,9 @@ module.exports = (req, res) => {
         });
       }
 
+      const linkedProblems = getLinkedPublicationsByType(publication, publications, 'PROBLEM');
+      const linkedReviews = getLinkedPublicationsByType(publication, publications, 'REVIEW');
+
       publication.authors = await attachAuthors(publication, accessToken);
       publication.ratings = attachRatings(publication, userId);
       // publication.text = encodeURIComponent(publication.text);
@@ -311,6 +350,9 @@ module.exports = (req, res) => {
       publication.viewRelatedPubs = viewRelatedPubs;
       publication.relatedPublications = mapRelatedPublications;
       publication.relatablePublications = relatedPublicationHelpers.attachRelatablePublications(publications, publication);
+      publication.linkedProblems = linkedProblems;
+      publication.linkedReviews = linkedReviews;
+      publication.countedLinked = linkedProblems.length + linkedReviews.length;
 
       const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
       const relatedPublicationRatings = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
