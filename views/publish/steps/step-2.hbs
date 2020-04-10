@@ -49,7 +49,7 @@
     </div>
 
     <div class="form-group">
-      <label>2. Authors</label>
+      <label>2. Authors <span class="required">*</span></label>
 
       <p>All authors need to have an ORCiD with a valid email address. All authors will be emailed on submission in order to authorise publication before it goes live.</p>
 
@@ -92,17 +92,12 @@
     </div>
 
     <div class="form-group">
-      <label for="publicationTitle">3. Publication title</label>
+      <label for="publicationTitle">3. Publication title <span class="required">*</span></label>
       <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter a title that gives readers as good an idea as possible of the content of the publication. Max characters 100" maxlength="100"/>
     </div>
 
     <div class="form-group">
-      <label for="publicationSummary">4. Publication summary</label>
-      <textarea required id="publicationSummary" class="form-control" name="publicationSummary" placeholder="Enter a sentence that gives readers more detail of the publication. Max characters 200" maxlength="100"></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="publicationDataUrl">5.
+      <label for="publicationDataUrl">4.
         {{#if (equals publication.type "PROTOCOL")}} Link to detailed protocol
         {{else if (equals publication.type "RESULT")}} Link to raw data file(s)
         {{else if (equals publication.type "ANALYSIS")}} Link to analytical code
@@ -110,7 +105,14 @@
         {{/if}}
       </label>
 
-      <p>If you have used a specialist data repository/code-sharing platform/protocol-sharing platform please enter the URL or DOI here:</p>
+      <p>If you have used a specialist
+        {{#if (equals publication.type "DATA")}} data repository
+        {{else if (equals publication.type "ANALYSIS")}} code-sharing platform
+        {{else if (equals publication.type "PROTOCOL")}} Protocol-sharing platform
+        {{else}} data repository/code-sharing platform/protocol-sharing platform
+        {{/if}}
+        please enter the URL or DOI here:
+      </p>
 
       <input id="publicationDataUrl" class="form-control" name="publicationDataUrl"/>
 
@@ -124,12 +126,12 @@
     </div>
 
     <div class="form-group">
-      <label for="publicationKeywords">6. Publication keywords (optional)</label>
+      <label for="publicationKeywords">5. Publication keywords (optional)</label>
       <input id="publicationKeywords" class="form-control" name="publicationKeywords" type="text" value="" placeholder="Enter up to 5 keywords to help search engines find your publication" />
     </div>
 
     <div class="form-group">
-      <label for="fundingStatement">7. Funding statement</label>
+      <label for="fundingStatement">6. Funding statement <span class="required">*</span></label>
 
       <p>Please acknowledge all sources of funding for this work and supporting each of the authors.<br/>If the rare case that no funding sources need to be stated, feel free to enter "None".</p>
 
@@ -137,7 +139,7 @@
     </div>
 
     <div class="form-group">
-      <label for="coiDeclaration">8. Conflict of Interest declaration</label>
+      <label for="coiDeclaration">7. Conflict of Interest declaration <span class="required">*</span></label>
 
       <p>Declare any potential conflicts of interest this publication may have. This includes past and present financial support relevant to this publication; employment or volunteer positions of any authors or their close family for organisations who might be perceived as having an interest in this publication; intellectual interests (such as Intellectual Property rights held by the authors).<br/>If in doubt whether an interest is relevant, declare it! If there aren't any, just type "No conflicts of interest".
       </p>
@@ -146,7 +148,7 @@
     </div>
 
     <div class="form-group">
-      <label for="copyrightLicence">9. CC-BY licence</label>
+      <label for="copyrightLicence">8. CC-BY licence <span class="required">*</span></label>
 
       <p> Please choose a copyright licence for your publication. Octopus uses the Creative Commons Copyright options (for more on each of these, please see <a href="https://creativecommons.org/licenses" target="_blank">https://creativecommons.org/licenses</a>).
       </p>
@@ -163,7 +165,7 @@
     </div>
 
     <div class="form-group">
-      <label for="relatedPublications">10. Add related publications</label>
+      <label for="relatedPublications">9. Add related publications</label>
 
       {{#if allRelatablePublications}}
         <p>Are there any other publications in Octopus that you think readers of this publication should be aware of (excluding those above this one in the publication chain which it will already be related to)? This is particularly useful for relating between different fields of science.You can make multiple selections.
@@ -184,7 +186,7 @@
 
     {{#if (equals publication.type "PROTOCOL")}}
       <div class="form-group">
-        <label>11. Has this method already been carried out?</label>
+        <label>10. Has this method already been carried out?</label>
 
         <div class="checkbox">
           <label>

@@ -152,6 +152,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .bg-white { background: white !important; }
 .text-white { color: white !important; }
 .text-white:hover:before { color: white !important; }
+.required { color: red; }
 
 /* Bootstrap panels */
 .panel-body.scroll { max-height: 350px; overflow-y: auto; }
