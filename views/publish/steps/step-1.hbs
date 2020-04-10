@@ -17,15 +17,15 @@
     <div class="form-group">
       <label for="publicationType">I'd like to publish</label>
       <select name="publicationType" id="publicationType" class="form-control">
-        {{#publicationTypesOptions linksTo}}
+        {{#publicationTypesOptions linksTo linkedPublicationData.type linkedPublicationId}}
         <option value="PROBLEM">a problem</option>
+        <option value="REVIEW">a peer review</option>
         <option value="HYPOTHESIS">a hypothesis (rationale)</option>
         <option value="PROTOCOL">a protocol (method)</option>
         <option value="RESULT">a result (data)</option>
         <option value="ANALYSIS">an analysis</option>
         <option value="INTERPRETATION">an interpretation</option>
         <option value="APPLICATION">a real world application</option>
-        <option value="REVIEW">a peer review</option>
         {{/publicationTypesOptions}}
       </select>
     </div>

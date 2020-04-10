@@ -58,6 +58,7 @@ module.exports = (req, res) => {
       return api.getPublicationByID(linkedPublicationId, (publicationErr, publicationData) => {
         const linkedPublicationType = _.find(res.locals.publicationTypes, { key: publicationData.type });
         res.locals.linksTo = linkedPublicationType.linksTo;
+        res.locals.linkedPublicationData = publicationData;
         return res.render(`publish/steps/step-${stepNumber}`, res.locals);
       });
     }

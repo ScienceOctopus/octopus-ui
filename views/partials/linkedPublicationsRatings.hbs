@@ -1,0 +1,23 @@
+{{#if publication.attachedRatings}}
+  <div class="ratings-container">
+    {{#each publicationType.ratingCriteria}}
+        <p class="mr-2">
+          <b>{{this}}</b>
+        </p>
+
+        <div class="star-rating">
+          <div class="star-rating__wrap input-group">
+            {{#times 5}}
+              <input type="radio" name="rating{{@key}}" class="star-rating__input" id="star-rating-{{@key}}{{@pos}}"
+                value="{{math "sub" 5 @index}}"
+                {{checkRating ../publication.attachedRatings.values @key @index 5 ../publication.attachedRatings.disabled}}
+                disabled>
+                
+              <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-{{@key}}{{@pos}}"
+                title="{{math "sub" 5 @index}} out of 5 stars"></label>
+            {{/times}}
+          </div>
+        </div>
+    {{/each}}
+  </div>
+{{/if}}

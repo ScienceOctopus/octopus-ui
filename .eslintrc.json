@@ -13,7 +13,7 @@
     "global-require": "warn",
     "new-cap": "warn",
     "max-len": "off",
-    "no-param-reassign": "warn",
+    "no-param-reassign": "off",
     "no-else-return": "warn",
     "no-loop-func": "warn",
     "no-console": "off",

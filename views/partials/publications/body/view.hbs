@@ -7,7 +7,6 @@
 
       {{> publications/versionTabs version=version publication=publication}}
 
-
       <div class="pub-title">
         {{#if publication.redFlags}}
         <i class="fa fa-flag fa-lg text-danger publicationRedFlag mr-2"></i>
@@ -30,6 +29,20 @@
           View Red Flag History
         </a>
       {{/if}}
+
+      <hr />
+
+      <div>
+        <h3>Linked Problems</h3>
+        {{> publications/linkedPublicationsList linkedPublications=publication.linkedProblems publicationType=publicationType publicationTypes=this.publicationTypes type="problems"}}
+      </div>
+
+      <hr/>
+
+      <div>
+        <h3>Reviews</h3>
+        {{> publications/linkedPublicationsList linkedPublications=publication.linkedReviews publicationType=publicationType publicationTypes=this.publicationTypes type="reviews"}}
+      </div>
 
       <hr />
 
@@ -57,13 +70,6 @@
 
           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#redFlagPublicationModal">Red flag</button>
         {{/if}}
-      </div>
-
-      <hr />
-
-      <div>
-        <h3>Summary</h3>
-        {{publication.summary}}
       </div>
 
       <hr />
