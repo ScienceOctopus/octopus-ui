@@ -125,6 +125,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .publication-container { background: #f7f7f7; padding: 20px 15px; border-radius: 5px; border: 1px solid #f1f1f1; margin-bottom: 10px; }
 .publication-iframe { width: 100%; min-height: 150px; border: 0}
 .publication-type { text-transform: capitalize; color: #ADA3ED; font-weight: bold; margin-top: 0px; }
+.publication-type .label-octopus { background-color: #6a68e4; }
 .publication-title { margin-bottom: 0px; }
 .authors-list { font-size: 13px; }
 .authors-list-separator { margin-left: -4px; }

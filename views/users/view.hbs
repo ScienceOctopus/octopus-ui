@@ -79,21 +79,25 @@
           <div class="row">
             <div class="col-sm-9">
               <p class="publication-type">
-                {{this.type}}
+                <span class="label label-octopus mt-0">{{this.type}}</span>
+                <span class="label label-default mt-0">{{this.status}}</span>
               </p>
+            </div>
+            <div class="col-sm-3">
+              <p>
+                <b>Date added:</b>
+                {{this.createdDate}}
+              </p>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-sm-12">
               <a href="/publications/view/{{this._id}}" target="_blank">
                 <h4 class="publication-title">
                   {{this.title}}
                 </h4>
               </a>
-            </div>
-            <div class="col-sm-3">
-              <p>
-                <b>
-                  Date added:
-                </b>
-                {{this.createdDate}}
-              </p>
             </div>
           </div>
         </li>
