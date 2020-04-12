@@ -138,28 +138,38 @@ const getUserFullName = (orcidId, accessToken) => new Promise((resolve) => {
 });
 
 // Fetch user's publications by orcidId from database
-const getUserPublications = (orcidId) => new Promise((resolve) => {
-  const query = {
+const getUserPublications = (orcidId) => new Promise(async (resolveUserPublications) => {
+  const livePublicationsQuery = {
     createdByUser: orcidId,
+    status: 'LIVE',
   };
 
-  return api.findPublications(query, (publicationsErr, publications) => {
-    const allPublications = [];
-    const userPublications = publications.results;
+  const draftPublicationsQuery = {
+    createdByUser: orcidId,
+    status: 'DRAFT',
+  };
 
-    // transform "2019-11-13 00:00:00" to "2019-11-13"
-    userPublications.forEach((publication) => {
-      const pub = publication;
-      const { dateCreated } = pub;
-      const splittedDate = dateCreated.split(' ')[0];
-
-      pub.createdDate = splittedDate;
-
-      allPublications.push(pub);
-    });
-
-    resolve(allPublications);
+  const livePublications = await new Promise((resolve) => {
+    return api.findPublications(livePublicationsQuery, (publicationsErr, pubs) => resolve(pubs.results));
   });
+
+  const draftPublications = await new Promise((resolve) => {
+    return api.findPublications(draftPublicationsQuery, (publicationsErr, pubs) => resolve(pubs.results));
+  });
+
+  // all user publications
+  const allPublications = livePublications.concat(draftPublications);
+
+  // transform date from "2019-11-13 00:00:00" to "2019-11-13"
+  allPublications.forEach((publication) => {
+    const pub = publication;
+    const { dateCreated } = pub;
+    const splittedDate = dateCreated.split(' ')[0];
+
+    publication.createdDate = splittedDate;
+  });
+
+  return resolveUserPublications(allPublications);
 });
 
 // count publications by publication types from DB

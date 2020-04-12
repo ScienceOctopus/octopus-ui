@@ -148,6 +148,16 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .ml-3 { margin-left: 16px; }
 .pl-0 { padding-left: 0; }
 
+/* Label utility clases based on publication type */
+.label-PROBLEM { background-color: #42C0A3; }
+.label-HYPOTHESIS { background-color: #BF72E8; }
+.label-PROTOCOL { background-color: #D9504F; }
+.label-RESULT { background-color: #0083ff; }
+.label-ANALYSIS { background-color: #5180BD; }
+.label-INTERPRETATION { background-color: #a90329; }
+.label-APPLICATION { background-color: #C99E58; }
+.label-REVIEW { background-color: #F5F56C; color: black; }
+
 /* Color utility classes */
 .bg-white { background: white !important; }
 .text-white { color: white !important; }
