@@ -37,6 +37,7 @@
 
   function drawHorizontalLinks() {
     // Constants
+    const HIDE_NOTLINKED = true;    // Remove non-linked publications
     const ITEMS_SPACING = 10;       // Space between publication items
     const OFFSET_TOP = 46;          // Space taken by the column header (title)
     const ACTIVE_CLASS = "active";  // State classes - current publication (active)
@@ -52,22 +53,32 @@
     const currentPublicationId = $pubChainContainer.data("publication");
     const activePublicationItem = $pubChainColumns.find(`.pubItem#${currentPublicationId}`);
 
-    // Dimensions
-    const pubItemHeight = $pubChainColumns.find(".pubItem").first().outerHeight();
+    // Mark the current publication item as active
+    activePublicationItem.addClass(ACTIVE_CLASS);
+    markBackwards(activePublicationItem); // Highlight items going backwards | < ACTIVE
+    markForwards(activePublicationItem);  // Highlight items going forwards  | ACTIVE >
+
+    if (HIDE_NOTLINKED) {
+      // Remove non-linked publications
+      $pubChainContainer.find(".pubItem").not(`.${HIGH_CLASS}`).not(`.${ACTIVE_CLASS}`).remove()
+    }
 
     // Update the svg viewbox based on the dimensions of the svg
     $pubChainContainer.find("svg").each((i, svg) => {
       svg.setAttribute("viewBox", `0, 0, ${$(svg).width()}, ${$(svg).height()}`);
     });
 
-    // Mark the current publication item as active
-    activePublicationItem.addClass(ACTIVE_CLASS);
-    markBackwards(activePublicationItem); // Highlight items going backwards | < ACTIVE
-    markForwards(activePublicationItem);  // Highlight items going forwards  | ACTIVE >
-
+    // Dimensions
+    const pubItemHeight = $pubChainColumns.find(".pubItem").first().outerHeight();
 
     // Setup & Draw
     $pubChainColumns.each(updateSvg);
+
+    if (HIDE_NOTLINKED) {
+      // Publications counter by type
+      $pubChainColumns.each(updateCounter);
+    }
+
     // Re-draw the Y on scroll
     $pubChainColumns.find(".publicationsList").scroll((e) => {
       const currentPublicationsList = $(e.target);
@@ -113,6 +124,11 @@
       });
     });
 
+    function updateCounter(_colIndex, columnElement) {
+      const currentColumnElement = $(columnElement);
+      const counterValue = currentColumnElement.find(".pubItem").length
+      currentColumnElement.find(".counter").text(counterValue);
+    }
 
     function updateSvg(_colIndex, columnElement) {
       // Setup

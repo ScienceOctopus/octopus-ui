@@ -141,21 +141,41 @@ const getLinkedPublicationsByType = (publication, publications, type) => {
 };
 
 // Get ALL linked publications for current
-const getLinkedPublications = (publication, publications) => {
-  if (!_.isEmpty(publication.linkedPublications)) {
-    const { linkedPublications } = publication;
+// const getLinkedPublications = (publication, publications) => {
+//   const linked = [];
 
-    const linkedPubs = publications.filter((pub) => {
-      return linkedPublications.includes(pub._id);
-    });
+//   if (!_.isEmpty(publication.linkedPublications)) {
+//     const { linkedPublications, type } = publication;
 
-    linkedPubs.push(publication);
+//     const linkedPubs = publications.filter((pub) => {
+//       return linkedPublications.includes(pub._id);
+//     });
 
-    return linkedPubs;
-  }
+//     linkedPubs.forEach((l) => linked.push(l));
+//   } else {
+//     const linkedPubs = publications.filter((pub) => {
+//       if(!_.isEmpty(pub.linkedPublications)) {
+//         return pub.linkedPublications.includes(publication._id);
+//       }
+//       return []
+//     });
 
-  return [];
-};
+//     linkedPubs.forEach((l) => linked.push(l));
+//   }
+
+//   linked.push(publication);
+
+//   const filteredArr = linked.reduce((acc, current) => {
+//     const x = acc.find(item => item._id === current._id);
+//     if (!x) {
+//       return acc.concat([current]);
+//     } else {
+//       return acc;
+//     }
+//   }, []);
+
+//   return filteredArr;
+// };
 
 module.exports = (req, res) => {
   const userId = _.get(req, 'session.user.orcid');
@@ -373,8 +393,8 @@ module.exports = (req, res) => {
 
       const publicationType = publicationTypes.filter((type) => type.key === publication.type)[0];
       const relatedPublicationRatings = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+      // const linkedPublications = getLinkedPublications(publication, publications);
       const countedPublications = typeCounter(publicationTypes, publications);
-      const linkedPublications = getLinkedPublications(publication, publications);
 
       res.locals.version = version;
       res.locals.publication = publication;
@@ -384,7 +404,7 @@ module.exports = (req, res) => {
       res.locals.relatedPublication = relatedPublication;
       res.locals.relatedPublicationRatings = relatedPublicationRatings;
       res.locals.countedPublications = countedPublications;
-      res.locals.linkedPublications = linkedPublications;
+      // res.locals.linkedPublications = linkedPublications;
 
       debug('octopus:ui:trace')(res.locals);
 
