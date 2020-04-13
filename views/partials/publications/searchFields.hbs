@@ -1,0 +1,26 @@
+{{!-- SORT --}}
+{{#if query.sort}}
+  {{#if (equals currentField "sort")}}{{else}}
+  <input name="sort" type="hidden" value="{{query.sort}}" />
+  {{/if}}
+{{/if}}
+
+{{!-- PHRASE --}}
+{{#if query.phrase}}
+  {{#if (equals currentField "phrase") }}{{else}}
+  <input name="phrase" type="hidden" value="{{query.phrase}}" />
+{{/if}}{{/if}}
+
+{{!-- TYPE FILTER --}}
+{{#if query.type}}
+  {{#if (equals currentField "type") }}{{else}}
+    <input name="type" type="hidden" value="{{query.type}}" />
+  {{/if}}
+{{/if}}
+
+{{!-- DATE FILTER --}}
+{{#if query.date}}
+  {{#if (equals currentField "date") }}{{else}}
+    <input name="date" type="hidden" value="{{query.date}}" />
+  {{/if}}
+{{/if}}

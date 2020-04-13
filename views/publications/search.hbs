@@ -8,40 +8,75 @@
       <h5><strong>Refine search</strong></h5>
       <form method="GET" action="" class="form-inline" id="searchFormSidebar">
         <!-- <div class="form-group"> -->
-          <label for="searchFormSidebarInput" class="sr-only">Search term</label>
-          <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}" placeholder="Search publications" />
+        <label for="searchFormSidebarInput" class="sr-only">Search term</label>
+        <input id="searchFormSidebarInput" class="searchFormInput" name="phrase" type="text" value="{{query.phrase}}"
+          placeholder="Search publications" />
 
-          <button type="submit" class="btn btn-default searchFormSubmitBtn">
-            <span class="fa fa-search"></span>
-            <span class="sr-only">Submit search</span>
-          </button>
+        <button type="submit" class="btn btn-default searchFormSubmitBtn">
+          <span class="fa fa-search"></span>
+          <span class="sr-only">Submit search</span>
+        </button>
+
+        {{> publications/searchFields currentField="phrase"}}
         <!-- </div> -->
       </form>
 
-      <br/>
+      <br />
 
       <h5><strong>Filter by Publication type:</strong></h5>
       <form method="GET" action="" class="form-horizontal">
-          {{#each publicationTypes}}
-          <div class="checkbox"><label>
-            <input type="checkbox" checked="checked" name="publicationTypes" value="{{this.key}}" /> {{this.plural}}
-          </label></div>
-          {{/each}}
+        {{#radio query.type}}
+        {{#each publicationTypes}}
+        <div class="radio">
+          <label>
+            <input type="radio" name="type" value="{{this.key}}" onclick="this.form.submit()" /> {{this.plural}}
+          </label>
+        </div>
+        {{/each}}
+        <div class="radio">
+          <label>
+            {{#if query.type}}
+              {{#if (equals query.type "all")}}
+              <input type="radio" name="type" value="" onclick="this.form.submit()" checked/> All
+              {{else}}
+              <input type="radio" name="type" value="" onclick="this.form.submit()" /> All
+              {{/if}}
+            {{else}}
+              <input type="radio" name="type" value="" onclick="this.form.submit()" checked/> All
+            {{/if}}
+          </label>
+        </div>
+        {{/radio}}
+
+        {{> publications/searchFields currentField="type"}}
       </form>
 
-      <br/>
+      <br />
 
       <h5><strong>Filter by Publication date:</strong></h5>
       <form method="GET" action="" class="form-horizontal">
-          <div class="radio"><label>
-            <input type="radio" name="publicationDate" value="now-1m" /> Last month
-          </label></div>
-          <div class="radio"><label>
-            <input type="radio" name="publicationDate" value="now-3m" /> Last 3 months
-          </label></div>
-          <div class="radio"><label>
-            <input type="radio" checked="checked" name="publicationDate" value="all" /> All
-          </label></div>
+        {{#radio query.date}}
+        <div class="radio">
+          <label>
+            <input type="radio" name="date" value="now-1m" onChange="this.form.submit()" checked>
+            Last month
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="date" value="now-3m" onChange="this.form.submit()">
+            Last 3 months
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="date" value="all" onChange="this.form.submit()">
+            All
+          </label>
+        </div>
+        {{/radio}}
+
+        {{> publications/searchFields currentField="date"}}
       </form>
     </div>
 
@@ -51,13 +86,15 @@
         <form method="GET" action="" class="form-inline">
           <div class="form-group">
             <strong>Sort by:</strong>
-            <select>
-              <option>Date added (newest-oldest)</option>
-              <option>Date added (oldest-newest)</option>
-              <option>Title (A-Z)</option>
-              <option>Title (Z-A)</option>
-              <!-- <option>Last activity date (newest-oldest)</option> -->
-              <!-- <option>Last activity date (oldest-newest)</option> -->
+            <select name="sort" onchange="this.form.submit()">
+              {{#select query.sort}}
+              <option value="date-asc">Date added (newest-oldest)</option>
+              <option value="date-desc">Date added (oldest-newest)</option>
+              <option value="name-asc">Title (A-Z)</option>
+              <option value="name-desc">Title (Z-A)</option>
+              {{/select}}
+
+              {{> publications/searchFields currentField="sort"}}
             </select>
           </div>
         </form>
@@ -72,28 +109,22 @@
       <br />
 
       {{#each publications.results}}
-        <div class="row result-item">
-          <div class="col-xs-12">
-            <div class="flex">
-              {{#if resolutions}}
-          		  <i class="fa fa-flag fa-lg text-danger searchRedFlag mr-2"></i>
-              {{/if}}
-
-              <h2><a href="/publications/view/{{this._id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
-            </div>
-            <span class="label label-default">{{this.type}}</span>
+      <div class="row result-item">
+        <div class="col-xs-12">
+          <div class="flex">
             {{#if resolutions}}
-              {{!-- <a class="text-danger">
+            <i class="fa fa-flag fa-lg text-danger searchRedFlag mr-2"></i>
+            {{/if}}
+
+            <h2><a href="/publications/view/{{this._id}}">{{{markHits this.title ../query.phrase}}}</a></h2>
+          </div>
+          <span class="label label-default">{{this.type}}</span>
+          {{#if resolutions}}
+          {{!-- <a class="text-danger">
                 <span class="label label-danger">Red Flagged</span>
               </a> --}}
-              <button
-                class="btn label label-danger text-white"
-                data-toggle="popover"
-                data-trigger="focus"
-                data-html="true"
-                title="Categories of the previous red flags"
-                data-placement="top"
-                data-content="
+          <button class="btn label label-danger text-white" data-toggle="popover" data-trigger="focus" data-html="true"
+            title="Categories of the previous red flags" data-placement="top" data-content="
                   <ul>
                     {{#each resolutions}}
                       <li>
@@ -101,21 +132,20 @@
                       </li>
                     {{/each}}
                   </ul>
-                  "
-                >
-                  Red Flagged
-              </button>
-            {{/if}}
-            <br /><br />
+                  ">
+            Red Flagged
+          </button>
+          {{/if}}
+          <br /><br />
 
-            <!-- <blockquote>{{{markHits this.summary ../query.phrase}}}</blockquote> -->
+          <!-- <blockquote>{{{markHits this.summary ../query.phrase}}}</blockquote> -->
 
-            <ul class="list-unstyled small">
-              <li><strong>Date added:</strong> {{formatDate this.dateCreated}} &nbsp;</li>
-              <li><strong>Authors:</strong>{{> authorsList authors=this.authors}}</li>
-            </ul>
-          </div>
+          <ul class="list-unstyled small">
+            <li><strong>Date added:</strong> {{formatDate this.dateCreated}} &nbsp;</li>
+            <li><strong>Authors:</strong>{{> authorsList authors=this.authors}}</li>
+          </ul>
         </div>
+      </div>
       {{/each}}
 
     </div>
