@@ -28,7 +28,7 @@
               {{/each}}
 
               <div class="publicationsList">
-                {{#each ../linkedPublications}}
+                {{#each ../publications}}
                   {{#if (equals type  ../key)}}
                     <a id={{_id}} title="{{title}}" href="/publications/view/{{_id}}" class="pubItem" linked="{{toString linkedPublications}}">
                       <h5 class="title">{{title}}</h5>
