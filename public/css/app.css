@@ -263,5 +263,6 @@ footer, footer a { color: #ddd }
 .btn-primary:active, .btn-primary:hover, .btn-primary:focus { background-color: #4f4dbf; border-color: #403cce; }
 .btn-primary:active:hover, .btn-primary:active:focus { background-color: #3634a0; border-color: #070563; }
 
-.display-inline-block {display: inline-block}
-.content-actions-bar .separator {display: inline-block; width: 10px}
+.display-inline-block { display: inline-block; }
+.content-actions-bar .separator { display: inline-block; width: 10px; }
+.full-text-content img { max-width: 100%  }
