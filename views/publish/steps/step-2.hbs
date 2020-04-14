@@ -91,9 +91,12 @@
       </button>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
       <label for="publicationTitle">3. Publication title <span class="required">*</span></label>
-      <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter a title that gives readers as good an idea as possible of the content of the publication. Max characters 100" maxlength="100"/>
+      <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="" placeholder="Enter a title that gives readers as good an idea as possible of the content of the publication. Max characters 200" maxlength="200"/>
+      <div class="flex flex-end">
+        <span id="counter-display" class="text-normal">0</span><span class="text-normal">&nbsp;/ 200</span>
+      </div>
     </div>
 
     <div class="form-group">
@@ -251,8 +254,30 @@
     }
   }
 
+  // Input character counter
+  function countCharacters(inputId, displayId) {
+    // Count input value length and show up
+    const counter = (() => {
+      const input = document.getElementById(inputId),
+        display = document.getElementById(displayId),
+        changeEvent = (evt) => display.innerHTML = evt.target.value.length,
+        getInput = () => input.value,
+        countEvent = () => input.addEventListener('keyup', changeEvent),
+        init = () => countEvent();
+
+      return {
+        init
+      }
+    })();
+
+    counter.init();
+  }
+
   $(function () {
     $("#publicationCollaboratorsList").sortable();
     $("#publicationCollaboratorsList").disableSelection();
   });
+
+  // Title input character counter
+  countCharacters('publicationTitle', 'counter-display');
 </script>

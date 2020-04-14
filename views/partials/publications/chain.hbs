@@ -32,10 +32,16 @@
                   {{#if (equals type  ../key)}}
                     <a id={{_id}} title="{{title}}" href="/publications/view/{{_id}}" class="pubItem" linked="{{toString linkedPublications}}">
                       <h5 class="title">{{title}}</h5>
-                        {{#unless (equals countedLinked 0)}}
+                        {{#unless (equals countedLinkedProblems 0)}}
                           <div class="countedLinked">
-                            {{countedLinked}}
-                            <span class="fa fa-link"></span>
+                            {{countedLinkedProblems}}
+                            <span class="fa fa-link w-2"></span>
+                          </div>
+                        {{/unless}}
+                        {{#unless (equals countedLinkedReviews 0)}}
+                          <div class="countedLinked mt-3">
+                            <span>{{countedLinkedReviews}}</span>
+                            <span class="fa fa-file-o w-2"></span>
                           </div>
                         {{/unless}}
 

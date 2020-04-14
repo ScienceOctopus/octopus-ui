@@ -33,14 +33,20 @@
       <hr />
 
       <div>
-        <h3>Linked Problems</h3>
+        <h3>
+          <span class="fa fa-link align-center mr-1 w-3"></span>
+          Linked Problems
+        </h3>
         {{> publications/linkedPublicationsList linkedPublications=publication.linkedProblems publicationType=publicationType publicationTypes=this.publicationTypes type="problems"}}
       </div>
 
       <hr/>
 
       <div>
-        <h3>Reviews</h3>
+        <h3>
+          <span class="fa fa-file-o align-center mr-1 w-3"></span>
+          Reviews
+        </h3>
         {{> publications/linkedPublicationsList linkedPublications=publication.linkedReviews publicationType=publicationType publicationTypes=this.publicationTypes type="reviews"}}
       </div>
 
