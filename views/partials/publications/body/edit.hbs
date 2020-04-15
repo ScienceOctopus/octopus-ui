@@ -10,11 +10,30 @@
 
       <hr />
 
-      <h3>Title <span class="required">*</span></h3>
-      <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="{{publication.title}}" placeholder="Enter a title that gives readers as good an idea as possible of the content of the publication. Max characters 100" maxlength="100"/>
+      <div class="mb-3">
+        <h3>Title <span class="required">*</span></h3>
+        <input required id="publicationTitle" class="form-control" name="publicationTitle" type="text" value="{{publication.title}}" placeholder="Enter a title that gives readers as good an idea as possible of the content of the publication. Max characters 200" maxlength="200"/>
+        <div class="flex flex-end">
+          <span id="counter-display" class="text-normal">0</span><span class="text-normal">&nbsp;/ 200</span>
+        </div>
+      </div>
 
-      <br />
-      
+      <div>
+        <h3>Linked publications</h3>
+        <select multiple id="linkedPublications" name="linkedPublications" class="form-control selectpicker" data-live-search="true" data-icon-base="FontAwesome" data-tick-icon="fa fa-check" data-none-selected-text="Please select which publication you wish to link to">
+          {{#each publication.alreadyLinkedPublications}}
+            <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}" selected>
+              {{this.title}}
+            </option>
+          {{/each}}
+          {{#each publication.notLinkedPublications}}
+            <option value="{{this.id}}" title="{{this.title}}" data-subtext="{{this.type}}">
+              {{this.title}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+
       <div>
         <h3>Authors <span class="required">*</span></h3>
         <ul id="publicationCollaboratorsList">
@@ -186,8 +205,34 @@
     }
   }
 
+  // Input character counter
+  function countCharacters(inputId, displayId) {
+    // Get initial input value length before user start typing
+    const initialValue = $(`#${inputId}`).val().length;
+    $(`#${displayId}`).text(initialValue);
+
+    // Count value length and show up
+    const counter = (() => {
+      const input = document.getElementById(inputId),
+        display = document.getElementById(displayId),
+        changeEvent = (evt) => display.innerHTML = evt.target.value.length,
+        getInput = () => input.value,
+        countEvent = () => input.addEventListener('keyup', changeEvent),
+        init = () => countEvent();
+
+      return {
+        init
+      }
+    })();
+
+    counter.init();
+  }
+
   $(function () {
     $("#publicationCollaboratorsList").sortable();
     $("#publicationCollaboratorsList").disableSelection();
   });
+
+  // Title input character counter
+  countCharacters('publicationTitle', 'counter-display');
 </script>

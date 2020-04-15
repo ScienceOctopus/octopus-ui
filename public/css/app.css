@@ -71,6 +71,7 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .text-accent { color: #9955de }
 .text-semi-strong { font-weight: 500 }
 .text-strong { font-weight: 600 }
+.text-normal { font-weight: normal; }
 .text-truncate { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .alert { border-radius: 0; border-width: 1px 0}
 .inline-flex { display: inline-flex; }
@@ -147,6 +148,11 @@ hr.octopus-separator { height: 30px; background: url('../images/separatorChain.p
 .ml-2 { margin-left: 8px; }
 .ml-3 { margin-left: 16px; }
 .pl-0 { padding-left: 0; }
+
+/* Width utility classes */
+.w-1 { width: 4px; }
+.w-2 { width: 8px; }
+.w-3 { width: 16px; }
 
 /* Label utility clases based on publication type */
 .label-PROBLEM { background-color: #42C0A3; }
