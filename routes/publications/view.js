@@ -123,21 +123,18 @@ const typeCounter = (publicationTypes, publications) => {
 
 // Get linked publications for current publication by type
 const getLinkedPublicationsByType = (publication, publications, type) => {
-  if (!_.isEmpty(publication.linkedPublications)) {
-    const { linkedPublications } = publication;
+  const { _id } = publication;
 
-    const linkedPubs = publications.filter((pub) => {
-      return linkedPublications.includes(pub._id) && (pub.type === type);
-    });
+  const linkedPubs = publications.filter((pub) => {
+    const { linkedPublications = [] } = pub;
+    return linkedPublications.includes(_id) && (pub.type === type);
+  });
 
-    linkedPubs.forEach((linkedPub) => {
-      linkedPub.attachedRatings = attachRatings(linkedPub, null);
-    });
+  linkedPubs.forEach((linkedPub) => {
+    linkedPub.attachedRatings = attachRatings(linkedPub, null);
+  });
 
-    return linkedPubs;
-  }
-
-  return [];
+  return linkedPubs;
 };
 
 // Get ALL linked publications for current
@@ -267,6 +264,7 @@ module.exports = (req, res) => {
                 authors,
                 linkedProblems,
                 countedLinked,
+                countedLinkedProblems,
                 countedLinkedReviews,
               });
             })();
