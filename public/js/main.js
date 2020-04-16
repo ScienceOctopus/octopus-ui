@@ -82,8 +82,9 @@
     // Re-draw the Y on scroll
     $pubChainColumns.find(".publicationsList").scroll((e) => {
       const currentPublicationsList = $(e.target);
-      const nextSvgElement = currentPublicationsList.parent().next();
-      const prevSvgElement = currentPublicationsList.parent().prev();
+      const nextSvgElement = currentPublicationsList.closest(".typeColumnWrapper").next().find("svg");
+      const prevSvgElement = currentPublicationsList.closest(".typeColumnWrapper").prev().find("svg");
+      const OFFSET_BOTTOM = nextSvgElement.height() + pubItemHeight / 2;
 
       // Handle Y1 in the next SVG
       nextSvgElement.find("path").each((_i, pathSvgElement) => {
@@ -102,6 +103,7 @@
 
         $pathSvgElement.data("y1", y1);
         $pathSvgElement.attr("d", coords.join(" "));
+        $pathSvgElement.toggleClass("hidden", newY < OFFSET_TOP || newY > OFFSET_BOTTOM);
       });
 
       // Handle Y2 in the previous SVG
@@ -121,6 +123,7 @@
 
         $pathSvgElement.data("y2", y2);
         $pathSvgElement.attr("d", coords.join(" "));
+        $pathSvgElement.toggleClass("hidden", newY < OFFSET_TOP || newY > OFFSET_BOTTOM);
       });
     });
 
@@ -134,7 +137,7 @@
       // Setup
       const currentColumnElement = $(columnElement);
       const nextSvgElement = currentColumnElement.next();
-      const nextColumnElement = nextSvgElement.next();
+      const nextColumnElement = currentColumnElement.parent().next();
 
       // Nothing to do, exit
       if (!nextColumnElement.length) return;
@@ -181,7 +184,7 @@
 
     function markBackwards(currentMarkedItem) {
       if (!currentMarkedItem.attr(LINK_ATTR)) return;
-      const prevColumn = currentMarkedItem.closest(".typeColumn").prev().prev();
+      const prevColumn = currentMarkedItem.closest(".typeColumnWrapper").prev();
       const prevMarkedItemsIds = currentMarkedItem.attr(LINK_ATTR).split(",");
       const prevMarkedItemsSelectors = prevMarkedItemsIds.map(s => `.pubItem#${s}`);
       const prevFoundItems = prevColumn.find(prevMarkedItemsSelectors.join(","));
@@ -192,7 +195,7 @@
     }
 
     function markForwards(currentMarkedItem) {
-      const nextColumn = currentMarkedItem.closest(".typeColumn").next().next();
+      const nextColumn = currentMarkedItem.closest(".typeColumnWrapper").next();
       const nextFoundItems = nextColumn.find(`.pubItem[linked*='${currentMarkedItem.attr("id")}']`);
       nextFoundItems.each((i, item) => {
         $(item).addClass(HIGH_CLASS);
