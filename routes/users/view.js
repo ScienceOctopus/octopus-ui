@@ -78,13 +78,14 @@ const getUserWorks = (orcidId, accessToken) => new Promise((resolve) => {
       if (summaries) {
         // Extract specific data from orcid
         summaries.forEach((summary) => {
-          const { title, type, url:pubUrl } = summary;
+          const { title, type, url: pubUrl } = summary;
           const externalId = _.get(summary, 'external-ids.external-id[0]');
           const journalTitle = _.get(summary, 'journal-title.value');
           const createdAt = _.get(summary, 'created-date.value'); // Timestamp format
-          const url = externalId && externalId['external-id-url']
-            ? externalId['external-id-url'].value
-            : pubUrl ? pubUrl.value : null;
+          const externalIdUrl = externalId && externalId['external-id-url']
+            ? externalId['external-id-url'].value : null;
+          const internalPubUrl = pubUrl && pubUrl.value ? pubUrl.value : null;
+          const url = externalIdUrl || internalPubUrl;
 
           // Transform timestamp into ISO String
           const date = new Date(createdAt);

@@ -54,7 +54,7 @@ module.exports = (req, res) => {
       const linkablePublications = await new Promise((resolve) => api.findPublications({}, (linkablePublicationsErr, linkablePublicationsData) => resolve(linkablePublicationsData.results)));
       linkablePublications.forEach((linkablePublication) => allLinkablePublications.push(mapResultForDropdown(linkablePublication)));
     } else {
-      const dd = await Promise.all(publicationTypeDef.linksTo.map(async (linkType) => {
+      const getPubsByLinksTo = await Promise.all(publicationTypeDef.linksTo.map(async (linkType) => {
         const filters = {
           type: linkType,
         };

@@ -20,7 +20,6 @@ module.exports = (req, res) => {
     type: _.get(req, 'query.type'),
     date: _.get(req, 'query.date'),
     sort: _.get(req, 'query.sort'),
-    phrase: _.get(req, 'query.phrase'),
   };
 
   debug('octopus:ui:debug')(`Searching for Publications. Query: "${query.phrase || ''}"`);
@@ -79,7 +78,7 @@ module.exports = (req, res) => {
       const currentMonth = currentDate.getMonth() + 1;
       const numOfDaysThisMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-      results = results.filter(result => {
+      results = results.filter((result) => {
         const dateCreated = new Date(result.dateCreated);
         const msDifference = currentDate - dateCreated;
         const daysDifference = msDifference / 1000 / 60 / 60 / 24;
@@ -89,7 +88,7 @@ module.exports = (req, res) => {
           case 'now-3m': return monthsDifference < 3;
           case 'now-1m': return monthsDifference < 1;
           case 'all':
-          default: return true
+          default: return true;
         }
       });
     }
