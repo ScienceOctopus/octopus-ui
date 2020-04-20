@@ -4,13 +4,13 @@ const debug = require('debug');
 const api = require('../../lib/api');
 const userHelpers = require('../users/helpers');
 
-const sortPublications = (query, titleA, titleB) => {
-  switch (query.sort) {
-    case 'name-desc': return titleB.localeCompare(titleA);
-    case 'name-asc':
-    default: return titleA.localeCompare(titleB);
-  }
-};
+// const sortPublications = (query, titleA, titleB) => {
+//   switch (query.sort) {
+//     case 'name-desc': return titleB.localeCompare(titleA);
+//     case 'name-asc':
+//     default: return titleA.localeCompare(titleB);
+//   }
+// };
 
 module.exports = (req, res) => {
   const accessToken = _.get(req, 'session.authOrcid.accessToken');
