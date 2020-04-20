@@ -85,7 +85,6 @@
       const nextSvgElement = currentPublicationsList.closest(".typeColumnWrapper").find("svg");
       const prevSvgElement = currentPublicationsList.closest(".typeColumnWrapper").prev().find("svg");
       const OFFSET_BOTTOM = nextSvgElement.height() + pubItemHeight / 2;
-      console.log(currentPublicationsList, nextSvgElement);
 
       // Handle Y1 in the next SVG
       nextSvgElement.find("path").each((_i, pathSvgElement) => {
