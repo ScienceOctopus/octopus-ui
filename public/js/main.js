@@ -82,9 +82,10 @@
     // Re-draw the Y on scroll
     $pubChainColumns.find(".publicationsList").scroll((e) => {
       const currentPublicationsList = $(e.target);
-      const nextSvgElement = currentPublicationsList.closest(".typeColumnWrapper").next().find("svg");
+      const nextSvgElement = currentPublicationsList.closest(".typeColumnWrapper").find("svg");
       const prevSvgElement = currentPublicationsList.closest(".typeColumnWrapper").prev().find("svg");
       const OFFSET_BOTTOM = nextSvgElement.height() + pubItemHeight / 2;
+      console.log(currentPublicationsList, nextSvgElement);
 
       // Handle Y1 in the next SVG
       nextSvgElement.find("path").each((_i, pathSvgElement) => {
@@ -103,7 +104,7 @@
 
         $pathSvgElement.data("y1", y1);
         $pathSvgElement.attr("d", coords.join(" "));
-        $pathSvgElement.toggleClass("hidden", newY < OFFSET_TOP || newY > OFFSET_BOTTOM);
+        // $pathSvgElement.toggleClass("hidden", newY < OFFSET_TOP || newY > OFFSET_BOTTOM);
       });
 
       // Handle Y2 in the previous SVG
@@ -123,7 +124,7 @@
 
         $pathSvgElement.data("y2", y2);
         $pathSvgElement.attr("d", coords.join(" "));
-        $pathSvgElement.toggleClass("hidden", newY < OFFSET_TOP || newY > OFFSET_BOTTOM);
+        // $pathSvgElement.toggleClass("hidden", newY < OFFSET_TOP || newY > OFFSET_BOTTOM);
       });
     });
 

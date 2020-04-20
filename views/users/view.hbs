@@ -123,11 +123,18 @@
                 {{this.type}}
               </p>
 
-              <a href="{{this.url}}" target="_blank">
+              {{#if this.url}}
+                <a href="{{this.url}}" target="_blank">
+                  <h4 class="publication-title">
+                    {{this.title}}
+                  </h4>
+                </a>
+
+                {{else}}
                 <h4 class="publication-title">
                   {{this.title}}
                 </h4>
-              </a>
+              {{/if}}
 
               <p class="publication-title">
                 {{this.journalTitle}}
