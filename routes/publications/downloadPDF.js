@@ -10,20 +10,6 @@ module.exports = (req, res) => {
   return api.downloadPublicationPDF(
     publicationID,
     baseUrl,
-    async (publicationErr, publicationPDFBuffer) => {
-      if (publicationErr || !publicationPDFBuffer) {
-        debug('octopus:ui:error')(
-          `Error when trying to download Publication ${publicationID}: ${publicationErr}`,
-        );
-      }
-
-      const publicationPDF = Buffer.from(publicationPDFBuffer);
-
-      res.setHeader(
-        'Content-disposition',
-        `attachment; filename=${publicationID}.pdf`,
-      );
-      res.end(publicationPDF, '');
-    },
-  );
+    async (publicationErr, publicationPDFResponse) => {},
+  ).pipe(res);
 };
